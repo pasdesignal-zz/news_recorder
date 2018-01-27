@@ -53,7 +53,7 @@ if __name__ == '__main__':
 			wav_files = os.listdir(wav_dir)
 			print "no new files bro..."
 	except Exception as e:
-		print("Error:%s".format(e))
+		print("Error:".format(e))
 	finally:
 		print "outta here..."
 		exit()
