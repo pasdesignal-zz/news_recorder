@@ -22,7 +22,7 @@ filename = 'rnznews_'+date_time+'.wav'
 
 def record():
 	print "initiating ffmpeg record of livewire stream"
-	ff = ffmpy.FFmpeg(inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'},outputs={(wav_dir+filename) : None })
+	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'},outputs={(wav_dir+filename) : None })
 	print ff
 	ff.run()
 
@@ -41,11 +41,11 @@ def housekeeping():
 if __name__ == '__main__':
 	try:
 		housekeeping()
-		record() 
+		rec_output = record() 
 	except KeyboardInterrupt:
 		print "manually interrupted!"
-		housekeeping()
 	except Exception as e:
 		print("Error:%s".format(e))
 	finally:
+		print rec_output
 		housekeeping()
