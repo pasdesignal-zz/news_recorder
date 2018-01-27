@@ -44,3 +44,7 @@ if __name__ == '__main__':
 	try:
 		observer = Observer()        #folder watchdog process to monitor wav folder for new files
 		observer.schedule(MyHandler(), path=wav_dir)
+	except Exception as e:
+		print("Error:%s".format(e))
+	finally:
+		pass
