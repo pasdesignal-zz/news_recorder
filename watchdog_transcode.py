@@ -20,7 +20,7 @@ class MyHandler(PatternMatchingEventHandler):
 		#everything here is what happens once the event is triggered
 		_files = os.listdir(event.src_path)
 		if len(_files) > 0:
-			for file in files:
+			for file in _files:
 				print("file detected:%s", format(file))
 			exit()
 
@@ -42,10 +42,9 @@ class MyHandler(PatternMatchingEventHandler):
 
 if __name__ == '__main__':
 	try:
-		while True:
-			print "starting watchdog process observing new files in folder:", wav_dir
-			observer = Observer()        #folder watchdog process to monitor wav folder for new files
-			observer.schedule(MyHandler(), path=wav_dir)
+		print "starting watchdog process observing new files in folder:", wav_dir
+		observer = Observer()        #folder watchdog process to monitor wav folder for new files
+		observer.schedule(MyHandler(), path=wav_dir)
 	except Exception as e:
 		print("Error:%s".format(e))
 	finally:
