@@ -15,7 +15,7 @@ import datetime
 #create test script to test all of above at any moment
 
 wav_dir = '/home/rnzweb/audio/wav/'
-opus_dir = 'home/rnzweb/audio/opus/'
+opus_dir = '/home/rnzweb/audio/opus/'
 sdp_file = '/home/rnzweb/news_recorder/rnz_national.sdp'
 date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = 'rnznews_'+date_time+'.ogg'
