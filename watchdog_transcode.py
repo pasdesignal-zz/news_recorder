@@ -46,8 +46,8 @@ if __name__ == '__main__':
 			print "starting watchdog process observing new files in folder:", wav_dir
 			observer = Observer()        #folder watchdog process to monitor wav folder for new files
 			observer.schedule(MyHandler(), path=wav_dir)
-		except Exception as e:
-			print("Error:%s".format(e))
-		finally:
-			print "outta here..."
-			exit()
+	except Exception as e:
+		print("Error:%s".format(e))
+	finally:
+		print "outta here..."
+		exit()
