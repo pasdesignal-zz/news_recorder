@@ -21,7 +21,7 @@ date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = 'rnznews_'+date_time+'.ogg'
 
 def record():
-	ff = ffmpy.FFmpeg(inputs={sdp_file: '-acodec pcm_s24le -ar 48000 -t 03:30'},outputs={filename: '-acodec libopus -b 64' })
+	ff = ffmpy.FFmpeg(inputs={sdp_file: '-c:a pcm_s24le -r:a 48000 -t 03:30'},outputs={filename: '-c:a libopus -b:a 64k' })
 	ff.run()
 
 if __name__ == '__main__':
