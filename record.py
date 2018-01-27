@@ -47,5 +47,5 @@ if __name__ == '__main__':
 		housekeeping()
 	except Exception as e:
 		print("Error:%s".format(e))
-	finally
+	finally:
 		housekeeping()
