@@ -4,11 +4,13 @@ import ffmpy
 import datetime
 
 ##TO DO:
-#folder watchdog process to process wav file - transcode to ogg/opus
-#folder watchdog process to ftp/scp ogg/opus file to ELF
+#folder watchdog process to process wav file - trim to silence (start and between 02:50mins - 03:10mins )
+#folder watchdog process trimmed .wav file to opus
+#folder watchdog process to ftp/scp ogg/opus file to ELF(?)
 #setup cron jobs to call above jobs each hour two seconds before the hour
 #log all output to file
 #create test script to test all of above at any moment
+#try/except clause
 
 wav_dir = '/home/rnzweb/audio/wav/'
 opus_dir = '/home/rnzweb/audio/opus/'
@@ -21,4 +23,9 @@ def record():
 	ff.run()
 
 if __name__ == '__main__':
-	record()
+	try:
+		record() 
+	except KeyboardInterrupt:
+		print "manually interrupted!"
+	except Exception as e:
+	print("Error:%s".format(e)
