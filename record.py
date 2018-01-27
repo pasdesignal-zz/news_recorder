@@ -31,7 +31,7 @@ def housekeeping():
 	files_wav= []
 	files_wav = os.listdir(wav_dir)
 	if len(files_wav) > 0:
-		print "removing existing .wav files:", files_xml
+		print "removing existing .wav files:", files_wav
 		for file in  files_wav:
 			try:
 				os.remove(wav_dir+file)        
