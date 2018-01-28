@@ -11,3 +11,5 @@
 #5. save appended .wav file to appropriate folder with appropriate naming for transcode
 
 #sox original.wav new.wav silence 1 0.5 2% 1 2.0 2% : newfile : restart
+#https://github.com/rabitt/pysox
+#https://digitalcardboard.com/blog/2009/08/25/the-sox-of-silence/
