@@ -1,6 +1,6 @@
 v=0
-o=Node 1 1 IN IP4 10.212.255.249
-s=Channel 4004
+o=Node 1 1 IN IP4 10.212.13.1
+s=NatProcSt w T/S
 c=IN IP4 239.192.15.164
 t=0 0
 a=type:multicast
