@@ -13,7 +13,7 @@ ffmpeg_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 
 def normalise(wav_in, wav_out):
 	print "initiating ffmpeg loudness processing"
-	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav : ffmpeg_string},outputs={input_file : None })
+	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav_in: ffmpeg_string},outputs={wav_out : None })
 	print ff.cmd
 	ff.run()
 
