@@ -9,11 +9,11 @@ wav_dir = '/home/rnzweb/audio/wav/'
 opus_dir = '/home/rnzweb/audio/opus/'
 input_file = '/home/rnzweb/audio/bulletin_3mins.wav'
 output_file = '/home/rnzweb/audio/bulletin_3mins_loud_processed.wav'
-ffmpeg_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
+loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 
 def normalise(wav_in, wav_out):
 	print "initiating ffmpeg loudness processing"
-	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav_in: ffmpeg_string},outputs={wav_out : None })
+	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
 	print ff.cmd
 	ff.run()
 
