@@ -21,7 +21,7 @@ filename = 'rnznews_'+date_time+'.wav'
 #'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 
-recorder = ffmpy.FFmpeg(global_options="-v debug -protocol_whitelist 'file,udp,rtp,https'",inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2'},outputs={(wav_dir+filename) : None })
+recorder = ffmpy.FFmpeg(global_options="-protocol_whitelist 'file,udp,rtp,https'",inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2'},outputs={(wav_dir+filename) : None })
 
 def housekeeping():
 	print "housekeeping..."
@@ -39,7 +39,6 @@ if __name__ == '__main__':
 	try:
 		print "starting thread 'recorder'"
 		rec_job = Thread(target=recorder.run)
-		rec_job.daemon = True
 		rec_job.start()
 		time.sleep(1)
 		print "waiting ...1"
@@ -51,7 +50,7 @@ if __name__ == '__main__':
 		print "waiting ...4"
 		time.sleep(5)
 		print "waiting ...5"
-		rec_job.process.terminate()
+		recorder.process.terminate()
 		print "filename:", filename
 		#housekeeping()   #this should not be at the start of this script it will slow down start of recording
 		record()
