@@ -4,6 +4,7 @@ import threading
 import ffmpy
 import datetime
 import os
+import time
 
 ##TO DO:
 #improve logging to file (include ffmpeg stdout and errors)
