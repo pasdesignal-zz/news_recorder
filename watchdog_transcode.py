@@ -5,10 +5,6 @@ import os
 import datetime
 
 wav_dir = '/home/rnzweb/audio/wav/'
-opus_dir = '/home/rnzweb/audio/opus/'
-sdp_file = '/home/rnzweb/news_recorder/rnz_national.sdp'
-date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-filename = 'rnznews_'+date_time+'.wav'
 
 class MyHandler(PatternMatchingEventHandler):
 	
@@ -42,7 +38,7 @@ class MyHandler(PatternMatchingEventHandler):
 
 if __name__ == '__main__':
 	try:
-		print "starting watchdog process observing new files in folder:", wav_dir
+		print "starting watchdog process observing new files..."
 		observer = Observer()        #folder watchdog process to monitor wav folder for new files
 		observer.schedule(MyHandler(), path=wav_dir)
 		wav_files =[]
