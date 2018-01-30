@@ -5,7 +5,7 @@ import os
 import datetime
 import time
 
-wav_dir = '/home/rnzweb/audio/wav/'
+wav_dir = '/home/rnzweb/audio/wav'
 
 class MyHandler(PatternMatchingEventHandler):
 	patterns = ["*.wav"]
@@ -40,6 +40,7 @@ if __name__ == '__main__':
 	print "starting watchdog process observing new files..."
 	observer = Observer()        #folder watchdog process to monitor wav folder for new files
 	observer.schedule(MyHandler(), path=wav_dir)
+	observer.start()
 	while True:
 		print "waiting ..."
 		time.sleep(2)
