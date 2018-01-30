@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from threading import Thread
+import threading
 import ffmpy
 import datetime
 import os
@@ -38,7 +38,8 @@ def housekeeping():
 if __name__ == '__main__':
 	try:
 		print "starting thread 'recorder'"
-		rec_job = Thread(target=recorder.run)
+		rec_job = threading.Thread(target=recorder.run)
+		rec_job.daemon = True
 		rec_job.start()
 		time.sleep(1)
 		print "waiting ...1"
