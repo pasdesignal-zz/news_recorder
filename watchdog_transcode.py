@@ -35,19 +35,12 @@ class MyHandler(PatternMatchingEventHandler):
 				self.process(event)
 
 if __name__ == '__main__':
-	try:
-		print "starting watchdog process observing new files..."
-		observer = Observer()        #folder watchdog process to monitor wav folder for new files
-		observer.schedule(MyHandler(), path=wav_dir)
-		wav_files =[]
-		wav_files = os.listdir(wav_dir)
-		count = len(wav_files)
-		while len(wav_files) == count:
-			time.sleep(1)
-			wav_files = os.listdir(wav_dir)
-			print "no new files bro..."
-	except Exception as e:
-		print "Error:".format(e)
-	finally:
-		print "outta here..."
-		exit()
+	#try:
+print "starting watchdog process observing new files..."
+observer = Observer()        #folder watchdog process to monitor wav folder for new files
+observer.schedule(MyHandler(), path=wav_dir)
+	#except Exception as e:
+	#	print "Error:".format(e)
+	#finally:
+	#	print "outta here..."
+	#	exit()
