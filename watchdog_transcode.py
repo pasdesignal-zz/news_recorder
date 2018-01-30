@@ -7,10 +7,8 @@ import datetime
 wav_dir = '/home/rnzweb/audio/wav/'
 
 class MyHandler(PatternMatchingEventHandler):
-	
 	patterns = ["*.wav"]
 
-##This needs to be improved to tolerate empty/bad xmls...
 	def process(self, event):
 		print event.src_path, event.event_type         #debug
 		#everything here is what happens once the event is triggered
@@ -49,7 +47,7 @@ if __name__ == '__main__':
 			wav_files = os.listdir(wav_dir)
 			print "no new files bro..."
 	except Exception as e:
-		print("Error:".format(e))
+		print "Error:".format(e)
 	finally:
 		print "outta here..."
 		exit()
