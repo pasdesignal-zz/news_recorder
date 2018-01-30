@@ -37,10 +37,20 @@ def housekeeping():
 
 if __name__ == '__main__':
 	try:
+		print "starting thread 'recorder'"
 		rec_job = Thread(target=recorder.run)
 		rec_job.start()
+		time.sleep(1)
+		waiting ...1
+		time.sleep(2)
+		waiting ...2
+		time.sleep(3)
+		waiting ...3
+		time.sleep(4)
+		waiting ...4
 		time.sleep(5)
-		recorder.process.terminate()
+		waiting ...5
+		rec_job.process.terminate()
 		print "filename:", filename
 		#housekeeping()   #this should not be at the start of this script it will slow down start of recording
 		record()
