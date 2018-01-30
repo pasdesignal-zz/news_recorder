@@ -20,7 +20,7 @@ filename = 'rnznews_'+date_time+'.wav'
 
 def record():
 	print "initiating ffmpeg record of livewire stream"
-	ff = ffmpy.FFmpeg(global_options='-v debug -protocol_whitelist "file, udp, rtp, tcp"',inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'},outputs={(wav_dir+filename) : None })
+	ff = ffmpy.FFmpeg(global_options='-v debug -protocol_whitelist "file, udp, rtp, tcp, tls"',inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'},outputs={(wav_dir+filename) : None })
 	print ff.cmd
 	ff.run()
 
