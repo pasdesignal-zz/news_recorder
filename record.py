@@ -51,10 +51,9 @@ if __name__ == '__main__':
 		print "waiting ...4"
 		time.sleep(5)
 		print "waiting ...5"
-		rec_job.stop()
+		recorder.process.terminate()
 		print "filename:", filename
 		#housekeeping()   #this should not be at the start of this script it will slow down start of recording
-		record()
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
