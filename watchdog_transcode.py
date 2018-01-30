@@ -36,7 +36,7 @@ class MyHandler(PatternMatchingEventHandler):
 
 if __name__ == '__main__':
 	#try:
-	while true:
+	while True:
 		print "starting watchdog process observing new files..."
 		observer = Observer()        #folder watchdog process to monitor wav folder for new files
 		observer.schedule(MyHandler(), path=wav_dir)
