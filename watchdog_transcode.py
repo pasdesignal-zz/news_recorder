@@ -21,15 +21,15 @@ class MyHandler(PatternMatchingEventHandler):
 		_files = os.listdir(wav_dir)
 		if len(_files) > 0:
 			for file in _files:
-				print("file detected:%s", format(file))
+				print("file detected: %s".format(file))
 				print "processing file(s) for loudness using FFMPEG..."
 				new_name = event.src_path+".loud"
 				print new_name
-				normalise(event.src_path, new_name)
+				self.normalise(event.src_path, new_name)
 			exit()
 
 	def on_modified(self, event):
-		print "detected new file%s".format(event.src_path)
+		print "detected new file %s".format(event.src_path)
 		#print "modified observer =", observer
 		if os.path.exists(event.src_path):
 			file_stopped = 0
@@ -40,7 +40,7 @@ class MyHandler(PatternMatchingEventHandler):
 				size2 = os.path.getsize(event.src_path)
 				print "file size:", size2		#debug
 				if size1 == size2:
-					print 'file $s stopped growing...'.format(event.src_path)
+					print 'file %s stopped growing...'.format(event.src_path)
 					file_stopped = 1	
 			if size2 > 0:
 				self.process(event)
