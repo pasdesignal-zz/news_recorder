@@ -15,13 +15,13 @@ class MyHandler(PatternMatchingEventHandler):
 	patterns = ["*.wav"]
 
 	def process(self, event):
-		print "processing file %s".format(event.src_path)
+		print "processing file {}".format(event.src_path)
 		#print event.src_path, event.event_type         #debug
 		#everything here is what happens once the event is triggered
 		_files = os.listdir(wav_dir)
 		if len(_files) > 0:
 			for file in _files:
-				print("file detected: %s".format(file))
+				print("file detected: {}".format(file))
 				print "processing file(s) for loudness using FFMPEG..."
 				new_name = event.src_path+".loud"
 				print new_name
@@ -29,7 +29,7 @@ class MyHandler(PatternMatchingEventHandler):
 			exit()
 
 	def on_modified(self, event):
-		print "detected new file %s".format(event.src_path)
+		print "detected new file {}".format(event.src_path)
 		#print "modified observer =", observer
 		if os.path.exists(event.src_path):
 			file_stopped = 0
@@ -40,12 +40,12 @@ class MyHandler(PatternMatchingEventHandler):
 				size2 = os.path.getsize(event.src_path)
 				print "file size:", size2		#debug
 				if size1 == size2:
-					print 'file %s stopped growing...'.format(event.src_path)
+					print 'file {} stopped growing...'.format(event.src_path)
 					file_stopped = 1	
 			if size2 > 0:
 				self.process(event)
 
-	def normalise(wav_in, wav_out):
+	def normalise(self, wav_in, wav_out):
 		print "initiating ffmpeg loudness processing"
 		ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
 		print ff.cmd
