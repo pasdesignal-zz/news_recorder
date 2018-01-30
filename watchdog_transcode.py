@@ -13,7 +13,7 @@ class MyHandler(PatternMatchingEventHandler):
 	def process(self, event):
 		print event.src_path, event.event_type         #debug
 		#everything here is what happens once the event is triggered
-		_files = os.listdir(event.src_path)
+		_files = os.listdir(wav_dir)
 		if len(_files) > 0:
 			for file in _files:
 				print("file detected:%s", format(file))
