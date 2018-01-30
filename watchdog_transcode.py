@@ -4,37 +4,52 @@ from watchdog.observers import Observer
 import os
 import datetime
 import time
+import ffmpy
 
 wav_dir = '/home/rnzweb/audio/wav'
+loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
+
+
 
 class MyHandler(PatternMatchingEventHandler):
 	patterns = ["*.wav"]
 
 	def process(self, event):
-		print event.src_path, event.event_type         #debug
+		print "processing file %s".format(event.src_path)
+		#print event.src_path, event.event_type         #debug
 		#everything here is what happens once the event is triggered
 		_files = os.listdir(wav_dir)
 		if len(_files) > 0:
 			for file in _files:
 				print("file detected:%s", format(file))
+				print "processing file(s) for loudness using FFMPEG..."
+				new_name = event.src_path+".loud"
+				print new_name
+				normalise(event.src_path, new_name)
 			exit()
 
 	def on_modified(self, event):
-		print "modified observer =", observer
-		print event.src_path
+		print "detected new file%s".format(event.src_path)
+		#print "modified observer =", observer
 		if os.path.exists(event.src_path):
 			file_stopped = 0
 			while file_stopped == 0:
 				size1 = os.path.getsize(event.src_path)
-				print "File size:", size1		#debug
+				print "file size:", size1		#debug
 				time.sleep(2)
 				size2 = os.path.getsize(event.src_path)
-				print "File size:", size2		#debug
+				print "file size:", size2		#debug
 				if size1 == size2:
-					print 'file stopped growing...'
-					file_stopped = 1
+					print 'file $s stopped growing...'.format(event.src_path)
+					file_stopped = 1	
 			if size2 > 0:
 				self.process(event)
+
+	def normalise(wav_in, wav_out):
+	print "initiating ffmpeg loudness processing"
+	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
+	print ff.cmd
+	ff.run()			
 
 if __name__ == '__main__':
 	#try:
