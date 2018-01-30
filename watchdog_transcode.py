@@ -27,10 +27,11 @@ class MyHandler(PatternMatchingEventHandler):
 			while file_stopped == 0:
 				size1 = os.path.getsize(event.src_path)
 				print "File size:", size1		#debug
-				time.sleep(0.5)
+				time.sleep(2)
 				size2 = os.path.getsize(event.src_path)
 				print "File size:", size2		#debug
 				if size1 == size2:
+					print 'file stopped growing...'
 					file_stopped = 1
 			if size2 > 0:
 				self.process(event)
