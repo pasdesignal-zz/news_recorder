@@ -18,9 +18,10 @@ sdp_file = '/home/rnzweb/news_recorder/rnz_national.sdp'
 date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = 'rnznews_'+date_time+'.wav'
 
+#-protocol_whitelist “file,udp,rtp”
 def record():
 	print "initiating ffmpeg record of livewire stream"
-	ff = ffmpy.FFmpeg(global_options='-v debug',inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'},outputs={(wav_dir+filename) : None })
+	ff = ffmpy.FFmpeg(global_options='-v debug -protocol_whitelist “file,udp,rtp”',inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'},outputs={(wav_dir+filename) : None })
 	print ff.cmd
 	ff.run()
 
