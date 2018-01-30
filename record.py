@@ -41,15 +41,15 @@ if __name__ == '__main__':
 		rec_job = Thread(target=recorder.run)
 		rec_job.start()
 		time.sleep(1)
-		waiting ...1
+		print "waiting ...1"
 		time.sleep(2)
-		waiting ...2
+		print "waiting ...2"
 		time.sleep(3)
-		waiting ...3
+		print "waiting ...3"
 		time.sleep(4)
-		waiting ...4
+		print "waiting ...4"
 		time.sleep(5)
-		waiting ...5
+		print "waiting ...5"
 		rec_job.process.terminate()
 		print "filename:", filename
 		#housekeeping()   #this should not be at the start of this script it will slow down start of recording
