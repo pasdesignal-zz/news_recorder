@@ -61,9 +61,11 @@ class MyHandler(PatternMatchingEventHandler):
 		if os.path.isfile(orig_file): 
 			os.remove(orig_file)
 			if not os.path.isfile(orig_file):
-				print "file {} deleted".format(orig_file)
+				print "file {} deleted:".format(orig_file)
 				print "replacing with processed file:{}".format(new_file)
 				shutil.copy(new_file, orig_file)
+				if os.path.isfile(orig_file):
+					print "file replaced:{}".format(orig_file)
 				if os.path.isfile(new_file):
 					print "deleting temp file:{}".format(new_file)
 					os.remove(new_file)
@@ -72,7 +74,6 @@ class MyHandler(PatternMatchingEventHandler):
 						print "file operations complete..."
 		else:
 			print "no file found:{}".format(event.src_path)
-			observer.start()
 
 if __name__ == '__main__':
 	try:
