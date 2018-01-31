@@ -26,8 +26,8 @@ class MyHandler(PatternMatchingEventHandler):
 		self.temp_file = (temp_dir+(os.path.basename(event.src_path)))
 		print "new name:{}".format(self.temp_file)
 		self.normalise((event.src_path), self.temp_file)
+		observer.stop()
 		self.replace(event.src_path, self.temp_file)
-		#observer.stop()
 
 	def on_modified(self, event):
 		print "detected new file {}".format(event.src_path)
@@ -66,9 +66,11 @@ class MyHandler(PatternMatchingEventHandler):
 					if not os.path.isfile(new_file):
 						print "file {} deleted".format(self.temp_file)
 						print "file operations complete..."
+						observer.start()
 		else:
 			print "no file found:{}".format(event.src_path)
-
+			observer.start()
+			
 if __name__ == '__main__':
 	try:
 	#test folders exists, if not make them!
