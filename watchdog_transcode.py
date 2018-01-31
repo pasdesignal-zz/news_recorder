@@ -22,8 +22,8 @@ class MyHandler(PatternMatchingEventHandler):
 	
 	def process(self, event):
 		#have we seen this file before?
-		if not event.src_path == ignore:
-			ignore = event.src_path
+		if not event.src_path == self.ignore:
+			self.ignore = event.src_path
 			print "processing file {}".format(event.src_path)
 			#print event.src_path, event.event_type         #debug
 			#everything here is what happens once the event is triggered
