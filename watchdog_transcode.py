@@ -2,6 +2,7 @@
 
 ##to do:
 #this script requires watchdog module - pip install watchdog
+@
 
 from watchdog.events import PatternMatchingEventHandler  
 from watchdog.observers import Observer
@@ -17,7 +18,7 @@ loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 
 class MyHandler(PatternMatchingEventHandler):
 	
-	patterns = ["*.wav"]
+	patterns = ["*.wav", "*.mp3", "*.ogg"]
 	ignore = None
 	
 	def process(self, event):
