@@ -41,19 +41,19 @@ if __name__ == '__main__':
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
 		#rec_job.daemon = True
-		rec_job.start()
-		time.sleep(1)
-		print "waiting ...1"
-		time.sleep(2)
-		print "waiting ...2"
-		time.sleep(3)
-		print "waiting ...3"
-		time.sleep(4)
-		print "waiting ...4"
-		time.sleep(5)
-		print "waiting ...5"
-		recorder.process.terminate()
-		print "filename:", filename
+		#rec_job.start()
+		#time.sleep(1)
+		#print "waiting ...1"
+		#time.sleep(2)
+		#print "waiting ...2"
+		#time.sleep(3)
+		#print "waiting ...3"
+		#time.sleep(4)
+		#print "waiting ...4"
+		#time.sleep(5)
+		#print "waiting ...5"
+		#recorder.process.terminate()
+		#print "filename:", filename
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
