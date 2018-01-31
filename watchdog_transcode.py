@@ -23,7 +23,7 @@ class MyHandler(PatternMatchingEventHandler):
 			for file in _files:
 				print("file detected: {}".format(file))
 				print "processing file(s) for loudness using FFMPEG..."
-				new_name = (temp_dir+(os.path.basename(your_pathevent.src_path))
+				new_name = (temp_dir+(os.path.basename(event.src_path)))
 				print "new name:{}".format(new_name)
 				self.normalise(event.src_path, new_name)
 			exit()
