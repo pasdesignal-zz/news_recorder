@@ -47,7 +47,7 @@ class MyHandler(PatternMatchingEventHandler):
 
 	def normalise(self, wav_in, wav_out):
 		print "initiating ffmpeg loudness processing"
-		ff = ffmpy.FFmpeg(global_options='-v debug',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
+		ff = ffmpy.FFmpeg(global_options='-hide_banner -v debug',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
 		print ff.cmd
 		ff.run()			
 
