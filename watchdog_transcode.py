@@ -1,9 +1,6 @@
 #!/usr/bin/python
 
 ##to do:
-#if folder dont exist - create them!
-# eg: if not os.path.exists(dest_dkfrontend):
-    	#os.makedirs(dest_dkfrontend)
 #this script requires watchdog module - pip install watchdog
 
 from watchdog.events import PatternMatchingEventHandler  
@@ -29,6 +26,8 @@ class MyHandler(PatternMatchingEventHandler):
 		self.temp_file = (temp_dir+(os.path.basename(event.src_path)))
 		print "new name:{}".format(self.temp_file)
 		self.normalise((event.src_path), self.temp_file)
+		self.replace(event.src_path, self.temp_file)
+		#observer.stop()
 
 	def on_modified(self, event):
 		print "detected new file {}".format(event.src_path)
@@ -55,16 +54,16 @@ class MyHandler(PatternMatchingEventHandler):
 
 	def replace(self, orig_file, new_file):
 		print "deleting original file:{}".format(event.src_path)
-		if os.path.isfile(event.src_path): 
-			os.remove(wav_dir+file)
-			if not os.path.isfile(event.src_path):
-				print "file {} deleted".format(event.src_path)
-				print "replacing with processed file:{}".format()
-				shutil.copy(self.temp_file, event.src_path)
-				if os.path.isfile(event.src_path):
-					print "deleting temp file:{}".format(self.temp_file)
-					os.remove(self.temp_file)
-					if not os.path.isfile(self.temp_file):
+		if os.path.isfile(orig_file): 
+			os.remove(orig_file)
+			if not os.path.isfile(orig_file):
+				print "file {} deleted".format(orig_file)
+				print "replacing with processed file:{}".format(new_file)
+				shutil.copy(new_file, orig_file)
+				if os.path.isfile(new_file):
+					print "deleting temp file:{}".format(new_file)
+					os.remove(new_file)
+					if not os.path.isfile(new_file):
 						print "file {} deleted".format(self.temp_file)
 						print "file operations complete..."
 		else:
