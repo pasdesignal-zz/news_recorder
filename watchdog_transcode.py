@@ -22,7 +22,6 @@ class MyHandler(PatternMatchingEventHandler):
 		new_name = (temp_dir+(os.path.basename(event.src_path)))
 		print "new name:{}".format(new_name)
 		self.normalise((event.src_path), new_name)
-		exit()
 
 	def on_modified(self, event):
 		print "detected new file {}".format(event.src_path)
