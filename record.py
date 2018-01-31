@@ -14,9 +14,9 @@ import time
 #setup cron jobs to call above jobs each hour two seconds before the hour
 #create test script to test all of above at any moment
 
-wav_dir = '/home/rnzweb/audio/wav/'
-opus_dir = '/home/rnzweb/audio/opus/'
-sdp_file = '/home/rnzweb/news_recorder/rnz_national.sdp'
+wav_dir = '~/audio/wav/'
+opus_dir = '~/audio/opus/'
+sdp_file = '~/news_recorder/rnz_national.sdp'
 date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = 'rnznews_'+date_time+'.wav'
 #'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'

@@ -1,4 +1,8 @@
 
+
+##to do:
+#if folder dont exist - create them!
+
 from watchdog.events import PatternMatchingEventHandler  
 from watchdog.observers import Observer
 import os
@@ -42,12 +46,19 @@ class MyHandler(PatternMatchingEventHandler):
 
 	def normalise(self, wav_in, wav_out):
 		print "initiating ffmpeg loudness processing"
-		ff = ffmpy.FFmpeg(global_options='-y -hide_banner -v debug',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
+		ff = ffmpy.FFmpeg(global_options='-y -hide_banner',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
 		print ff.cmd
 		ff.run()			
 
+	def replace(self, orig_file, new_file)
+		print "deleting original file {}".format(event.src_path)
+
+
+
 if __name__ == '__main__':
 	#try:
+	#test folder exists, if not make it!
+	#if os.path(wav_dir) 
 	print "starting watchdog process observing new files..."
 	observer = Observer()        #folder watchdog process to monitor wav folder for new files
 	observer.schedule(MyHandler(), path=wav_dir)
