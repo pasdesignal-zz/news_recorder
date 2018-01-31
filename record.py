@@ -15,8 +15,8 @@ import time
 #create test script to test all of above at any moment
 
 wav_dir = (os.getcwd()+'/audio/wav/')
-opus_dir = (os.getcwd()+'~/audio/opus/')
-sdp_file = (os.getcwd()+'~/news_recorder/rnz_national.sdp')
+opus_dir = (os.getcwd()+'/audio/opus/')
+sdp_file = (os.getcwd()+'/news_recorder/rnz_national.sdp')
 date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = 'rnznews_'+date_time+'.wav'
 #'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'

@@ -13,7 +13,7 @@ import ffmpy
 
 wav_dir = (os.getcwd()+'/audio/wav/')
 loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
-temp_dir = (os.getcwd()+'~/audio/temp/')
+temp_dir = (os.getcwd()+'/audio/temp/')
 
 
 class MyHandler(PatternMatchingEventHandler):
