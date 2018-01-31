@@ -41,7 +41,7 @@ if __name__ == '__main__':
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
 		#rec_job.daemon = True
-		#rec_job.start()
+		rec_job.start()
 		#time.sleep(1)
 		#print "waiting ...1"
 		#time.sleep(2)
