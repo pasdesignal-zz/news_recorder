@@ -54,8 +54,6 @@ class MyHandler(PatternMatchingEventHandler):
 	def replace(self, orig_file, new_file):
 		print "deleting original file {}".format(event.src_path)
 
-
-
 if __name__ == '__main__':
 	#try:
 	#test folder exists, if not make it!
