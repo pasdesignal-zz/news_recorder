@@ -70,7 +70,6 @@ class MyHandler(PatternMatchingEventHandler):
 					if not os.path.isfile(new_file):
 						print "file {} deleted".format(self.temp_file)
 						print "file operations complete..."
-						observer.start()
 		else:
 			print "no file found:{}".format(event.src_path)
 			observer.start()
