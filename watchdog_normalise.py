@@ -18,12 +18,12 @@ loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 class MyHandler(PatternMatchingEventHandler):
 	
 	patterns = ["*.wav", "*.mp3", "*.ogg"]
-	ignore = None
+	ignore = []
 	
 	def process(self, event):
 		#have we seen this file before?
-		if not event.src_path == self.ignore:
-			self.ignore = event.src_path
+		if event.src_path not in self.ignore:
+			self.ignore.append(event.src_path)
 			print "processing file {}".format(event.src_path)
 			#print event.src_path, event.event_type         #debug
 			#everything here is what happens once the event is triggered
@@ -40,10 +40,10 @@ class MyHandler(PatternMatchingEventHandler):
 			file_stopped = 0
 			while file_stopped == 0:
 				size1 = os.path.getsize(event.src_path)
-				print "file size:", size1		#debug
-				time.sleep(2)
+				#print "file size:", size1		#debug
+				time.sleep(5)
 				size2 = os.path.getsize(event.src_path)
-				print "file size:", size2		#debug
+				#print "file size:", size2		#debug
 				if size1 == size2:
 					print 'file {} stopped growing...'.format(event.src_path)
 					file_stopped = 1	
