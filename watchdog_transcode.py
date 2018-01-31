@@ -11,7 +11,7 @@ import datetime
 import time
 import ffmpy
 
-wav_dir = '~/audio/wav/'
+wav_dir = (os.path.expanduser(~)+'/audio/wav/')
 loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 temp_dir = '~/audio/temp/'
 
