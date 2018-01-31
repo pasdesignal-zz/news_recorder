@@ -53,7 +53,7 @@ class MyHandler(PatternMatchingEventHandler):
 		ff.run()			
 
 	def replace(self, orig_file, new_file):
-		print "deleting original file:{}".format(event.src_path)
+		print "deleting original file:{}".format(orig_file)
 		if os.path.isfile(orig_file): 
 			os.remove(orig_file)
 			if not os.path.isfile(orig_file):
