@@ -94,7 +94,7 @@ if __name__ == '__main__':
 		observer.start()
 		while True:
 			print "waiting ..."
-			time.sleep(2)
+			time.sleep(5)
 	except Exception as e:
 		print "Error:".format(e)
 	finally:
