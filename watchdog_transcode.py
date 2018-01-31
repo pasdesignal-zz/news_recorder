@@ -31,7 +31,6 @@ class MyHandler(PatternMatchingEventHandler):
 			self.temp_file = (temp_dir+(os.path.basename(event.src_path)))
 			print "new name:{}".format(self.temp_file)
 			self.normalise((event.src_path), self.temp_file)
-			observer.stop()
 			self.replace(event.src_path, self.temp_file)
 
 	def on_modified(self, event):
