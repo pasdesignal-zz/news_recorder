@@ -2,6 +2,7 @@
 
 ##to do:
 #if folder dont exist - create them!
+#this script requires watchdog module - pip install watchdog
 
 from watchdog.events import PatternMatchingEventHandler  
 from watchdog.observers import Observer
@@ -10,9 +11,9 @@ import datetime
 import time
 import ffmpy
 
-wav_dir = '/home/rnzweb/audio/wav/'
+wav_dir = '~/audio/wav/'
 loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
-temp_dir = '/home/rnzweb/audio/temp/'
+temp_dir = '~/audio/temp/'
 
 
 class MyHandler(PatternMatchingEventHandler):
@@ -50,7 +51,7 @@ class MyHandler(PatternMatchingEventHandler):
 		print ff.cmd
 		ff.run()			
 
-	def replace(self, orig_file, new_file)
+	def replace(self, orig_file, new_file):
 		print "deleting original file {}".format(event.src_path)
 
 
