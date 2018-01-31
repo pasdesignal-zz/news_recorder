@@ -2,7 +2,6 @@
 
 ##to do:
 #this script requires watchdog module - pip install watchdog
-@
 
 from watchdog.events import PatternMatchingEventHandler  
 from watchdog.observers import Observer
