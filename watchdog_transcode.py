@@ -6,9 +6,9 @@ import datetime
 import time
 import ffmpy
 
-wav_dir = '/home/rnzweb/audio/wav'
+wav_dir = '/home/rnzweb/audio/wav/'
 loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
-
+temp_dir = '/home/rnzweb/audio/temp/'
 
 
 class MyHandler(PatternMatchingEventHandler):
@@ -23,8 +23,8 @@ class MyHandler(PatternMatchingEventHandler):
 			for file in _files:
 				print("file detected: {}".format(file))
 				print "processing file(s) for loudness using FFMPEG..."
-				new_name = "loud"+event.src_path
-				print new_name
+				new_name = (temp_dir+(os.path.basename(your_pathevent.src_path))
+				print "new name:{}".format(new_name)
 				self.normalise(event.src_path, new_name)
 			exit()
 
