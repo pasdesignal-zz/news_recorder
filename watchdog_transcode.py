@@ -18,16 +18,21 @@ loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 class MyHandler(PatternMatchingEventHandler):
 	patterns = ["*.wav"]
 
+	self.ignore = None
+
 	def process(self, event):
-		print "processing file {}".format(event.src_path)
-		#print event.src_path, event.event_type         #debug
-		#everything here is what happens once the event is triggered
-		print "processing file(s) for loudness using FFMPEG..."
-		self.temp_file = (temp_dir+(os.path.basename(event.src_path)))
-		print "new name:{}".format(self.temp_file)
-		self.normalise((event.src_path), self.temp_file)
-		observer.stop()
-		self.replace(event.src_path, self.temp_file)
+		#have we seen this file before?
+		if not event.src_path == self.ignore:
+			self.ignore = event.src_path
+			print "processing file {}".format(event.src_path)
+			#print event.src_path, event.event_type         #debug
+			#everything here is what happens once the event is triggered
+			print "processing file(s) for loudness using FFMPEG..."
+			self.temp_file = (temp_dir+(os.path.basename(event.src_path)))
+			print "new name:{}".format(self.temp_file)
+			self.normalise((event.src_path), self.temp_file)
+			observer.stop()
+			self.replace(event.src_path, self.temp_file)
 
 	def on_modified(self, event):
 		print "detected new file {}".format(event.src_path)
@@ -70,7 +75,7 @@ class MyHandler(PatternMatchingEventHandler):
 		else:
 			print "no file found:{}".format(event.src_path)
 			observer.start()
-			
+
 if __name__ == '__main__':
 	try:
 	#test folders exists, if not make them!
