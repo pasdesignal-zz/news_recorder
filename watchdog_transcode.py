@@ -73,20 +73,20 @@ class MyHandler(PatternMatchingEventHandler):
 if __name__ == '__main__':
 	try:
 	#test folders exists, if not make them!
-	if not os.path.exists(wav_dir):
-		os.makedirs(wav_dir)
-	if not os.path.exists(temp_dir):
-		os.makedirs(temp_dir)
-	#call and start Observer class
-	print "starting watchdog process observing new files..."
-	observer = Observer()        #folder watchdog process to monitor wav folder for new files
-	observer.schedule(MyHandler(), path=wav_dir)
-	observer.start()
-	while True:
-		print "waiting ..."
-		time.sleep(2)
-	except Exception as e:
-		print "Error:".format(e)
-	finally:
-		print "outta here..."
-		exit()
+		if not os.path.exists(wav_dir):
+			os.makedirs(wav_dir)
+		if not os.path.exists(temp_dir):
+			os.makedirs(temp_dir)
+		#call and start Observer class
+		print "starting watchdog process observing new files..."
+		observer = Observer()        #folder watchdog process to monitor wav folder for new files
+		observer.schedule(MyHandler(), path=wav_dir)
+		observer.start()
+		while True:
+			print "waiting ..."
+			time.sleep(2)
+		except Exception as e:
+			print "Error:".format(e)
+		finally:
+			print "outta here..."
+			exit()
