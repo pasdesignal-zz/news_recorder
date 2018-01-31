@@ -18,21 +18,20 @@ loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 class MyHandler(PatternMatchingEventHandler):
 	
 	patterns = ["*.wav", "*.mp3", "*.ogg"]
-	ignore = []
+	ignore = None
 	
 	def process(self, event):
 		#have we seen this file before?
-		if event.src_path not self.ignore:
-			self.ignore.append(event.src_path)
-			print "processing new file {}".format(event.src_path)
+		if not event.src_path == self.ignore:
+			self.ignore = event.src_path
+			print "processing file {}".format(event.src_path)
 			#print event.src_path, event.event_type         #debug
 			#everything here is what happens once the event is triggered
 			print "processing file(s) for loudness using FFMPEG..."
 			self.temp_file = (temp_dir+(os.path.basename(event.src_path)))
 			print "new name:{}".format(self.temp_file)
-			self.transcode((event.src_path), self.temp_file)
-			self.housekeeping()
-		else print "file seen before - no need to process."	
+			self.normalise((event.src_path), self.temp_file)
+			self.replace(event.src_path, self.temp_file)
 
 	def on_modified(self, event):
 		print "detected new file {}".format(event.src_path)
@@ -51,15 +50,35 @@ class MyHandler(PatternMatchingEventHandler):
 			if size2 > 0:
 				self.process(event)
 
-	def transcode(self, wav_in, wav_out):
-		print "initiating ffmpeg transcode process"
+	def normalise(self, wav_in, wav_out):
+		print "initiating ffmpeg loudness processing"
 		ff = ffmpy.FFmpeg(global_options='-y -hide_banner',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
-		print ff.cmd
-		ff.run()			
+		try:
+			ff.run()			
+		except Exception as e:
+			print "Error:".format(e)
+		finally:
+			print "loundess normalisation complete"
+			exit()
 
-	def housekeeping(self, deleteme):
-		print "removing source file:{}".format(deleteme)
-		#remove source file after transcode
+	def replace(self, orig_file, new_file):
+		print "deleting original file:{}".format(orig_file)
+		if os.path.isfile(orig_file): 
+			os.remove(orig_file)
+			if not os.path.isfile(orig_file):
+				print "file {} deleted:".format(orig_file)
+				print "replacing with processed file:{}".format(new_file)
+				shutil.copy(new_file, orig_file)
+				if os.path.isfile(orig_file):
+					print "file replaced:{}".format(orig_file)
+				if os.path.isfile(new_file):
+					print "deleting temp file:{}".format(new_file)
+					os.remove(new_file)
+					if not os.path.isfile(new_file):
+						print "file {} deleted".format(self.temp_file)
+						print "file operations complete..."
+		else:
+			print "no file found:{}".format(event.src_path)
 
 if __name__ == '__main__':
 	try:
