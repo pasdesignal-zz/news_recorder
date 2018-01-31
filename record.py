@@ -22,7 +22,7 @@ filename = 'rnznews_'+date_time+'.wav'
 #'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 
-recorder = ffmpy.FFmpeg(global_options="-hide_banner -protocol_whitelist 'file,udp,rtp,https'",inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 4'},outputs={(wav_dir+filename) : None })
+recorder = ffmpy.FFmpeg(global_options="-y -hide_banner -protocol_whitelist 'file,udp,rtp,https'",inputs={sdp_file : '-c:a pcm_s24be -r:a 48000 -ac 2 -t 4'},outputs={(wav_dir+filename) : None })
 
 def housekeeping():
 	print "housekeeping..."
