@@ -18,7 +18,8 @@ loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 class MyHandler(PatternMatchingEventHandler):
 	patterns = ["*.wav"]
 
-	self.ignore = None
+	def __init__(self):
+		self.ignore = None
 
 	def process(self, event):
 		#have we seen this file before?
