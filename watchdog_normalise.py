@@ -11,7 +11,7 @@ import time
 import ffmpy
 import shutil
 
-wav_dir = (os.getcwd()+'/audio/wav/')
+watch_dir = (os.getcwd()+'/audio/wav/')
 temp_dir = (os.getcwd()+'/audio/temp/')
 loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
 
@@ -83,14 +83,14 @@ class MyHandler(PatternMatchingEventHandler):
 if __name__ == '__main__':
 	try:
 	#test folders exists, if not make them!
-		if not os.path.exists(wav_dir):
-			os.makedirs(wav_dir)
+		if not os.path.exists(watch_dir):
+			os.makedirs(watch_dir)
 		if not os.path.exists(temp_dir):
 			os.makedirs(temp_dir)
 		#call and start Observer class
-		print "starting watchdog process observing new files..."
+		print "starting watchdog process observing new files in folder:{}".format(watch_dir)
 		observer = Observer()        #folder watchdog process to monitor wav folder for new files
-		observer.schedule(MyHandler(), path=wav_dir)
+		observer.schedule(MyHandler(), path=watch_dir)
 		observer.start()
 		while True:
 			print "waiting ..."
