@@ -47,7 +47,7 @@ if __name__ == '__main__':
 		print "waiting ...4"
 		time.sleep(5)
 		print "waiting ...5"
-		rec_job.process.terminate()
+		recorder.process.terminate()
 		#print "filename:", filename
 	except KeyboardInterrupt:
 		print "manually interrupted!"
