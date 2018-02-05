@@ -12,6 +12,6 @@ s.connect((TCP_IP, TCP_PORT))
 print "sending tcp message:{}".format(message)
 s.send(message)
 #data = s.recv(BUFFER_SIZE)
-#s.close()
+s.close()
 
 #print "received data:", data
