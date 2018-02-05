@@ -7,12 +7,7 @@ import os
 import time
 
 ##TO DO:
-#improve logging to file (include ffmpeg stdout and errors)
-#folder watchdog process to process wav file - trim to silence (start and between 02:50mins - 03:10mins )
-#folder watchdog transcode trimmed .wav file to opus
-#folder watchdog process to ftp/scp ogg/opus file to ELF(?)
-#setup cron jobs to call above jobs each hour two seconds before the hour
-#create test script to test all of above at any moment
+#setup cron jobs to call above jobs each hour 1 minute before the hour
 
 wav_dir = (os.getcwd()+'/audio/wav/')
 opus_dir = (os.getcwd()+'/audio/opus/')
@@ -42,17 +37,17 @@ if __name__ == '__main__':
 		rec_job = threading.Thread(target=recorder.run)
 		#rec_job.daemon = True
 		rec_job.start()
-		#time.sleep(1)
-		#print "waiting ...1"
-		#time.sleep(2)
-		#print "waiting ...2"
-		#time.sleep(3)
-		#print "waiting ...3"
-		#time.sleep(4)
-		#print "waiting ...4"
-		#time.sleep(5)
-		#print "waiting ...5"
-		#recorder.process.terminate()
+		time.sleep(1)
+		print "waiting ...1"
+		time.sleep(2)
+		print "waiting ...2"
+		time.sleep(3)
+		print "waiting ...3"
+		time.sleep(4)
+		print "waiting ...4"
+		time.sleep(5)
+		print "waiting ...5"
+		rec_job.process.terminate()
 		#print "filename:", filename
 	except KeyboardInterrupt:
 		print "manually interrupted!"
