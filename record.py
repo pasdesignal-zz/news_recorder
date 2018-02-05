@@ -29,13 +29,13 @@ if __name__ == '__main__':
 		rec_job.start()
 		time.sleep(1)
 		print "waiting ...1"
-		time.sleep(2)
+		time.sleep(1)
 		print "waiting ...2"
-		time.sleep(3)
+		time.sleep(1)
 		print "waiting ...3"
-		time.sleep(4)
+		time.sleep(1)
 		print "waiting ...4"
-		time.sleep(5)
+		time.sleep(1)
 		print "waiting ...5"
 		recorder.process.terminate()
 		#print "filename:", filename
