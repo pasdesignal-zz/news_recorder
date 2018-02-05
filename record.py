@@ -29,11 +29,11 @@ def listen():
 	s.listen(1)
 	conn, addr = s.accept()
 	print 'Connection address:', addr
-	while 1:
+	received = 0
+	while received == 0:
 		data = conn.recv(BUFFER_SIZE)
-    	if not data: 
-    		break
     	print "received data:", data
+    	received = 1
     	#conn.send(data)  # echo
 	conn.close()
 	return(data)
