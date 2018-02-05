@@ -48,7 +48,7 @@ if __name__ == '__main__':
 		#rec_job = threading.Thread(target=recorder.run)
 		#rec_job.daemon = True
 		#rec_job.start()
-		whitle True:
+		while True:
 			time.sleep(1)
 			print "waiting ...1"
 		time.sleep(1)
