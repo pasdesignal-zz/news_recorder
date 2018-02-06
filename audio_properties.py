@@ -33,13 +33,13 @@ if __name__ == '__main__':
 	stats = get_properties()
 	properties = stats.properties(test_wav)
 	print "properties of {} :".format(test_wav)
-	print properties
+	print properties.to_data()
 	stats.properties(test_ogg)
 	print "properties of {} :".format(test_ogg)
-	print properties
+	print properties.to_data()
 	stats.properties(test_mp3)
 	print "properties of {} :".format(test_mp3)
-	print properties
+	print properties.to_data()
 	stats.properties(test_opus)
 	print "properties of {} :".format(test_opus)
-	print properties
+	print properties.to_data()
