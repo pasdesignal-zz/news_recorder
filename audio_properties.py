@@ -1,9 +1,12 @@
 #!/usr/bin/python
 
-#Get properties of audio file using ffprode
+#Get properties of audio file using mediainfo
+#requires mediainfo: sudo apt install mediainfo
+#requires pymediainfo: sudo pip install pymediainfo
 
-import ffmpy
+
 import os
+from pymediainfo import MediaInfo
 
 test_wav = os.getcwd()+'/test.wav'
 test_ogg = os.getcwd()+'/test.ogg'
@@ -14,23 +17,29 @@ class get_properties():
 
 	def __init__(self):
 		self.input = ''
-		self.string = '-v quiet -show_format -show_streams -pretty -print_format json' #ffprobe input string
-
 	#how to make this return an object describing the audio file properties?
-	def properties(self, audio_file):		#testing for metadata
+	#test for valid file types
+	def properties(self, audio_file):
 		self.input = audio_file
 		print "getting metadata of file: {}".format(self.input)
-		ff = ffmpy.FFprobe(global_options = '-hide_banner -loglevel warning', inputs = {self.input: self.string})
 		try:
-			ff.run()	
+			media_info = MediaInfo.parse(self.input)
 		except Exception as e:
 			print "ffprobe error:".format(e)
 		finally:
-			pass
+			return media_info
 
 if __name__ == '__main__':
 	stats = get_properties()
-	stats.properties(test_wav)
+	properties = stats.properties(test_wav)
+	print "properties of {} :".format(test_wav)
+	print properties
 	stats.properties(test_ogg)
+	print "properties of {} :".format(test_ogg)
+	print properties
 	stats.properties(test_mp3)
+	print "properties of {} :".format(test_mp3)
+	print properties
 	stats.properties(test_opus)
+	print "properties of {} :".format(test_opus)
+	print properties
