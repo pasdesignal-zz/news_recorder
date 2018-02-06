@@ -33,9 +33,9 @@ def listen():
 	received = 0
 	while received == 0:
 		data = conn.recv(BUFFER_SIZE)
-    	print "received data:", data
-    	received = 1
-    print "out now..."
+		print "received data:", data
+		received = 1
+	print "out now..."
 	conn.close()
 	return(data)
 
