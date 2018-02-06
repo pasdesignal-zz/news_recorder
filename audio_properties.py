@@ -6,6 +6,7 @@
 
 
 import os
+import json
 from pymediainfo import MediaInfo
 
 test_wav = os.getcwd()+'/test.wav'
@@ -29,17 +30,28 @@ class get_properties():
 		finally:
 			return media_info
 
+parsed = json.loads(your_json)
+>>> print json.dumps(parsed, indent=4, sort_keys=True)
+[
+
 if __name__ == '__main__':
 	stats = get_properties()
 	properties = stats.properties(test_wav)
+	parsed = json.loads(properties)
 	print "properties of {} :".format(test_wav)
-	print properties.to_data()
-	stats.properties(test_ogg)
+	json.dumps(parsed, indent=4, sort_keys=True)	
+	#
+	properties = stats.properties(test_ogg)
+	parsed = json.loads(properties)
 	print "properties of {} :".format(test_ogg)
-	print properties.to_data()
-	stats.properties(test_mp3)
+	json.dumps(parsed, indent=4, sort_keys=True)	
+	#
+	properties = stats.properties(test_mp3)
+	parsed = json.loads(properties)
 	print "properties of {} :".format(test_mp3)
-	print properties.to_data()
+	json.dumps(parsed, indent=4, sort_keys=True)
+	#
 	stats.properties(test_opus)
+	parsed = json.loads(properties)
 	print "properties of {} :".format(test_opus)
-	print properties.to_data()
+	json.dumps(parsed, indent=4, sort_keys=True)	
