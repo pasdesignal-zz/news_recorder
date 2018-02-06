@@ -60,13 +60,8 @@ if __name__ == '__main__':
 			print 'command: {}'.format(command)
 			if command == 'terminate':
 				print "terminating recording process..."
-				try:
-					recorder.process.terminate()
-				except Exception as e:
-					print "Error:"
-					print e
-				finally:	
-					loop = 1
+				recorder.process.terminate()
+				loop = 0
 		print "testing file recorded..."
 		stats = get_properties()
 		properties = stats.properties((wav_dir+filename)) #returns object, use .to_data() method to get dict
