@@ -55,9 +55,10 @@ if __name__ == '__main__':
 		control.start()
 		while command == 0:
 			command = listen_child_conn.recv()
+			print 'command:{}'.format(command)
 			time.sleep(1)
 			print "waiting ...1"
-		if record == 'terminate':
+		if command == 1:
 			print "terminating recording process..."
 			recorder.process.terminate()
 		else:
