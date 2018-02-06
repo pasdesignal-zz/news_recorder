@@ -36,7 +36,8 @@ if __name__ == '__main__':
 	print properties.to_data()
 	parsed = json.dumps(properties.to_data(), indent=4, sort_keys=True)
 	print "properties of {} :".format(test_wav)
-	print json.loads(parsed)	
+	print parsed
+	exit()	
 	#
 	properties = stats.properties(test_ogg)
 	#print properties.to_data()
