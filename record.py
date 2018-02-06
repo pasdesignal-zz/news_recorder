@@ -17,7 +17,7 @@ wav_dir = (os.getcwd()+'/audio/wav/')
 opus_dir = (os.getcwd()+'/audio/opus/')
 sdp_file = (os.getcwd()+'/news_recorder/rnz_national.sdp')
 date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-filename = 'rnznews_'+date_time+'.wav'
+filename = wav_dir+'rnznews_'+date_time+'.wav'
 #'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v warning"
@@ -41,7 +41,7 @@ def listen(comm):
 	conn.close()
 	comm.send(data)
 
-recorder = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_record_string},outputs={(wav_dir+filename) : None })
+recorder = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_record_string},outputs={filename : None })
 
 if __name__ == '__main__':
 	try:
@@ -63,10 +63,10 @@ if __name__ == '__main__':
 				print "terminating recording process..."
 				recorder.process.terminate()
 				loop = 0
-		print "testing file recorded..."
+		print "testing for valid recording..."
 		stats = get_properties()
-		properties = stats.properties((wav_dir+filename)) #returns object, use .to_data() method to get dict
-		print "properties of {} :".format((wav_dir+filename))
+		properties = stats.properties(filename) #returns object, use .to_data() method to get dict
+		print "properties of {} :".format(filename)
 		print json.dumps(properties.to_data(), indent=2, sort_keys=True)		
 	except KeyboardInterrupt:
 		print "manually interrupted!"
