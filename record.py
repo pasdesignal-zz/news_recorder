@@ -6,6 +6,7 @@ import datetime
 import os
 import time
 import socket
+from multiprocessing import Process, Pipe
 
 ##TO DO:
 #setup cron jobs to call above jobs each hour 1 minute before the hour
@@ -20,7 +21,7 @@ filename = 'rnznews_'+date_time+'.wav'
 ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v warning"
 ffmpeg_record_string = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 
-def listen():
+def listen(comm):
 	TCP_IP = '127.0.0.1'
 	TCP_PORT = 5005
 	BUFFER_SIZE = 20  # Normally 1024, but we want fast response
@@ -37,30 +38,30 @@ def listen():
 		received = 1
 	print "out now..."
 	conn.close()
-	return(data)
+	comm.send(data)
 
 recorder = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_record_string},outputs={(wav_dir+filename) : None })
 
 if __name__ == '__main__':
 	try:
 		print "starting thread 'listen'"
-		listen_thread = threading.Thread(target=listen())
-		listen_thread.daemon = True
-		listen_thread.start()
-
+		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
+		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                            
+		command = ''
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
 		rec_job.daemon = True
 		rec_job.start()
-		while True:
+		control.start()
+		while command not 'terminate':
+			command = listen_child_conn.recv()
 			time.sleep(1)
 			print "waiting ...1"
-			if listen_thread == 'terminate':
-				recorder.process.terminate()
-				break
-			else:
-				print "listening:{}".format(listen_thread)
-		#print "filename:", filename
+		if record == 'terminate':
+			print "terminating recording process..."
+			recorder.process.terminate()
+		else:
+			print "command:{}".format(command)
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
