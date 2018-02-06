@@ -17,13 +17,12 @@ class get_properties():
 	def properties(self):		#testing for metadata
 		print "getting metadata of file: {}".format(self.input_file)
 		ff = ffmpy.FFprobe(global_options = '-hide_banner -loglevel warning', inputs = {self.input_file: self.string})
-		ff.run()
-		#try:
-		#	ff.run()	
-		#except Exception as e:
-		#	print "ffprobe error:".format(e)
-		#finally:
-		#	pass
+		try:
+			ff.run()	
+		except Exception as e:
+			print "ffprobe error:".format(e)
+		finally:
+			pass
 
 if __name__ == '__main__':
 	stats = get_properties(test_wav)
