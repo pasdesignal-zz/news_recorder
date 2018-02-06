@@ -14,6 +14,7 @@ class get_properties():
 	def __init__(self, audio_file):
 		input_file = audio_file
 		string = '-v quiet -show_format -show_streams -pretty -print_format json' #ffprobe input string
+		timestamp = ''
 
 	#how to make this return an object describing the audio file properties?
 	def properties(self):		#testing for metadata
