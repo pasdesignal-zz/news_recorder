@@ -1,19 +1,11 @@
 #!/usr/bin/python
 
-#Automatically normalise audio to Amazon Voice Services loudness standard:
-#https://developer.amazon.com/docs/flashbriefing/normalizing-the-loudness-of-audio-content.html
-#this script requires watchdog module - pip install watchdog
-#this script requires ffmpy wrapper module - pip install ffmpy
-
-##to do:
-#syslog integration using python syslog library
-#add metadata to processed files: processed=yes - where? How to extract metadata and test with existing libraries
-#hash the file to identify - dont rely on filename (in case of replace)??? How will this work with replacement file?
-# test more!!!
+#Get properties of audio file using ffprode
 
 import datetime
 import time
 import ffmpy
+import os
 
 test_wav = os.getcwd()+'/test.wav'
 
