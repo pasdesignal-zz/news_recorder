@@ -44,10 +44,10 @@ recorder = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_
 if __name__ == '__main__':
 	try:
 		print "starting thread 'listen'"
-		listen_thread = threading.Thread(target=listen.run)
+		listen_thread = threading.Thread(target=listen())
 		listen_thread.daemon = True
 		listen_thread.start()
-		
+
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
 		rec_job.daemon = True
