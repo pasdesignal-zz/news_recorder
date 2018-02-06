@@ -49,7 +49,7 @@ if __name__ == '__main__':
 		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                     
 		print "initiating recorder thread"
 		rec_job = threading.Thread(target=recorder.run)
-		#rec_job.daemon = True
+		rec_job.daemon = True
 		print "start recorder thread"
 		rec_job.start()
 		print "start listen socket"
