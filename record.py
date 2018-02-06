@@ -47,13 +47,13 @@ if __name__ == '__main__':
 		print "starting thread 'listen'"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
 		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                            
-		command = ''
+		command = 0
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
 		rec_job.daemon = True
 		rec_job.start()
 		control.start()
-		while command not 'terminate':
+		while command == 0:
 			command = listen_child_conn.recv()
 			time.sleep(1)
 			print "waiting ...1"
