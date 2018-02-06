@@ -15,7 +15,7 @@ class get_properties():
 
 	#how to make this return an object describing the audio file properties?
 	def properties(self):		#testing for metadata
-		print "{} getting metadata of file: {}".format(self.timestamp, self.input_file)
+		print "getting metadata of file: {}".format(self.input_file)
 		ff = ffmpy.FFprobe(global_options = '-hide_banner -loglevel warning', inputs = {self.input_file: self.string})
 		try:
 			ff.run()	
