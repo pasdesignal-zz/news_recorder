@@ -44,12 +44,9 @@ recorder = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_
 if __name__ == '__main__':
 	try:
 		print "starting thread 'listen'"
-		listening = listen()
-		listen_thread = threading.Thread(target=listening.run)
+		listen_thread = threading.Thread(target=listen.run)
 		listen_thread.daemon = True
 		listen_thread.start()
-		#control = listen()
-		#print "control:{}".format(control)
 		
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
@@ -58,11 +55,11 @@ if __name__ == '__main__':
 		while True:
 			time.sleep(1)
 			print "waiting ...1"
-			if listening == 'terminate':
+			if listen_thread == 'terminate':
 				recorder.process.terminate()
 				break
 			else:
-				print "listening:{}".format(listening)
+				print "listening:{}".format(listen_thread)
 		#print "filename:", filename
 	except KeyboardInterrupt:
 		print "manually interrupted!"
