@@ -49,7 +49,7 @@ if __name__ == '__main__':
 		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                     
 		print "initiating recorder thread"
 		rec_job = threading.Thread(target=recorder.run)
-		rec_job.daemon = True
+		#rec_job.daemon = True
 		print "start recorder thread"
 		rec_job.start()
 		print "start listen socket"
@@ -62,7 +62,11 @@ if __name__ == '__main__':
 				print "terminating recording process..."
 				try:
 					recorder.process.terminate()
-				loop = 1
+				except Exception as e:
+					print "Error:"
+					print e
+				finally:	
+					loop = 1
 		print "testing file recorded..."
 		stats = get_properties()
 		properties = stats.properties((wav_dir+filename)) #returns object, use .to_data() method to get dict
