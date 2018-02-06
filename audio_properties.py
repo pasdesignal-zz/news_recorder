@@ -30,7 +30,8 @@ class get_properties():
 
 if __name__ == '__main__':
 	try:
-		get_properties(test_wav)
+		stats = get_properties()
+		stats.properties(test_wav)
 	except Exception as e:
 		print "Error:".format(e)
 	finally:
