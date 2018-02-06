@@ -27,11 +27,3 @@ class get_properties():
 if __name__ == '__main__':
 	stats = get_properties(test_wav)
 	stats.properties()
-	#try:
-	#	stats = get_properties(test_wav)
-	#	stats.properties()
-	#except Exception as e:
-	#	print "Error:".format(e)
-	#finally:
-	#	print "ending"
-	#	exit()
