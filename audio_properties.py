@@ -32,9 +32,9 @@ class get_properties():
 
 if __name__ == '__main__':
 	stats = get_properties()
-	properties = stats.properties(test_wav)
+	properties = stats.properties(test_wav) #returns object, use .to_data() method to get dict
 	print "properties of {} :".format(test_wav)
-	print json.loads(properties.to_json())
+	print json.dumps(properties.to_data(), indent=2, sort_keys=True)
 	#
 	properties = stats.properties(test_ogg)
 	print "properties of {} :".format(test_ogg)

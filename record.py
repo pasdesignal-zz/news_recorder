@@ -7,6 +7,7 @@ import os
 import time
 import socket
 from multiprocessing import Process, Pipe
+from audio_properties import get_properties
 
 ##TO DO:
 #setup cron jobs to call above jobs each hour 1 minute before the hour
@@ -61,6 +62,11 @@ if __name__ == '__main__':
 				print "terminating recording process..."
 				recorder.process.terminate()
 				loop = 1
+		print "testing file recorded..."
+		stats = get_properties()
+		properties = stats.properties((wav_dir+filename)) #returns object, use .to_data() method to get dict
+		print "properties of {} :".format((wav_dir+filename))
+		print json.dumps(properties.to_data(), indent=2, sort_keys=True)		
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
