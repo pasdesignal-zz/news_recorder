@@ -33,21 +33,21 @@ class get_properties():
 if __name__ == '__main__':
 	stats = get_properties()
 	properties = stats.properties(test_wav)
-	parsed = json.loads(properties)
+	parsed = json.load(properties)
 	print "properties of {} :".format(test_wav)
 	print json.dumps(parsed, indent=4, sort_keys=True)	
 	#
 	properties = stats.properties(test_ogg)
-	parsed = json.loads(properties)
+	parsed = json.load(properties)
 	print "properties of {} :".format(test_ogg)
 	print json.dumps(parsed, indent=4, sort_keys=True)	
 	#
 	properties = stats.properties(test_mp3)
-	parsed = json.loads(properties)
+	parsed = json.load(properties)
 	print "properties of {} :".format(test_mp3)
 	print json.dumps(parsed, indent=4, sort_keys=True)
 	#
 	stats.properties(test_opus)
-	parsed = json.loads(properties)
+	parsed = json.load(properties)
 	print "properties of {} :".format(test_opus)
 	print json.dumps(parsed, indent=4, sort_keys=True)
