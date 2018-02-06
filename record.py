@@ -35,8 +35,7 @@ def listen():
 		data = conn.recv(BUFFER_SIZE)
     	print "received data:", data
     	received = 1
-    	#conn.send(data)  # echo
-    print "out now..."	
+    print "out now..."
 	conn.close()
 	return(data)
 
