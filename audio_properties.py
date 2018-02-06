@@ -29,12 +29,14 @@ class get_properties():
 			pass
 
 if __name__ == '__main__':
-	try:
-		stats = get_properties(test_wav)
-		stats.properties()
-	except Exception as e:
-		print "Error:".format(e)
-	finally:
-		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "Terminated {}.".format(timestamp)
-		exit()
+	stats = get_properties(test_wav)
+	stats.properties()
+	#try:
+	#	stats = get_properties(test_wav)
+	#	stats.properties()
+	#except Exception as e:
+	#	print "Error:".format(e)
+	#finally:
+	#	timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+	#	print "Terminated {}.".format(timestamp)
+	#	exit()
