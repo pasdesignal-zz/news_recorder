@@ -46,23 +46,22 @@ if __name__ == '__main__':
 	try:
 		print "starting thread 'listen'"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
-		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                            
-		command = 0
+		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                     
 		print "starting thread 'recorder'"
 		rec_job = threading.Thread(target=recorder.run)
 		rec_job.daemon = True
 		rec_job.start()
 		control.start()
-		while command == 0:
+		loop = 1
+		while loop == 1:
 			command = listen_child_conn.recv()
 			print 'command:{}'.format(command)
+			if command == 'terminate':
+				print "terminating recording process..."
+				recorder.process.terminate()
+				loop = 0
 			time.sleep(1)
-			print "waiting ...1"
-		if command == 1:
-			print "terminating recording process..."
-			recorder.process.terminate()
-		else:
-			print "command:{}".format(command)
+			print "waiting ..."
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
