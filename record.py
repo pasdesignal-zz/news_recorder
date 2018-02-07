@@ -42,7 +42,16 @@ def listen(comm):
 	conn.close()
 	comm.send(data)
 
-recorder = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_record_string},outputs={filename : None })
+class record():
+
+	def __init__(self):
+		self.cue = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_record_string},outputs={filename : None })
+
+	def run(self):
+		try:
+			self.cue.run()
+		except Exception as e:
+			pass	
 
 if __name__ == '__main__':
 	try:
@@ -50,7 +59,8 @@ if __name__ == '__main__':
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
 		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                     
 		print "initiating recorder thread"
-		rec_job = threading.Thread(target=recorder.run)
+		recorder = record()
+		rec_job = threading.Thread(target=recorder.run())
 		print "starting recorder thread"
 		rec_job.start()
 		print "starting listen socket"
