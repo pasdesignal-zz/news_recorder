@@ -49,7 +49,8 @@ if __name__ == '__main__':
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
 		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                     
 		print "initiating recorder thread"
-		rec_job = threading.Thread(target=recorder.run)
+		rec_job = Process(target=recorder.run, kwargs={})
+		#rec_job = threading.Thread(target=recorder.run)
 		print "starting recorder thread"
 		rec_job.start()
 		print "starting listen socket"
