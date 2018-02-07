@@ -52,7 +52,7 @@ class record():
 		except Exception as e:
 			pass
 
-	def terminate():
+	def terminate(self):
 		try:
 			self.cue.process.terminate()
 		except Exception as e:
