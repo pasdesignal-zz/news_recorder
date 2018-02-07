@@ -71,7 +71,7 @@ if __name__ == '__main__':
 			print 'command: {}'.format(command)
 			if command == 'terminate':
 				print "terminating recording process..."
-				recorder.process.terminate()
+				recorder.cue.process.terminate()
 				loop = 0
 		print "testing for valid recording..."
 		stats = get_properties()
