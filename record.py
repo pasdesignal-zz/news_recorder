@@ -21,7 +21,7 @@ filename = wav_dir+'rnznews_'+date_time+'.wav'
 #'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 #ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v warning"
-ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v silent"
+ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 ffmpeg_record_string = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 
 def listen(comm):
@@ -51,7 +51,13 @@ class record():
 		try:
 			self.cue.run()
 		except Exception as e:
-			pass	
+			pass
+
+	def terminate()
+		try:
+			self.cue.process.terminate()
+		except Exception as e:
+			pass				
 
 if __name__ == '__main__':
 	try:
@@ -71,7 +77,7 @@ if __name__ == '__main__':
 			print 'command: {}'.format(command)
 			if command == 'terminate':
 				print "terminating recording process..."
-				recorder.cue.process.terminate()
+				recorder.terminate()
 				loop = 0
 		print "testing for valid recording..."
 		stats = get_properties()
