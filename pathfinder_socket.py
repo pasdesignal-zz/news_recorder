@@ -13,9 +13,9 @@ import datetime
 
 class listen_socket():
 
-	def __init__(self, comm, bind, port):
+	def __init__(self, comm, port):
 		self.comm = comm
-		self.bind = bind
+		self.bind = '127.0.0.1'
 		self.port = int(port)
 		self.BUFFER_SIZE = 20  # Normally 1024, but we want fast response -- is this going to be an issue????
 		
