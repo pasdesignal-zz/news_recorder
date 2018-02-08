@@ -17,7 +17,7 @@ from pathfinder_socket import listen_socket
 
 wav_dir = (os.getcwd()+'/audio/wav/')
 sdp_file = (os.getcwd()+'/news_recorder/rnz_national.sdp')
-timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = wav_dir+'rnznews_'+timestamp+'.wav'
 
 class record():
@@ -33,9 +33,11 @@ class record():
 	def run(self):
 		try:
 			print "starting recording of file:{}".format(self.filename)
+			if not os.path.dirname(self.filename):
+				os.mkdir(os.path.dirname(self.filename))
 			self.cue.run()
 		except Exception as e:
-			pass
+			print "Error", e
 
 	def terminate(self):
 		try:
