@@ -17,7 +17,8 @@ from pathfinder_socket import listen_socket
 
 wav_dir = (os.getcwd()+'/audio/wav/')
 sdp_file = (os.getcwd()+'/news_recorder/rnz_national.sdp')
-filename = wav_dir+'rnznews_'+date_time+'.wav'
+timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+filename = wav_dir+'rnznews_'+timestamp+'.wav'
 
 class record():
 
