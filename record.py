@@ -16,7 +16,6 @@ from pathfinder_socket import listen_socket
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 
 wav_dir = (os.getcwd()+'/audio/wav/')
-sdp_file = (os.getcwd()+'/news_recorder/rnz_national.sdp')
 timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = wav_dir+'rnznews_'+timestamp+'.wav'
 
@@ -24,17 +23,19 @@ class record():
 
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
-	audio_input = (os.getcwd()+'/news_recorder/rnz_national.sdp')
+	outstring = "-c:a pcm_s24le"
+	audio_input = (os.getcwd()+'/rnz_national.sdp')
 
 	def __init__(self, filename):
 		self.filename = filename
-		self.cue = ffmpy.FFmpeg(global_options=self.global_options,inputs={self.audio_input : self.recstring},outputs={self.filename : None })
+		self.cue = ffmpy.FFmpeg(global_options=self.global_options,inputs={self.audio_input : self.recstring},outputs={self.filename : self.outstring })
 
 	def run(self):
 		try:
-			print "starting recording of file:{}".format(self.filename)
-			if not os.path.dirname(self.filename):
-				os.mkdir(os.path.dirname(self.filename))
+			if not os.path.isdir(os.path.dirname(self.filename)):
+				print "creating folder:{}".format(os.path.dirname(self.filename))
+				os.makedirs(os.path.dirname(self.filename))
+			print "starting recording of file:{}".format(self.filename)	
 			self.cue.run()
 		except Exception as e:
 			print "Error", e
@@ -64,7 +65,8 @@ if __name__ == '__main__':
 			print 'command: {}'.format(command)
 			if command == 'stop_recording':
 				print "terminating recording process..."
-				recorder.terminate()
+				rec_job.terminate()
+				#recorder.terminate()
 				loop = 0
 		control.terminate()
 		print "testing for valid recording..."
