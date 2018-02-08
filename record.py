@@ -55,9 +55,9 @@ if __name__ == '__main__':
 		print "initiating recorder thread"
 		recorder = record(filename)
 		rec_job = Process(target=recorder.run)
-		print "starting recorder thread"
+		print "starting ffmpeg recorder thread"
 		rec_job.start()
-		print "starting listen socket on port: {}".format(5009)
+		print "starting pathfinder listen socket on port: {}".format(5009)
 		control.start()    
 		loop = 1
 		while loop == 1:
@@ -72,6 +72,7 @@ if __name__ == '__main__':
 		print "testing for valid recording..."
 		analyser = get_properties()
 		audio_properties = analyser.properties(filename) #returns object, use .to_data() method to get dict
+		#test for valid porperties here....
 		print "properties of {} :".format(filename)
 		print json.dumps(audio_properties.to_data(), indent=2, sort_keys=True)		
 	except KeyboardInterrupt:
