@@ -13,16 +13,11 @@ from pathfinder_socket import listen_socket
 
 ##TO DO:
 #setup cron jobs to call above jobs each hour 1 minute before the hour
+#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 
 wav_dir = (os.getcwd()+'/audio/wav/')
-opus_dir = (os.getcwd()+'/audio/opus/')
 sdp_file = (os.getcwd()+'/news_recorder/rnz_national.sdp')
-date_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 filename = wav_dir+'rnznews_'+date_time+'.wav'
-#'-c:a pcm_s24be -r:a 48000 -ac 2 -t 30'
-#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
-ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
-ffmpeg_record_string = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 
 class record():
 

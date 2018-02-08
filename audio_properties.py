@@ -22,6 +22,9 @@ class get_properties():
 	#test for valid file types
 	def properties(self, audio_file):
 		self.input = audio_file
+		if not os.path.exists(self.input):
+			print "ERROR: no such file exists"
+			exit()
 		print "getting metadata of file: {}".format(self.input)
 		try:
 			media_info = MediaInfo.parse(self.input)
