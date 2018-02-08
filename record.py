@@ -9,6 +9,7 @@ import time
 import socket
 from multiprocessing import Process, Pipe
 from audio_properties import get_properties
+from pathfinder_socket import listen_socket
 
 ##TO DO:
 #setup cron jobs to call above jobs each hour 1 minute before the hour
@@ -23,28 +24,15 @@ filename = wav_dir+'rnznews_'+date_time+'.wav'
 ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 ffmpeg_record_string = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 
-def listen(comm):
-	TCP_IP = '127.0.0.1'
-	TCP_PORT = 5009
-	BUFFER_SIZE = 20  # Normally 1024, but we want fast response
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.bind((TCP_IP, TCP_PORT))
-	s.listen(1)
-	conn, addr = s.accept()
-	print 'Connection received from address:', addr
-	received = 0
-	while received == 0:
-		data = conn.recv(BUFFER_SIZE)
-		print "received data:", data
-		received = 1
-	print "out now..."
-	conn.close()
-	comm.send(data)
-
 class record():
 
-	def __init__(self):
-		self.cue = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={sdp_file : ffmpeg_record_string},outputs={filename : None })
+	ffmpeg_globals = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
+	ffmpeg_record_string = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
+
+	def __init__(self, source, filename):
+		self.input = source
+		self.filename = filename
+		self.cue = ffmpy.FFmpeg(global_options=ffmpeg_globals,inputs={self.input : ffmpeg_record_string},outputs={self.filename : None })
 
 	def run(self):
 		try:
@@ -62,22 +50,24 @@ if __name__ == '__main__':
 	try:
 		print "initiating listen socket"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
-		control = Process(target=listen, kwargs={'comm':listen_parent_conn})                     
+		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=listen_port)
+		control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
-		recorder = record()
+		recorder = record(sdp_file, filename)
 		rec_job = Process(target=recorder.run)
 		print "starting recorder thread"
 		rec_job.start()
-		print "starting listen socket"
-		control.start()
+		print "starting listen socket on interface {} port: {}".format(bind_interface, listen_port)
+		control.start()    
 		loop = 1
 		while loop == 1:
 			command = listen_child_conn.recv()
 			print 'command: {}'.format(command)
-			if command == 'terminate':
+			if command == 'stop_recording':
 				print "terminating recording process..."
 				recorder.terminate()
 				loop = 0
+		control.terminate()
 		print "testing for valid recording..."
 		stats = get_properties()
 		properties = stats.properties(filename) #returns object, use .to_data() method to get dict

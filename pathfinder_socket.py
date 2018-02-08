@@ -33,7 +33,7 @@ class listen_socket():
 			self.comm.send(data)	
 			time.sleep(1)
 
-	def close_socket(self):
+	def close_socket(self):   #this isnt working yet - .conn not an attribute of self?
 		print "closing listen socket {}".format(self.port)		
 		self.conn.close()
 
