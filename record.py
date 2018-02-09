@@ -9,6 +9,7 @@ import socket
 from multiprocessing import Process, Pipe
 from audio_properties import get_properties
 from pathfinder_socket import listen_socket
+import threading
 
 ##TO DO:
 #setup cron jobs to call above jobs each hour 1 minute before the hour
@@ -20,7 +21,7 @@ filename = wav_dir+'rnznews_'+timestamp+'.wav'
 
 class record():
 
-	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v verbose"
+	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 	outstring = "-c:a pcm_s24le"
 	audio_input = (os.getcwd()+'/rnz_national.sdp')
@@ -56,7 +57,7 @@ if __name__ == '__main__':
 		control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
 		recorder = record(filename)
-		rec_job = Process(target=recorder.run)
+		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		print "starting pathfinder listen socket on port: {}".format(5009)
@@ -68,8 +69,7 @@ if __name__ == '__main__':
 			if command == 'stop_recording':
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} terminating recording process".format(timestamp)
-				rec_job.terminate()
-				#recorder.terminate()
+				recorder.terminate()
 				loop = 0
 		control.terminate()
 		print "testing for valid recording..."
