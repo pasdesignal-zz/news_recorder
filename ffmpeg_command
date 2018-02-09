@@ -1,1 +1,0 @@
-ffmpeg -loglevel debug -protocol_whitelist “file,udp,rtp” -i [/path/to/sdp_file] -acodec pcm_s24le -ar 48000 /path/to/output_file
