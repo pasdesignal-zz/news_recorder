@@ -13,9 +13,9 @@ import datetime
 
 class listen_socket():
 
-	def __init__(self, comm, port):
+	def __init__(self, comm, bind, port):
 		self.comm = comm
-		self.bind = '127.0.0.1'
+		self.bind = bind
 		self.port = int(port)
 		self.BUFFER_SIZE = 20  # Normally 1024, but we want fast response -- is this going to be an issue????
 		
@@ -25,7 +25,8 @@ class listen_socket():
 		s.bind((self.bind, self.port))
 		s.listen(1)
 		self.conn, self.addr = s.accept()
-		print 'Connection received from address:', self.addr
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		print '{} connection received from address:'.format(timestamp, self.addr)
 		while True:
 			data = self.conn.recv(self.BUFFER_SIZE)
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")

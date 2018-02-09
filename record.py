@@ -14,7 +14,7 @@ import threading
 ##TO DO:
 #setup cron jobs to call above jobs each hour 1 minute before the hour
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
-
+bind_interface = '172.17.2.69'
 wav_dir = (os.getcwd()+'/audio/wav/')
 timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 filename = wav_dir+'rnznews_'+timestamp+'.wav'
@@ -53,7 +53,7 @@ if __name__ == '__main__':
 		print "{} starting recording job".format(timestamp)
 		print "initiating listen socket"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
-		pathfinder = listen_socket(comm=listen_parent_conn, port=5009)
+		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=5009)
 		control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
 		recorder = record(filename)
