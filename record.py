@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import json
-import threading
 import ffmpy
 import datetime
 import os
@@ -16,12 +15,12 @@ from pathfinder_socket import listen_socket
 #is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 
 wav_dir = (os.getcwd()+'/audio/wav/')
-timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 filename = wav_dir+'rnznews_'+timestamp+'.wav'
 
 class record():
 
-	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
+	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v verbose"
 	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 	outstring = "-c:a pcm_s24le"
 	audio_input = (os.getcwd()+'/rnz_national.sdp')
@@ -48,6 +47,9 @@ class record():
 
 if __name__ == '__main__':
 	try:
+		print ""
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		print "{} starting recording job".format(timestamp)
 		print "initiating listen socket"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
 		pathfinder = listen_socket(comm=listen_parent_conn, port=5009)
@@ -64,7 +66,8 @@ if __name__ == '__main__':
 			command = listen_child_conn.recv()
 			print 'command: {}'.format(command)
 			if command == 'stop_recording':
-				print "terminating recording process..."
+				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+				print "{} terminating recording process".format(timestamp)
 				rec_job.terminate()
 				#recorder.terminate()
 				loop = 0
