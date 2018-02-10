@@ -13,8 +13,6 @@ import threading
 from sdp_generator import SDP_Gen
 
 ##TO DO:
-#add argument to class which defines Livewire stream number
-#convert stream number to address and edit sdp file
 #trim silence from both ends of file
 
 class record():
@@ -46,6 +44,7 @@ class record():
 
 if __name__ == '__main__':
 	try:
+		#session variables
 		livewire_channel = 4263
 		sdp_filename = 'source.sdp'
 		bind_interface = '10.212.13.1'
@@ -78,6 +77,10 @@ if __name__ == '__main__':
 				print "{} terminating recording process".format(timestamp)
 				recorder.terminate()
 				loop = 0
+			else:
+				print 'command: {}'.format(command)	
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		print "{} closing listen socket".format(timestamp)
 		control.terminate()
 		print "testing for valid recording..."
 		analyser = get_properties(wav_filename)
