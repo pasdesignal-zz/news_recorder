@@ -38,8 +38,7 @@ class get_properties():
 		try:
 			print json.dumps(self.properties.to_data(), indent=2, sort_keys=True)
 		except:
-    		print("Unexpected error:", sys.exc_info()[0])	
-			
+    		print("Unexpected error:", sys.exc_info()[0])
 
 if __name__ == '__main__':
 	stats = get_properties()
