@@ -27,7 +27,7 @@ class get_properties():
 		except Exception as e:
 			print "MediaInfo error:".format(e)
 		finally:
-		self.properties = media_info
+			self.properties = media_info
 
 	def print_pretty(self):
 		print "audio properties of {} :".format(self.input)
