@@ -26,7 +26,7 @@ class listen_socket():
 		s.listen(1)
 		self.conn, self.addr = s.accept()
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print '{} connection received from address:'.format(timestamp, self.addr)
+		print '{} connection received from address:{}'.format(timestamp, self.addr)
 		while True:
 			data = self.conn.recv(self.BUFFER_SIZE)
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")

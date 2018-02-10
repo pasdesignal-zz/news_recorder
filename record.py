@@ -86,7 +86,7 @@ if __name__ == '__main__':
 				loop = 0
 		control.terminate()
 		print "testing for valid recording..."
-		analyser = get_properties()
+		analyser = get_properties(wav_filename)
 		analyser.print_pretty()	
 	except KeyboardInterrupt:
 		print "manually interrupted!"

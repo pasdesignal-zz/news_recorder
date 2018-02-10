@@ -16,11 +16,7 @@ test_opus = os.getcwd()+'/test.opus'
 
 class get_properties():
 
-	def __init__(self):
-		self.input = ''
-	#how to make this return an object describing the audio file properties?
-	#test for valid file types
-	def properties(self, audio_file):
+	def __init__(self, audio_file):  #to do: test for valid file type
 		self.input = audio_file
 		if not os.path.exists(self.input):
 			print "ERROR: no such file exists"
@@ -29,9 +25,9 @@ class get_properties():
 		try:
 			media_info = MediaInfo.parse(self.input)
 		except Exception as e:
-			print "ffprobe error:".format(e)
+			print "MediaInfo error:".format(e)
 		finally:
-			return media_info
+		self.properties = media_info
 
 	def print_pretty(self):
 		print "audio properties of {} :".format(self.input)
@@ -41,19 +37,6 @@ class get_properties():
 			print("Unexpected error:", sys.exc_info()[0])
 
 if __name__ == '__main__':
-	stats = get_properties()
-	properties = stats.properties(test_wav) #returns object, use .to_data() method to get dict
+	stats = get_properties(test_wav)
 	print "properties of {} :".format(test_wav)
-	print json.dumps(properties.to_data(), indent=2, sort_keys=True)
-	#
-	properties = stats.properties(test_ogg)
-	print "properties of {} :".format(test_ogg)
-	print json.dumps(properties.to_data(), indent=2, sort_keys=True)
-	#
-	properties = stats.properties(test_mp3)
-	print "properties of {} :".format(test_mp3)
-	print json.dumps(properties.to_data(), indent=2, sort_keys=True)
-	#
-	properties = stats.properties(test_opus)
-	print "properties of {} :".format(test_opus)
-	print json.dumps(properties.to_data(), indent=2, sort_keys=True)
+	print json.dumps(stats.properties.to_data(), indent=2, sort_keys=True)
