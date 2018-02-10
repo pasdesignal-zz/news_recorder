@@ -33,6 +33,14 @@ class get_properties():
 		finally:
 			return media_info
 
+	def print_pretty(self):
+		print "audio properties of {} :".format(self.input)
+		try:
+			print json.dumps(self.properties.to_data(), indent=2, sort_keys=True)
+		except:
+    		print("Unexpected error:", sys.exc_info()[0])	
+			
+
 if __name__ == '__main__':
 	stats = get_properties()
 	properties = stats.properties(test_wav) #returns object, use .to_data() method to get dict

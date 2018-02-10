@@ -12,15 +12,15 @@ from pathfinder_socket import listen_socket
 import threading
 
 ##TO DO:
-#setup cron jobs to call above jobs each hour 1 minute before the hour
-#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
+#trim silence from both ends of file
+
 bind_interface = '172.17.2.69'
 wav_dir = (os.getcwd()+'/audio/wav/')
 timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 filename = wav_dir+'rnznews_'+timestamp+'.wav'
 
 class record():
-
+	#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 	outstring = "-c:a pcm_s24le"
@@ -74,10 +74,7 @@ if __name__ == '__main__':
 		control.terminate()
 		print "testing for valid recording..."
 		analyser = get_properties()
-		audio_properties = analyser.properties(filename) #returns object, use .to_data() method to get dict
-		#test for valid porperties here....
-		print "properties of {} :".format(filename)
-		print json.dumps(audio_properties.to_data(), indent=2, sort_keys=True)		
+		analyser.print_pretty()	
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
