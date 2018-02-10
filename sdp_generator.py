@@ -9,8 +9,9 @@ import time
 
 class SDP_Gen():
 
-	def __init__(self, channel): #convert livewire channel number to multicast ip address
+	def __init__(self, channel, filename): #convert livewire channel number to multicast ip address
 		self.channel = channel
+		self.filename =filename
 		addr = int(self.channel)+0xEFC00000 #Axia channel number + base IP (239.192.0.0 [in hex]) 
 		self.multicastaddr = socket.inet_ntoa(struct.pack(">L", addr))
 
@@ -39,20 +40,15 @@ class SDP_Gen():
 	    sdp += "\r\n"
 	    sdp += "a=rtpmap:96 L24/48000/2\r\n"
 	    self.sdp = sdp	
+	    f = open(self.filename, 'w')
+	    print "writing sdp object to file:{}".format(self.filename)
+	    f.write(self.sdp)
+	    f = open(self.filename)
+	    print f.read()
 
 if __name__ == '__main__':
-	sdp_object = SDP_Generator(4263)
-	print "address:", sdp_object.multicastaddr
-	sdp_object.generate_sdp(session_description='RNZ Bulletin')
-	print ""
-	filename = 'source.sdp'
-	f = open(filename, 'w')
-	print "writing sdp object to file:{}".format(filename)
-	f.write(sdp_object.sdp)
-	f = open(filename)
-	print ""
-	print f.read()
-	f = open('test.sdp')
-	print ""
-	print f.read()
+		livewire_channel = 4263
+		sdp_filename = 'source.sdp'
+		sdp_object = SDP_Gen(livewire_channel, sdp_filename)
+		sdp_object.generate_sdp(session_description='RNZ Bulletin')
 

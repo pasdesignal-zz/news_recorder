@@ -46,6 +46,8 @@ class record():
 
 if __name__ == '__main__':
 	try:
+		livewire_channel = 4263
+		sdp_filename = 'source.sdp'
 		bind_interface = '10.212.13.1'
 		bind_port=5119
 		wav_dir = (os.getcwd()+'/audio/wav/')
@@ -59,16 +61,8 @@ if __name__ == '__main__':
 		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port)
 		control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
-		livewire_channel = 4263
-		sdp_object = SDP_Gen(livewire_channel)
-		#print "address:", sdp_object.multicastaddr
+		sdp_object = SDP_Gen(livewire_channel, sdp_filename)
 		sdp_object.generate_sdp(session_description='RNZ Bulletin')
-		sdp_filename = 'source.sdp'
-		f = open(sdp_filename, 'w')
-		print "writing sdp object to file:{}".format(sdp_filename)
-		f.write(sdp_object.sdp)
-		f = open(sdp_filename)
-		print f.read()
 		recorder = record(wav_filename)
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"

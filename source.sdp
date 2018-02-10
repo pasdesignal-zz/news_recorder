@@ -1,5 +1,5 @@
 v=0
-o=Recorder 1518241354 0 IN IP4 239.192.16.167
+o=bulletins_recorder 1518247270 0 IN IP4 239.192.16.167
 s=RNZ Bulletin
 t=0 0
 a=type:multicast
