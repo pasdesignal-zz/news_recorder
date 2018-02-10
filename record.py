@@ -10,6 +10,7 @@ from multiprocessing import Process, Pipe
 from audio_properties import get_properties
 from pathfinder_socket import listen_socket
 import threading
+from sdp_generator import SDP_Gen
 
 ##TO DO:
 #add argument to class which defines Livewire stream number
@@ -58,6 +59,16 @@ if __name__ == '__main__':
 		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=5009)
 		control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
+		livewire_channel = 4263
+		sdp_object = SDP_Gen(livewire_channel)
+		#print "address:", sdp_object.multicastaddr
+		sdp_object.generate_sdp(session_description='RNZ Bulletin')
+		filename = 'source.sdp'
+		f = open(filename, 'w')
+		print "writing sdp object to file:{}".format(filename)
+		f.write(sdp_object.sdp)
+		f = open(filename)
+		print f.read()
 		recorder = record(filename)
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"

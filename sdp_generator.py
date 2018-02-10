@@ -7,27 +7,20 @@ import socket
 import struct
 import time
 
-class SDP_Generator():
+class SDP_Gen():
 
-	def __init__(self, channel):
+	def __init__(self, channel): #convert livewire channel number to multicast ip address
 		self.channel = channel
-		#self.multicastAddr = int(self.channel) + 0xEFC00000 #Axia channel number + base IP (239.192.0.0 [in hex]) 
-		_addr = int(self.channel)+0xEFC00000
-		#print "_addr:", _addr
-		#print "hex_addr:", hex(_addr)
-		addr_long = int(hex(_addr), 16)
-		#print addr_long
-		#struct.pack("<L", addr_long)
-		self.multicastaddr = socket.inet_ntoa(struct.pack(">L", _addr))
-		#print "address:", hex(self.multicastAddr)
+		addr = int(self.channel)+0xEFC00000 #Axia channel number + base IP (239.192.0.0 [in hex]) 
+		self.multicastaddr = socket.inet_ntoa(struct.pack(">L", addr))
 
-	#borrowed from https://github.com/SythilTech/Python-SDP/blob/master/scripts/sdp.py
+	#heavily borrowed from https://github.com/SythilTech/Python-SDP/blob/master/scripts/sdp.py
 	def generate_sdp(self, session_description=""):
 	    sdp = ""
 	    #Protocol Version ("v=") https://tools.ietf.org/html/rfc4566#section-5.1 (always 0 for us)
 	    sdp += "v=0\r\n"
 	    #Origin ("o=") https://tools.ietf.org/html/rfc4566#section-5.2
-	    username = "Recorder"
+	    username = "bulletins_recorder"
 	    sess_id = int(time.time())
 	    sess_version = 0
 	    nettype = "IN"
@@ -40,9 +33,6 @@ class SDP_Generator():
 	    sdp += "a=type:multicast\r\n"
 	    #Connection Information ("c=") https://tools.ietf.org/html/rfc4566#section-5.7
 	    sdp += "c=" + nettype + " " + addrtype + " " + self.multicastaddr + "\r\n"
-	    
-	    
-	    
 	    #Media Descriptions ("m=") https://tools.ietf.org/html/rfc4566#section-5.14
 	    sdp += "m=audio " + '5004' + " RTP/AVP"
 	    sdp += " " + '96'
