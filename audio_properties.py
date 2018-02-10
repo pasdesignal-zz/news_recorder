@@ -4,7 +4,6 @@
 #requires mediainfo: sudo apt install mediainfo
 #requires pymediainfo: sudo pip install pymediainfo
 
-
 import os
 import json
 from pymediainfo import MediaInfo
