@@ -73,7 +73,7 @@ if __name__ == '__main__':
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
-		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface,bind_port)
+		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		control.start()    
 		loop = 1
 		while loop == 1:
