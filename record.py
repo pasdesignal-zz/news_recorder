@@ -12,6 +12,8 @@ from pathfinder_socket import listen_socket
 import threading
 
 ##TO DO:
+#add argument to class which defines Livewire stream number
+#convert stream number to address and edit sdp file
 #trim silence from both ends of file
 
 bind_interface = '172.17.2.69'
