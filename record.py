@@ -24,7 +24,7 @@ class record():
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
 	outstring = "-c:a pcm_s24le"
-	audio_input = (os.getcwd()+'/rnz_national.sdp')
+	audio_input = (os.getcwd()+'/source.sdp')
 
 	def __init__(self, filename):
 		self.filename = filename
