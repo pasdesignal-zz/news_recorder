@@ -56,7 +56,7 @@ if __name__ == '__main__':
 		print "{} starting recording job".format(timestamp)
 		print "initiating listen socket"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
-		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=5009)
+		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port)
 		control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
 		livewire_channel = 4263
