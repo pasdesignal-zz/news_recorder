@@ -47,6 +47,7 @@ class record():
 if __name__ == '__main__':
 	try:
 		bind_interface = '10.212.13.1'
+		bind_port=5119
 		wav_dir = (os.getcwd()+'/audio/wav/')
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
@@ -72,7 +73,7 @@ if __name__ == '__main__':
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
-		print "starting pathfinder listen socket on port: {}".format(5009)
+		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface,bind_port)
 		control.start()    
 		loop = 1
 		while loop == 1:
