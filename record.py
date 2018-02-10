@@ -17,11 +17,6 @@ from sdp_generator import SDP_Gen
 #convert stream number to address and edit sdp file
 #trim silence from both ends of file
 
-bind_interface = '172.17.2.69'
-wav_dir = (os.getcwd()+'/audio/wav/')
-timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-filename = wav_dir+'rnznews_'+timestamp+'.wav'
-
 class record():
 	#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
@@ -51,6 +46,10 @@ class record():
 
 if __name__ == '__main__':
 	try:
+		bind_interface = '172.17.2.69'
+		wav_dir = (os.getcwd()+'/audio/wav/')
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
 		print ""
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} starting recording job".format(timestamp)
@@ -63,13 +62,13 @@ if __name__ == '__main__':
 		sdp_object = SDP_Gen(livewire_channel)
 		#print "address:", sdp_object.multicastaddr
 		sdp_object.generate_sdp(session_description='RNZ Bulletin')
-		filename = 'source.sdp'
-		f = open(filename, 'w')
-		print "writing sdp object to file:{}".format(filename)
+		sdp_filename = 'source.sdp'
+		f = open(sdp_filename, 'w')
+		print "writing sdp object to file:{}".format(sdp_filename)
 		f.write(sdp_object.sdp)
-		f = open(filename)
+		f = open(sdp_filename)
 		print f.read()
-		recorder = record(filename)
+		recorder = record(wav_filename)
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
