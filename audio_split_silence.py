@@ -49,6 +49,6 @@ if __name__ == '__main__':
 	print "opening file:{}".format(test_wav)
 	sox_object = silence_trimmer(test_wav)
 	sox_object.duration(sox_object.input)
-	print "Duration before:{}".format(test.length)
+	print "Duration before:{}".format(sox_object.length)
 
 		
