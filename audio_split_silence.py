@@ -58,7 +58,7 @@ if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
 	print "opening file:{}".format(test_wav)
 	sox_object = silence_trimmer()
-	sox_object.get_duration(sox_object.input)
+	sox_object.get_duration(test_wav)
 	print "Duration before:{} secs".format(sox_object.duration)
 	print "trimming silence off start of bulletin"
 	sox_object.trim_start(test_wav, sox_object.temp)
