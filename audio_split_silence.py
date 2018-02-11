@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from pysox import CSoxApp
+import pysox
 import os
 
 #requires sox
@@ -40,7 +40,7 @@ class silence_trimmer():
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
 				os.makedirs(os.path.dirname(self.temp))
 		print "trimming silence from start of file..."
-		sapp = CSoxApp(self.input, self.temp, effectparams=[('silence', [1, 0.1, '0.01%',]),])
+		sapp = pysox.CSoxApp(self.input, self.temp, effectparams=[('silence', [1, 0.1, '0.01%',]),])
 		sapp.flow()
 
 	def duration(self, _file):
