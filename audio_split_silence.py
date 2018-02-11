@@ -52,5 +52,9 @@ if __name__ == '__main__':
 	sox_object = silence_trimmer(test_wav)
 	sox_object.get_duration(sox_object.input)
 	print "Duration before:{} secs".format(sox_object.duration)
+	print "trimming silence off start of bulletin"
+	sox_object.trim()
+	sox_object.get_duration(sox_object.temp)
+	print "Duration after:{} secs".format(sox_object.duration)
 
 		
