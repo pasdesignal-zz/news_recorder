@@ -4,10 +4,7 @@ import sox
 import os
 
 #requires sox
-#sudo apt install sox
-#sudo apt install libsox-dev
-#requires pysox wrapper:
-#sudo pip install pysox
+#sudo pip install sox
 
 #To Do:
 #1. get initial file duration
@@ -44,7 +41,7 @@ class silence_trimmer():
 		sapp.flow()
 
 	def duration(self, _file):
-		self.duration = sox.file_info.duration(input_filepath)
+		self.duration = sox.file_info.duration(_file)
 		print "duration:{}".format(self.duration)
 
 if __name__ == '__main__':
