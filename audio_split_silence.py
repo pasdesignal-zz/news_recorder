@@ -22,26 +22,34 @@ import os
 
 class silence_trimmer():
 
-	def __init__(self, filename):
+	def __init__(self):
 		self.temp = (os.getcwd()+'/audio/tmp/temp.wav')
-		self.input = filename
 		self.duration_before = 0
 		self.duration_after = 0
-
-	def trim(self):
-		#test for existing temp directory and file first
 		if os.path.isfile(self.temp):
 			print "WARNING: removing existing temp wav file{}".format(self.temp)
 			os.remove(self.temp)
 		if not os.path.isdir(os.path.dirname(self.temp)):
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
 				os.makedirs(os.path.dirname(self.temp))
+
+	def trim_start(self, _input, _output):
 		print "trimming silence from start of file..."
 		tfm = sox.Transformer()
 		tfm.silence(location=1, silence_threshold=0.1, min_silence_duration=0.5, buffer_around_silence=True)
-		tfm.build(self.input, self.temp)
-		if os.path.isfile(self.temp):
-			print "success...?"
+		tfm.build(_input, _output)
+		if os.path.isfile(_output):
+			print "trim_start success...maybe?"
+
+	def trim_end(self, _input, _output):
+		print "trimming silence from end of file..."
+		tfm = sox.Transformer()
+		tfm.reverse()
+		tfm.silence(location=1, silence_threshold=0.1, min_silence_duration=0.5, buffer_around_silence=True)
+		tfm.reverse()
+		tfm.build(_input, _output)
+		if os.path.isfile(_output):
+			print "trim end success...maybe?"		
 
 	def get_duration(self, _file):
 		self.duration = sox.file_info.duration(_file)
@@ -53,8 +61,13 @@ if __name__ == '__main__':
 	sox_object.get_duration(sox_object.input)
 	print "Duration before:{} secs".format(sox_object.duration)
 	print "trimming silence off start of bulletin"
-	sox_object.trim()
+	sox_object.trim_start(test_wav, sox_object.temp)
 	sox_object.get_duration(sox_object.temp)
-	print "Duration after:{} secs".format(sox_object.duration)
+	print "Duration after trim_start:{} secs".format(sox_object.duration)
+	sox_onject.trim_end(sox_object.temp, test_wav)
+	sox_object.get_duration(test_wav)
+	print "Duration after trim_end:{} secs".format(sox_object.duration)
+
+
 
 		
