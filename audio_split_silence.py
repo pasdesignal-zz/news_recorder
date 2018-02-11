@@ -45,7 +45,6 @@ class silence_trimmer():
 
 	def duration(self, _file):
 		stream = pysox.CSoxStream(_file)
-		self.signal = stream.CSignalInfo()
 		print "signal:{}".format(self.signal.get_signalinfo())
 		print "length:{}".format(self.signal.get_signalinfo(['length']))
 
