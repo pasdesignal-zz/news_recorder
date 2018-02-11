@@ -45,8 +45,8 @@ class silence_trimmer():
 
 	def duration(self, _file):
 		stream = pysox.CSoxStream(_file)
-		print "signal:{}".format(self.signal.get_signalinfo())
-		print "length:{}".format(self.signal.get_signalinfo(['length']))
+		print "signal:{}".format(stream.get_signalinfo())
+		print "length:{}".format(stream.get_signalinfo(['length']))
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
