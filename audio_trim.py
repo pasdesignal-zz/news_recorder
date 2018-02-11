@@ -6,6 +6,9 @@ import os
 #sudo pip install sox
 #https://media.readthedocs.org/pdf/pysox/latest/pysox.pdf
 
+#To do:
+#evaluate values for optimum sound left at start and end.
+
 class silence_trimmer():
 
 	def __init__(self):

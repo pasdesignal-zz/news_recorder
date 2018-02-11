@@ -35,8 +35,8 @@ if __name__ == '__main__':
 	try:
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
 		print ""
-		recorder = record(wav_filename)
-		rec_job = threading.Thread(target=recorder.run)
+		record_me = recorder(wav_filename)
+		rec_job = threading.Thread(target=record_me.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		print "testing for valid recording..."
