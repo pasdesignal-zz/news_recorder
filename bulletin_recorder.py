@@ -6,7 +6,7 @@ from multiprocessing import Process, Pipe
 from sdp_generator import SDP_Gen
 from audio_properties import get_properties
 from pathfinder_socket import listen_socket
-from record import recorder
+from audio_record import recorder
 from audio_trim import silence_trimmer
 
 #To Do:
