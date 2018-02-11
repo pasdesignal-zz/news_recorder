@@ -37,18 +37,20 @@ class silence_trimmer():
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
 				os.makedirs(os.path.dirname(self.temp))
 		print "trimming silence from start of file..."
-		sapp = pysox.CSoxApp(self.input, self.temp, effectparams=[('silence', [1, 0.1, '0.01%',]),])
-		sapp.flow()
+		tfm = sox.Transformer()
+		tfm.silence(location=1, silence_threshold=0.1, min_silence_duration=0.5, buffer_around_silence=True)
+		tfm.build(self.input, self.temp)
+		if os.path.isfile(self.temp):
+			print "success...?"
 
-	def duration(self, _file):
-		self.length = sox.file_info.duration(_file)
-		print "duration:{}".format(self.length)
+	def get_duration(self, _file):
+		self.duration = sox.file_info.duration(_file)
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
 	print "opening file:{}".format(test_wav)
 	sox_object = silence_trimmer(test_wav)
-	sox_object.duration(sox_object.input)
-	print "Duration before:{}".format(sox_object.length)
+	sox_object.get_duration(sox_object.input)
+	print "Duration before:{} secs".format(sox_object.duration)
 
 		
