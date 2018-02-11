@@ -47,6 +47,7 @@ class silence_trimmer():
 		audio = pysox.CSoxStream(_file)
 		self.signal = audio.get_signal()
 		print "signal:{}".format(self.signal)
+		print "length:{}".format(self.signal.length)
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
