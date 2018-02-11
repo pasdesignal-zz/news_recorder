@@ -30,7 +30,7 @@ if __name__ == '__main__':
 		print "initiating recorder thread"
 		sdp_object = SDP_Gen(livewire_channel, sdp_filename)
 		sdp_object.generate_sdp(session_description='RNZ Bulletin')
-		record_bulletin = record(wav_filename)
+		record_bulletin = recorder(wav_filename)
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
