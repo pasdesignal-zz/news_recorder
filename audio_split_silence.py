@@ -65,7 +65,7 @@ if __name__ == '__main__':
 	sox_object.get_duration(sox_object.temp)
 	print "Duration after trim_start:{} secs".format(sox_object.duration)
 	print "trimming silence off end of bulletin"
-	sox_onject.trim_end(sox_object.temp, test_wav)
+	sox_object.trim_end(sox_object.temp, test_wav)
 	sox_object.get_duration(test_wav)
 	print "Duration after trim_end:{} secs".format(sox_object.duration)
 
