@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import pysox
+import sox
 import os
 
 #requires sox
@@ -44,15 +44,13 @@ class silence_trimmer():
 		sapp.flow()
 
 	def duration(self, _file):
-		stream = pysox.CSoxStream(_file)
-		print "signal:{}".format(stream.get_signal())
-		print "testes:{}".format(stream.CSignalinfo)
-		print "length:{}".format(stream.CSignalinfo(['length']))
+		self.duration = sox.file_info.duration(input_filepath)
+		print "duration:{}".format(self.duration)
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
 	print "opening file:{}".format(test_wav)
 	test = silence_trimmer(test_wav)
-	print "Duration before:{}".format(test.duration(test.input))
+	print "Duration before:{}".format(test.duration(test_wav))
 
 		
