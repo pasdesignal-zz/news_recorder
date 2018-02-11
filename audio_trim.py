@@ -32,7 +32,7 @@ class silence_trimmer():
 		if os.path.isfile(_output):
 			self.get_duration(_output)
 			time2 = self.duration
-			if time1 => time2:
+			if time1 >= time2:
 				print "No silence removed"
 			else:
 				print "{} secs removed".format(time1-time2)
@@ -51,7 +51,7 @@ class silence_trimmer():
 		if os.path.isfile(_output):
 			self.get_duration(_output)
 			time2 = self.duration
-			if time1 => time2:
+			if time1 >= time2:
 				print "No silence removed"
 			else:
 				print "{} secs removed".format(time1-time2)
