@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
 from pysox import CSoxApp
-
+import os
 #requires sox
 #sudo apt install sox
+#sudo apt install libsox-dev
 #requires pysox wrapper:
 #sudo pip install pysox
-
 
 #To Do:
 #1. get initial file duration
