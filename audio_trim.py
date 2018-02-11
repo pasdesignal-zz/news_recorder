@@ -61,6 +61,17 @@ class silence_trimmer():
 	def get_duration(self, _file):
 		self.duration = sox.file_info.duration(_file)
 
+	def housekeeping():
+		if os.path.isfile(self.temp):
+			print "Removing temp wav file{}".format(self.temp)
+			os.remove(self.temp)
+			if os.path.isfile(self.temp)::
+				print "File removed"
+		else:
+			print "No file exists:{}".format(self.temp)		
+
+
+
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
 	processed_wav = (os.getcwd()+'/audio/test/processed_bulletin.wav')
@@ -69,5 +80,6 @@ if __name__ == '__main__':
 	sox_object.trim_start(test_wav, sox_object.temp)
 	print "trimming silence off end of bulletin"
 	sox_object.trim_end(sox_object.temp, processed_wav)
+	sox_object.housekeeping()
 
 		
