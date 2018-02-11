@@ -2,6 +2,7 @@
 
 from pysox import CSoxApp
 import os
+
 #requires sox
 #sudo apt install sox
 #sudo apt install libsox-dev
@@ -43,7 +44,9 @@ class silence_trimmer():
 		sapp.flow()
 
 	def duration(self, _file):
-		self.duration = sox.file_info.duration(_file)
+		audio = pysox.CSoxStream(_file)
+		self.signal = audio.get_signal()
+		print "signal:{}".format(self.signal)
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
