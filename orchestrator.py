@@ -31,7 +31,7 @@ if __name__ == '__main__':
 		sdp_object = SDP_Gen(livewire_channel, sdp_filename)
 		sdp_object.generate_sdp(session_description='RNZ Bulletin')
 		record_bulletin = recorder(wav_filename)
-		rec_job = threading.Thread(target=recorder.run)
+		rec_job = threading.Thread(target=record_bulletin.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
