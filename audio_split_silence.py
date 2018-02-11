@@ -41,13 +41,14 @@ class silence_trimmer():
 		sapp.flow()
 
 	def duration(self, _file):
-		self.duration = sox.file_info.duration(_file)
-		print "duration:{}".format(self.duration)
+		self.length = sox.file_info.duration(_file)
+		print "duration:{}".format(self.length)
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
 	print "opening file:{}".format(test_wav)
-	test = silence_trimmer(test_wav)
-	print "Duration before:{}".format(test.duration(test_wav))
+	sox_object = silence_trimmer(test_wav)
+	sox_object.duration(sox_object.input)
+	print "Duration before:{}".format(test.length)
 
 		
