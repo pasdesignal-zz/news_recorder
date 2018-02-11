@@ -62,7 +62,7 @@ if __name__ == '__main__':
 		print "{} secs removed".format(time1-time2)	
 	print "trimming silence off end of bulletin"
 	sox_object.trim_end(sox_object.temp, processed_wav)
-	sox_object.get_duration(test_wav)
+	sox_object.get_duration(processed_wav)
 	time3 = sox_object.duration
 	print "Duration after trim_end:{} secs".format(time3)
 	if time3 >= time2:
