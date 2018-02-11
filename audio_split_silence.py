@@ -1,33 +1,54 @@
 #!/usr/bin/python
 
-import sox
+from pysox import CSoxApp
+
+#requires sox
+#sudo apt install sox
+#requires pysox wrapper:
+#sudo pip install pysox
+
 
 #To Do:
-#Use sox to process .wav file 
-#Split .wav file based on silence
-#Possible alogithm: 
-#1. Split audio based on silence parameters
-#2. Test fragemnts for length starting at first fragment
-#3. If first fragment > 03:00, append second fragment and test again
-#4. Continue until appended fragemtn is very close to 03:00mins in length
-#5. save appended .wav file to appropriate folder with appropriate naming for transcode
+#1. get initial file duration
+#2. trim silence from start of file
+#3. get second duration of file
+#4. compare two durations and make sure it is shorter
+#5. trin silence from end of file
+#6. get third duration of file
+#7. compare durations and make sure it is shorter
 
+#sox 20170306-1400-048.mp3 -p silence 1 0.1 0.01% | sox -p output.mp3 reverse silence 1 0.1 0.1% reverse	
 #sox original.wav new.wav silence 1 0.5 2% 1 2.0 2% : newfile : restart
 #https://github.com/rabitt/pysox
 #https://digitalcardboard.com/blog/2009/08/25/the-sox-of-silence/
 
-def test_duration(wav_list):
-	#2. Test fragments for length starting at first fragment
-	#3. If first fragment > 03:00, append second fragment and test again
-	#4. Continue until appended fragemtn is very close to 03:00mins in length
-	number_of_fragments = len(wav_list)
-	fragment1_duration = sox.file_info.duration(wav_list[0])
-	if fragment1_duration => :#greater than 02:55mins and less than 03:10mins
-		print "correct duration detected:", wav_list[0]
+class silence_trimmer():
+
+	def __init__(self, filename):
+		self.temp = (os.getcwd()+'/audio/tmp/temp.wav')
+		self.input = filename
+		self.duration_before = 0
+		self.duration_after = 0
+
+	def trim(self):
+		#test for existing temp directory and file first
+		if os.path.isfile(self.temp):
+			print "WARNING: removing existing temp wav file{}".format(self.temp)
+			os.remove(self.temp)
+		if not os.path.isdir(os.path.dirname(self.temp)):
+				print "creating temp folder:{}".format(os.path.dirname(self.temp))
+				os.makedirs(os.path.dirname(self.temp))
+		print "trimming silence from start of file..."
+		sapp = CSoxApp(self.input, self.temp, effectparams=[('silence', [1, 0.1, '0.01%',]),])
+		sapp.flow()
+
+	def duration(self, _file):
+		self.duration = sox.file_info.duration(_file)
+
+if __name__ == '__main__':
+	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
+	print "opening file:{}".format(test_wav)
+	test = silence_trimmer(test_wav)
+	print "Duration before:{}".format(test.duration(test.input))
+
 		
-
-def export_wav(wav_correct_length):
-	#copy file to location and do housekeeping
-
-def housekeeping():
-	#tidy up temp files created during fragmentation and concatenation
