@@ -6,9 +6,6 @@ import os
 #sudo pip install sox
 #https://media.readthedocs.org/pdf/pysox/latest/pysox.pdf
 
-#To Do:
-#7. compare durations and make sure it is shorter
-
 class silence_trimmer():
 
 	def __init__(self):
@@ -52,7 +49,7 @@ class silence_trimmer():
 			self.get_duration(_output)
 			time2 = self.duration
 			if time2 >= time1:
-				print "No silence removed"
+				print "no silence removed"
 			else:
 				print "{} secs removed".format(time1-time2)
 		else:
@@ -63,10 +60,10 @@ class silence_trimmer():
 
 	def housekeeping(self):
 		if os.path.isfile(self.temp):
-			print "Removing temp wav file{}".format(self.temp)
+			print "removing temp wav file{}".format(self.temp)
 			os.remove(self.temp)
 			if os.path.isfile(self.temp):
-				print "File removed"
+				print "nile removed"
 		else:
 			print "No file exists:{}".format(self.temp)		
 
@@ -79,7 +76,7 @@ if __name__ == '__main__':
 	sox_object = silence_trimmer()
 	sox_object.trim_start(test_wav, sox_object.temp)
 	print "trimming silence off end of bulletin"
-	sox_object.trim_end(sox_object.temp, processed_wav)
+	sox_object.trim_end(sox_object.temp, test_wav)
 	sox_object.housekeeping()
 
 		
