@@ -48,20 +48,23 @@ if __name__ == '__main__':
 	processed_wav = (os.getcwd()+'/audio/test/processed_bulletin.wav')
 	print "opening file:{}".format(test_wav)
 	sox_object = silence_trimmer()
-	time1 = sox_object.get_duration(test_wav)
-	print "Duration before:{} secs".format(sox_object.duration)
+	sox_object.get_duration(test_wav)
+	time1 = sox_object.duration
+	print "Duration before:{} secs".format(time1)
 	print "trimming silence off start of bulletin"
 	sox_object.trim_start(test_wav, sox_object.temp)
-	time2 = sox_object.get_duration(sox_object.temp)
-	print "Duration after trim_start:{} secs".format(sox_object.duration)
+	sox_object.get_duration(sox_object.temp)
+	time2 = sox_object.duration
+	print "Duration after trim_start:{} secs".format(time2)
 	if time2 >= time1:
 		print "Nothing trimmed!"
 	else:
 		print "{} secs removed".format(time1-time2)	
 	print "trimming silence off end of bulletin"
 	sox_object.trim_end(sox_object.temp, processed_wav)
-	time3 = sox_object.get_duration(test_wav)
-	print "Duration after trim_end:{} secs".format(sox_object.duration)
+	sox_object.get_duration(test_wav)
+	time3 = sox_object.duration
+	print "Duration after trim_end:{} secs".format(time3)
 	if time3 >= time2:
 		print "Nothing trimmed!"
 	else:
