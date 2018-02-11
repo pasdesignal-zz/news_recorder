@@ -65,7 +65,7 @@ class silence_trimmer():
 		if os.path.isfile(self.temp):
 			print "Removing temp wav file{}".format(self.temp)
 			os.remove(self.temp)
-			if os.path.isfile(self.temp)::
+			if os.path.isfile(self.temp):
 				print "File removed"
 		else:
 			print "No file exists:{}".format(self.temp)		
