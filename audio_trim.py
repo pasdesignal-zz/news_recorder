@@ -61,7 +61,7 @@ class silence_trimmer():
 	def get_duration(self, _file):
 		self.duration = sox.file_info.duration(_file)
 
-	def housekeeping():
+	def housekeeping(self):
 		if os.path.isfile(self.temp):
 			print "Removing temp wav file{}".format(self.temp)
 			os.remove(self.temp)
