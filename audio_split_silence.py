@@ -44,10 +44,9 @@ class silence_trimmer():
 		sapp.flow()
 
 	def duration(self, _file):
-		audio = pysox.CSoxStream(_file)
-		self.signal = audio.get_signalinfo()
+		self.signal = pysox.CSignalInfo.get_signalinfo(_file)
 		print "signal:{}".format(self.signal)
-		print "length:{}".format(self.signal.length)
+		print "length:{}".format(self.signal['length'])
 
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
