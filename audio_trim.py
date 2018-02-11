@@ -67,8 +67,6 @@ class silence_trimmer():
 		else:
 			print "No file exists:{}".format(self.temp)		
 
-
-
 if __name__ == '__main__':
 	test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
 	processed_wav = (os.getcwd()+'/audio/test/processed_bulletin.wav')

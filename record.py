@@ -1,21 +1,10 @@
 #!/usr/bin/python
-
-import json
 import ffmpy
 import datetime
 import os
-import time
-import socket
-from multiprocessing import Process, Pipe
-from audio_properties import get_properties
-from pathfinder_socket import listen_socket
 import threading
-from sdp_generator import SDP_Gen
 
-##TO DO:
-#trim silence from both ends of file
-
-class record():
+class recorder():
 	#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
 	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:00"
@@ -44,44 +33,12 @@ class record():
 
 if __name__ == '__main__':
 	try:
-		#session variables
-		livewire_channel = 4263
-		sdp_filename = 'source.sdp'
-		bind_interface = '10.212.13.1'
-		bind_port=5119
-		wav_dir = (os.getcwd()+'/audio/wav/')
-		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
 		print ""
-		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "{} starting recording job".format(timestamp)
-		print "initiating listen socket"
-		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
-		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port)
-		control = Process(target=pathfinder.listen)             
-		print "initiating recorder thread"
-		sdp_object = SDP_Gen(livewire_channel, sdp_filename)
-		sdp_object.generate_sdp(session_description='RNZ Bulletin')
 		recorder = record(wav_filename)
 		rec_job = threading.Thread(target=recorder.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
-		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
-		control.start()    
-		loop = 1
-		while loop == 1:
-			command = listen_child_conn.recv()
-			print 'command: {}'.format(command)
-			if command == 'stop_recording':
-				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-				print "{} terminating recording process".format(timestamp)
-				recorder.terminate()
-				loop = 0
-			else:
-				print 'command: {}'.format(command)	
-		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "{} closing listen socket".format(timestamp)
-		control.terminate()
 		print "testing for valid recording..."
 		analyser = get_properties(wav_filename)
 		analyser.print_pretty()	
