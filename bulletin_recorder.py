@@ -11,7 +11,9 @@ from audio_trim import silence_trimmer
 
 #To Do:
 #remove old bulletin recordings (greater than 24 hours?)
-#make analyser useful! (boolean test for valid file, simple duration test like sox etc, multiple file types)
+#make analyser useful! (boolean test for valid file, simple duration test like sox etc, safe for multiple file types)
+#create XML for ELF
+#export function
 
 if __name__ == '__main__':
 	try:
@@ -23,7 +25,6 @@ if __name__ == '__main__':
 		wav_dir = (os.getcwd()+'/audio/wav/')
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
-		##
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting recording job".format(timestamp)
@@ -69,6 +70,8 @@ if __name__ == '__main__':
 		print "testing for valid recording..."  #make this a boolean evaluation for valid file
 		analyser = get_properties(wav_filename)
 		analyser.print_pretty()	
+		##--NORMALISE LOUDNESS--##
+		##--VALIDATE--##
 		##--TRANSCODE--##
 		##--VALIDATE--##
 		##--EXPORT--##
