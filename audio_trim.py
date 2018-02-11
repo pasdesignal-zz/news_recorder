@@ -4,6 +4,7 @@ import os
 
 #requires sox
 #sudo pip install sox
+#https://media.readthedocs.org/pdf/pysox/latest/pysox.pdf
 
 #To Do:
 #7. compare durations and make sure it is shorter
@@ -53,7 +54,7 @@ if __name__ == '__main__':
 	sox_object.trim_start(test_wav, sox_object.temp)
 	time2 = sox_object.get_duration(sox_object.temp)
 	print "Duration after trim_start:{} secs".format(sox_object.duration)
-	if time2 => time1:
+	if time2 >= time1:
 		print "Nothing trimmed!"
 	else:
 		print "{} secs removed".format(time1-time2)	
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 	sox_object.trim_end(sox_object.temp, processed_wav)
 	time3 = sox_object.get_duration(test_wav)
 	print "Duration after trim_end:{} secs".format(sox_object.duration)
-	if time3 => time2:
+	if time3 >= time2:
 		print "Nothing trimmed!"
 	else:
 		print "{} secs removed".format(time2-time3)	
