@@ -23,7 +23,9 @@ class recorder():
 			print "starting recording of file:{}".format(self.filename)	
 			self.cue.run()
 		except Exception as e:
-			print "Error", e
+			print "ffmpeg error:{}".format(e)
+		finally:
+			pass
 
 	def terminate(self):
 		try:
@@ -33,6 +35,7 @@ class recorder():
 
 if __name__ == '__main__':
 	try:
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
 		print ""
 		record_me = recorder(wav_filename)

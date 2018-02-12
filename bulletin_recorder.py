@@ -8,10 +8,12 @@ from audio_properties import get_properties
 from pathfinder_socket import listen_socket
 from audio_record import recorder
 from audio_trim import silence_trimmer
+from audio_normalise import loudness_normaliser
 
 #To Do:
+#name files correctly according to existing wrokflows
 #remove old bulletin recordings (greater than 24 hours?)
-#make analyser useful! (boolean test for valid file, simple duration test like sox etc, safe for multiple file types)
+#make analyser useful! (boolean test for valid file, get duration and return as attribute, safe for multiple file types, loudness stats/test)
 #create XML for ELF
 #export function
 
@@ -71,6 +73,9 @@ if __name__ == '__main__':
 		analyser = get_properties(wav_filename)
 		analyser.print_pretty()	
 		##--NORMALISE LOUDNESS--##
+		test = loudness_normaliser()
+		test.normalise(wav_filename, test.temp) #process orginal file and save as new file
+		test.replace(wav_filename, test.temp) #replace orginal file with new file
 		##--VALIDATE--##
 		##--TRANSCODE--##
 		##--VALIDATE--##

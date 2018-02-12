@@ -44,6 +44,7 @@ class SDP_Gen():
 	    print "writing sdp object to file:{}".format(self.filename)
 	    f.write(self.sdp)
 	    f = open(self.filename)
+	    print ""
 	    print f.read()
 
 if __name__ == '__main__':

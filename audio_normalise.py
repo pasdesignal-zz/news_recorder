@@ -1,55 +1,77 @@
+#!/usr/bin/python
 import ffmpy
 import os
+import shutil
+import datetime
 
-#This script takes a .wav file and runs a ludness process on it, creating a file that complies
+#This script takes a .wav file and runs a loudness process on it, creating a file that complies
 #with the Amazon Echo audio loudness standards. This requires FFMPEG version with libavfilter that includes 
 #the loudnorm module. E.G: FFMPEG 3.4.1
 #https://developer.amazon.com/docs/flashbriefing/normalizing-the-loudness-of-audio-content.html
 
 ##TO DO:
-#make into a module that can be called with args passed to it (input and output file)
-#output ffmpeg result and script stdout/stderr to log file
 #validate file (sox?) after loudness processing
-#test success and then housekeeping
+#test success
 
-#Amazon reference string
-#$ ffmpeg -i test.mp3 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -
+class loudness_normaliser():
 
-watch_dir = (os.getcwd()+'/audio/wav/')
-temp_dir = (os.getcwd()+'/audio/temp/')
-input_file = '/home/rnzweb/audio/bulletin_3mins.wav'					#testig only
-output_file = '/home/rnzweb/audio/bulletin_3mins_loud_processed.wav'	#testing only
-loudnorm_string = '-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json'
+	def __init__(self):
+		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -ar 48000'
+		self.global_string = '-y -hide_banner -loglevel warning'
+		self.temp = (os.getcwd()+'/audio/tmp/temp.wav')
+		if os.path.isfile(self.temp):
+			print "WARNING: removing existing temp wav file{}".format(self.temp)
+			os.remove(self.temp)
+		if not os.path.isdir(os.path.dirname(self.temp)):
+				print "creating temp folder:{}".format(os.path.dirname(self.temp))
+				os.makedirs(os.path.dirname(self.temp))
+		
+	def normalise(self, _input, _output):
+		if not os.path.isfile(_input):
+			print "ERROR: no file found: {}".format(_input)
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		print "{} initiating ffmpeg loudness processing".format(timestamp)
+		self.ff = ffmpy.FFmpeg(global_options=self.global_string, inputs={_input : None},outputs={_output : self.loudnorm_string })
+		print self.ff.cmd
+		try:
+			self.ff.run()
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} ffmpeg loudness processing COMPLETE".format(timestamp)
+		except Exception as e:
+			print "ERROR: ffmpeg loudness processing: {}".format(e)
+		finally:
+			pass
 
-def normalise(wav_in, wav_out):
-	print "initiating ffmpeg loudness processing"
-	ff = ffmpy.FFmpeg(global_options='-y -hide_banner',inputs={wav_in: None},outputs={wav_out : loudnorm_string })
-	print ff.cmd
-	ff.run()
-
-def replace(orig_file, new_file):
-		print "deleting original file:{}".format(orig_file)
-		if os.path.isfile(orig_file): 
-			os.remove(orig_file)
-			if not os.path.isfile(orig_file):
-				print "file {} deleted:".format(orig_file)
-				print "replacing with processed file:{}".format(new_file)
-				shutil.copy(new_file, orig_file)
-				if os.path.isfile(orig_file):
-					print "file replaced:{}".format(orig_file)
-				if os.path.isfile(new_file):
-					print "deleting temp file:{}".format(new_file)
-					os.remove(new_file)
-					if not os.path.isfile(new_file):
-						print "file {} deleted".format(self.temp_file)
-						print "file operations complete..."
+	def replace(self, orig_file, new_file):
+		if os.path.isfile(new_file): 			#safety checks
+			if os.path.isfile(orig_file):  		#safety checks
+				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+				print "{} deleting original file:{}".format(timestamp, orig_file)
+				os.remove(orig_file)
+				if not os.path.isfile(orig_file):
+					print "file deleted: {}".format(orig_file)
+					print "replacing with processed file: {}".format(new_file)
+					shutil.copy(new_file, orig_file)
+					if os.path.isfile(orig_file):
+						print "file replaced: {}".format(orig_file)
+					if os.path.isfile(new_file):
+						print "deleting temp file: {}".format(new_file)
+						os.remove(new_file)
+						if not os.path.isfile(new_file):
+							print "file deleted: {}".format(new_file)
+							timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+							print " {} file operations complete...".format(timestamp)
+			else:
+				print "ERROR: no file found:{}".format(orig_fle)
 		else:
-			print "no file found:{}".format(event.src_path)
+			print "ERROR: no file found:{}".format(new_file)
 
 if __name__ == '__main__':
 	try:
-		normalise(input_file, output_file)
-		replace(input_file, output_file)
+		input_file = (os.getcwd()+'/audio/test/test_bulletin.wav')
+		test = loudness_normaliser()
+		test.normalise(input_file, test.temp) #process orginal file and save as new file
+		test.replace(input_file, test.temp) #replace orginal file with new file
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
@@ -57,4 +79,3 @@ if __name__ == '__main__':
 		print e
 	finally:
 		pass
-
