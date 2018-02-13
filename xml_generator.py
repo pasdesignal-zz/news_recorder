@@ -55,7 +55,7 @@ class xml_machine():
 	def xml_tree(self):
 		self.root = ET.Element("audio_item")
 		self.tree = ET.ElementTree(self.root)
-		
+
 #writes xml object to file
 	def xml_write(self, output_xml):
 		self.output_xml = output_xml
@@ -85,6 +85,7 @@ class xml_machine():
 			if element.tag == 'ogg_size':
 				element.text = self.ogg_size
 			self.tree.write(output_xml)
+
 
 if __name__ == '__main__':
 	template_xml = (os.getcwd()+'/diginews_template.xml')
