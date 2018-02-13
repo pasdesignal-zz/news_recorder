@@ -27,6 +27,7 @@ if __name__ == '__main__':
 		wav_dir = (os.getcwd()+'/audio/wav/')
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
+		template_xml = (os.getcwd()+'/diginews_template.xml')
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting recording job".format(timestamp)
@@ -79,6 +80,13 @@ if __name__ == '__main__':
 		##--VALIDATE--##
 		##--TRANSCODE--##
 		##--VALIDATE--##
+		##--GENERATE XML--##
+		
+		test = xml_machine()
+		test.parse_template(template_xml)
+		test.ogg_url = 'testesonetwo'
+		test.ogg_size = '100'
+		test.xml_write((os.getcwd()+'/elf-test.xml'))
 		##--EXPORT--##
 		##--HOUSEKEEPING--##
 	except KeyboardInterrupt:
