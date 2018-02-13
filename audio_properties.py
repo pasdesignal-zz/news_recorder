@@ -42,7 +42,7 @@ class get_properties():
 			pass
 
 	def get_duration(self):
-		self.duration = (self.jsonloaded['tracks'][1]['other_duration'][3])
+		self.duration = (self.jsonloaded['tracks'][0]['duration'])/1000
 
 	def get_bitdepth(self):
 		self.bitdepth = (self.jsonloaded['tracks'][1]['bit_depth'])	
