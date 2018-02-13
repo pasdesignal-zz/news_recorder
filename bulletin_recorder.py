@@ -81,11 +81,20 @@ if __name__ == '__main__':
 		##--TRANSCODE--##
 		##--VALIDATE--##
 		##--GENERATE XML--##
-		
+		template_xml = (os.getcwd()+'/diginews_template.xml')
 		test = xml_machine()
 		test.parse_template(template_xml)
-		test.ogg_url = 'testesonetwo'
-		test.ogg_size = '100'
+		test.programme_code = " test1"
+		test.title = "test2"
+		test.body = "test3"
+		test.participants = "test4"
+		test.duration = "test5"
+		test.broadcast_at = "test6"
+		test.downloadable = "test7"
+		test.mp3_url = "test8"
+		test.mp3_size = "test9"
+		test.ogg_url = "test10"
+		test.ogg_size = "test11"
 		test.xml_write((os.getcwd()+'/elf-test.xml'))
 		##--EXPORT--##
 		##--HOUSEKEEPING--##
