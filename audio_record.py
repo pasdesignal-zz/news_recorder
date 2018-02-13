@@ -11,16 +11,18 @@ class recorder():
 	outstring = "-c:a pcm_s24le"
 	audio_input = (os.getcwd()+'/source.sdp')
 
-	def __init__(self, filename):
+	def __init__(self, comm, filename):
 		self.filename = filename
 		self.cue = ffmpy.FFmpeg(global_options=self.global_options,inputs={self.audio_input : self.recstring},outputs={self.filename : self.outstring })
+		self.comm = comm
 
 	def run(self):
 		try:
 			if not os.path.isdir(os.path.dirname(self.filename)):
 				print "creating folder:{}".format(os.path.dirname(self.filename))
 				os.makedirs(os.path.dirname(self.filename))
-			print "starting recording of file:{}".format(self.filename)	
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} starting recording of file:{}".format(timestamp, self.filename)	
 			self.cue.run()
 		except Exception as e:
 			print "ffmpeg error:{}".format(e)
@@ -32,6 +34,12 @@ class recorder():
 			self.cue.process.terminate()
 		except Exception as e:
 			pass				
+
+	def timeout(self):
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		print "{} ERROR: no-one pushed the button or something else went wrong".format(timestamp)
+		print "recording timeout occured, forcing end of recording etc"
+		self.comm.send('stop_recording')	
 
 if __name__ == '__main__':
 	try:

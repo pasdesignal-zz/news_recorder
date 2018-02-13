@@ -21,6 +21,7 @@ class get_properties():
 		self.duration = 0
 		self.bitdepth = 0
 		self.samplerate = 0
+		self.filesize = 0
 		self.codec = None
 		if not os.path.exists(self.input):
 			print "ERROR: no such file exists"
@@ -29,12 +30,12 @@ class get_properties():
 		try:
 			media_info = MediaInfo.parse(self.input)
 			self.json= json.dumps(media_info.to_data(), indent=2, sort_keys=True)
-			#print _json
 			self.jsonloaded = json.loads(self.json)
 			self.get_duration()
 			self.get_bitdepth()
 			self.get_samplerate()
 			self.get_codec()
+			self.get_filesize()
 		except Exception as e:
 			print "MediaInfo error:".format(e)
 		finally:
@@ -52,6 +53,9 @@ class get_properties():
 	def get_codec(self):
 		self.codec = (self.jsonloaded['tracks'][0]['codec'])
 
+	def get_filesize(self):
+		self.filesize = (self.jsonloaded['tracks'][0]['file_size'])
+
 	def validate(self):
 		#first test for file type based on filename or self.codec?
 		#various test oncditions
@@ -63,3 +67,4 @@ if __name__ == '__main__':
 	print "properties of {} :".format(test_wav)
 	print stats.json
 	print stats.duration
+	print stats.filesize

@@ -16,8 +16,8 @@ import datetime
 class loudness_normaliser():
 
 	def __init__(self):
-		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -ar 48000'
-		self.global_string = '-y -hide_banner -loglevel warning'
+		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'
+		self.global_string = '-y -hide_banner -loglevel verbose'
 		self.temp = (os.getcwd()+'/audio/tmp/temp.wav')
 		if os.path.isfile(self.temp):
 			print "WARNING: removing existing temp wav file{}".format(self.temp)

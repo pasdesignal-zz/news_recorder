@@ -41,7 +41,7 @@ class SDP_Gen():
 	    sdp += "a=rtpmap:96 L24/48000/2\r\n"
 	    self.sdp = sdp	
 	    f = open(self.filename, 'w')
-	    print "writing sdp object to file:{}".format(self.filename)
+	    print "writing sdp object to file: {}".format(self.filename)
 	    f.write(self.sdp)
 	    f = open(self.filename)
 	    print ""
