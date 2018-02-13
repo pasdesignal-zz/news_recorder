@@ -1,10 +1,11 @@
 <audio_item>
- <programme_code>DIGINEWS</programme_code>
+ <programme_code>tester</programme_code>
  <title>Latest RNZ News Bulletin</title>
  <body>The latest news bulletin from RNZ (Radio New Zealand), New Zealand's 100% ad-free multimedia public broadcaster. Listen to the latest breaking news read by Radio New Zealand newsreaders fresh every hour, 24 hours a day, 7 days a week.</body>
  <participants>RNZ Newsreader</participants>
  <duration>0</duration>
  <broadcast_at>2000-01-01 00:00</broadcast_at>
+ <archive_at>2000-01-02 00:00</archive_at>
  <downloadable>1</downloadable>
  <mp3_url>None</mp3_url>
  <mp3_size>0</mp3_size>

@@ -30,6 +30,7 @@ class get_properties():
 		try:
 			media_info = MediaInfo.parse(self.input)
 			self.json= json.dumps(media_info.to_data(), indent=2, sort_keys=True)
+			print self.json
 			self.jsonloaded = json.loads(self.json)
 			self.get_duration()
 			self.get_bitdepth()
@@ -42,7 +43,7 @@ class get_properties():
 			pass
 
 	def get_duration(self):
-		self.duration = (self.jsonloaded['tracks'][0]['duration'])/1000
+		self.duration = str((self.jsonloaded['tracks'][0]['duration'])/1000)
 
 	def get_bitdepth(self):
 		self.bitdepth = (self.jsonloaded['tracks'][1]['bit_depth'])	
@@ -54,7 +55,7 @@ class get_properties():
 		self.codec = (self.jsonloaded['tracks'][0]['codec'])
 
 	def get_filesize(self):
-		self.filesize = (self.jsonloaded['tracks'][0]['file_size'])
+		self.filesize = str((self.jsonloaded['tracks'][0]['file_size']))
 
 	def validate(self):
 		#first test for file type based on filename or self.codec?

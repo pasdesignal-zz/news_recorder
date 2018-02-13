@@ -14,6 +14,7 @@ from xml_generator import xml_machine
 from audio_transcode import transcoder
 
 #To Do:
+#reset timeout to larger number! after testing!
 #name files correctly according to existing workflows
 #remove old bulletin recordings (greater than 24 hours?)
 #make analyser useful! (boolean test for valid file, get duration and return as attribute, safe for multiple file types, loudness stats/test)
@@ -25,7 +26,7 @@ class bulletin_object(): #object to use for duration of bulletin creation
 	def __init__(self):
 		timestamp = datetime.datetime.now() #get current time
 		timestamp_plus = timestamp + datetime.timedelta(minutes=10)	#bring time into next hour because we start early
-		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0).strftime("%Y%m%d-%H00") #round down to nearest hour, string now
+		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour
 
 if __name__ == '__main__':
 	try:
@@ -39,16 +40,21 @@ if __name__ == '__main__':
 		ogg_dir = (os.getcwd()+'/audio/ogg/')
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		template_xml = (os.getcwd()+'/diginews_template.xml')
+		podcast_baseurl = 'http://podcast.radionz.co.nz/news/'
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting recording job".format(timestamp)
 		bulletin = bulletin_object()
 		bulletin.xml = xml_machine()
 		bulletin.xml.parse_template(template_xml)
-		bulletin.xml.broadcast_at = bulletin.time
-		bulletin.filepath = wav_dir+bulletin.time+".wav"
-		bulletin.mp3_filepath = mp3_dir+bulletin.time+".mp3"
-		bulletin.ogg_filepath = ogg_dir+bulletin.time+".ogg"
+		bulletin.xml.broadcast_at = bulletin.time.strftime("%Y-%m-%d %H:00")
+		bulletin.xml.archive_at = (bulletin.time+datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:00")	#plus 1 day
+		bulletin.filepath = wav_dir+bulletin.time.strftime("%Y%m%d-%H00")+".wav"
+		bulletin.mp3_filepath = mp3_dir+bulletin.time.strftime("%Y%m%d-%H00")+".mp3"
+		bulletin.ogg_filepath = ogg_dir+bulletin.time.strftime("%Y%m%d-%H00")+".ogg"
+		bulletin.xml.mp3_url = podcast_baseurl+bulletin.time.strftime("%Y%m%d-%H00")+"-048.mp3"
+		bulletin.xml.ogg_url = podcast_baseurl+bulletin.time.strftime("%Y%m%d-%H00")+"-00.mp3"
+		bulletin.xml.xml_write((os.getcwd()+'/elf-test.xml'))
 		print "initiating listen socket"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipe for control of ffmpeg thread
 		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port) #pass one end of pipe to this thread
@@ -119,8 +125,7 @@ if __name__ == '__main__':
 		bulletin.transcoder = transcoder(bulletin.filepath)
 		bulletin.transcoder.transcode_mp3(bulletin.mp3_filepath)
 		bulletin.transcoder.transcode_ogg(bulletin.ogg_filepath)
-		###***get mp3_url and mp3_size here and add to xml
-		##***get ogg_url and ogg_size here and add to xml
+		
 		##--VALIDATE MP3--##
 		print "testing for valid recording..."  #make this a boolean evaluation for valid file, not sure how yet!
 		bulletin.properties = get_properties(bulletin.mp3_filepath)

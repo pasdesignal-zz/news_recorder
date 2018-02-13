@@ -7,6 +7,7 @@ import datetime
 #To Do:
 #Make this class handle an invalid xml file elegantly
 #Element data has to be strings?
+#should some of the xml stuff be broken out to another module?
 
 #Open XML document using ET parser.
 #ET.parse takes one argument and returns a parsed 
@@ -21,6 +22,7 @@ class xml_machine():
 		self.participants = ""
 		self.duration = ""
 		self.broadcast_at = ""
+		self.archive_at = ""
 		self.downloadable = ""
 		self.mp3_url = ""
 		self.mp3_size = ""
@@ -45,6 +47,7 @@ class xml_machine():
 		self.participants = self.root.find("participants").text
 		self.duration = self.root.find("duration").text
 		self.broadcast_at = self.root.find("broadcast_at").text
+		self.archive_at = self.root.find("broadcast_at").text
 		self.downloadable = self.root.find("downloadable").text
 		self.mp3_url = self.root.find("mp3_url").text
 		self.mp3_size = self.root.find("mp3_size").text
@@ -62,7 +65,7 @@ class xml_machine():
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} writing XML to file: {}".format(timestamp, self.output_xml)  
 		for element in self.root.iter():
-			if element.tag == 'programme_code':
+			if element.tag == 'programme_code':		#theres got to be a better way to do this....
 				element.text = self.programme_code
 			if element.tag == 'title':
 				element.text = self.title
@@ -74,6 +77,8 @@ class xml_machine():
 				element.text = self.duration
 			if element.tag == 'broadcast_at':
 				element.text = self.broadcast_at
+			if element.tag == 'archive_at':
+				element.text = self.archive_at
 			if element.tag == 'downloadable':
 				element.text = self.downloadable
 			if element.tag == 'mp3_url':
@@ -85,7 +90,6 @@ class xml_machine():
 			if element.tag == 'ogg_size':
 				element.text = self.ogg_size
 			self.tree.write(output_xml)
-
 
 if __name__ == '__main__':
 	template_xml = (os.getcwd()+'/diginews_template.xml')
