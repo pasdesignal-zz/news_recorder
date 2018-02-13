@@ -31,6 +31,8 @@ if __name__ == '__main__':
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting recording job".format(timestamp)
+		elf_xml = xml_machine()
+		elf_xml.parse_template(template_xml)
 		print "initiating listen socket"
 		listen_parent_conn, listen_child_conn = Pipe() 		#Pipes for control of external application processes
 		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port)
@@ -62,6 +64,7 @@ if __name__ == '__main__':
 		print "testing for valid recording..."  #make this a boolean evaluation for valid file
 		analyser = get_properties(wav_filename)
 		analyser.print_pretty()	
+		###***get broadcast_at here and add it to xml
 		##--REMOVE SILENCE--##
 		print "opening file:{} for silence trimming".format(wav_filename)
 		sox_object = silence_trimmer()
@@ -69,28 +72,21 @@ if __name__ == '__main__':
 		print "trimming silence off end of bulletin"
 		sox_object.trim_end(sox_object.temp, wav_filename)
 		sox_object.housekeeping()
+		###***get duration here and add it to xml
 		##--VALIDATE--##
 		print "testing for valid recording..."  #make this a boolean evaluation for valid file
 		analyser = get_properties(wav_filename)
 		analyser.print_pretty()	
 		##--NORMALISE LOUDNESS--##
-		test = loudness_normaliser()
-		test.normalise(wav_filename, test.temp) #process orginal file and save as new file
-		test.replace(wav_filename, test.temp) #replace orginal file with new file
+		louder = loudness_normaliser()
+		louder.normalise(wav_filename, test.temp) #process orginal file and save as new file
+		louder.replace(wav_filename, test.temp) #replace orginal file with new file
 		##--VALIDATE--##
 		##--TRANSCODE--##
 		##--VALIDATE--##
 		##--GENERATE XML--##
-		template_xml = (os.getcwd()+'/diginews_template.xml')
-		test = xml_machine()
-		test.parse_template(template_xml)
-		test.programme_code = " test1"
-		test.title = "test2"
-		test.body = "test3"
-		test.participants = "test4"
 		test.duration = "test5"
 		test.broadcast_at = "test6"
-		test.downloadable = "test7"
 		test.mp3_url = "test8"
 		test.mp3_size = "test9"
 		test.ogg_url = "test10"

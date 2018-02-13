@@ -69,9 +69,11 @@ class loudness_normaliser():
 if __name__ == '__main__':
 	try:
 		input_file = (os.getcwd()+'/audio/test/test_bulletin.wav')
-		test = loudness_normaliser()
-		test.normalise(input_file, test.temp) #process orginal file and save as new file
-		test.replace(input_file, test.temp) #replace orginal file with new file
+		#test = loudness_normaliser()
+		#test.normalise(input_file, test.temp) #process orginal file and save as new file
+		#test.replace(input_file, test.temp) #replace orginal file with new file
+		loudness_normaliser.normalise(input_file, test.temp) #process orginal file and save as new file
+		loudness_normaliser.replace(input_file, test.temp) #replace orginal file with new file
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
