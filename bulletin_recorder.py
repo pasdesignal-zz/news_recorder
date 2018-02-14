@@ -73,7 +73,7 @@ if __name__ == '__main__':
 			command = listen_child_conn.recv()
 			print 'command: {}'.format(command)
 			if command == 'stop_recording':
-				t.cancel()							#cancel timer thread
+				t.cancel()										#cancel timer thread
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} terminating recording process".format(timestamp)
 				bulletin.record.terminate()
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 		print "{} closing listen socket".format(timestamp)
 		bulletin.control.terminate()
 		##--VALIDATE--##
-		print "testing for valid recording..."  #make this a boolean evaluation for valid file, not sure how yet!
+		print "testing for valid recording..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.filepath)
@@ -99,20 +99,20 @@ if __name__ == '__main__':
 		sox_object.trim_end(sox_object.temp, bulletin.filepath)
 		sox_object.housekeeping()
 		##--VALIDATE--##
-		print "testing for valid audio file after silence trimming..."  #make this a boolean evaluation for valid file, not sure how yet!
+		print "testing for valid audio file after silence trimming..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.filepath)
 		else:
 			print "ERROR: valid test BAD: {}".format(bulletin.filepath)
 			#what to do here? exit()?
-		bulletin.xml.duration = bulletin.properties.duration	#add duration to xml	
+		bulletin.xml.duration = bulletin.properties.duration	#add audio duration to xml	
 		##--NORMALISE LOUDNESS--##
-		louder = loudness_normaliser()
-		louder.normalise(bulletin.filepath, louder.temp) #process orginal file and save as new file
-		louder.replace(bulletin.filepath, louder.temp) #replace orginal file with new file
+		louder = loudness_normaliser(bulletin.filepath)
+		louder.normalise(louder.temp) 							#process orginal file and save as new file
+		louder.replace(bulletin.filepath, louder.temp) 			#replace orginal file with new file
 		##--VALIDATE--##
-		print "testing for valid audio file after loudness process..."  #make this a boolean evaluation for valid file, not sure how yet!
+		print "testing for valid audio file after loudness process..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.filepath)
@@ -124,7 +124,7 @@ if __name__ == '__main__':
 		bulletin.transcoder.transcode_mp3(bulletin.mp3_filepath)
 		bulletin.transcoder.transcode_ogg(bulletin.ogg_filepath)
 		##--VALIDATE MP3--##
-		print "testing for valid mp3 audio file after transcode..."  #make this a boolean evaluation for valid file, not sure how yet!
+		print "testing for valid mp3 audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.mp3_filepath)
 		if bulletin.properties.valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.mp3_filepath)
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 			#what to do here? exit()?
 		bulletin.xml.mp3_size = bulletin.properties.filesize
 		##--VALIDATE OGG--##
-		print "testing for valid ogg audio file after transcode..."  #make this a boolean evaluation for valid file, not sure how yet!
+		print "testing for valid ogg audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.ogg_filepath)
 		if bulletin.properties.valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.ogg_filepath)
