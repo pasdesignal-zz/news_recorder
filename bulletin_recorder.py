@@ -101,7 +101,7 @@ if __name__ == '__main__':
 		##--VALIDATE--##
 		print "testing for valid audio file after silence trimming..."
 		bulletin.properties = get_properties(bulletin.filepath)
-		if bulletin.properties.valid == 1:
+		if bulletin.properties.wavvalid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.filepath)
 		else:
 			print "ERROR: valid test BAD: {}".format(bulletin.filepath)
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 		##--VALIDATE MP3--##											#should this be folded into module?
 		print "testing for valid mp3 audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.mp3_filepath)
-		if bulletin.properties.valid == 1:
+		if bulletin.properties.mp3valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.mp3_filepath)
 		else:
 			print "ERROR: valid test BAD: {}".format(bulletin.mp3_filepath)
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 		##--VALIDATE OGG--##
 		print "testing for valid ogg audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.ogg_filepath)
-		if bulletin.properties.valid == 1:
+		if bulletin.properties.oggvalid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.ogg_filepath)
 		else:
 			print "ERROR: valid test BAD: {}".format(bulletin.ogg_filepath)
