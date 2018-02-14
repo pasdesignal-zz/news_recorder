@@ -30,7 +30,7 @@ class bulletin_object(): #object to use for duration of bulletin creation
 if __name__ == '__main__':
 	try:
 		##--SESSION VARIABLES--##
-		livewire_channel = 4263 #4004 for testing
+		livewire_channel = 4004 #4004 for testing #4263 for bulletins
 		sdp_filename = 'source.sdp'
 		bind_interface = '10.212.13.1'
 		bind_port=5119
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		t = threading.Timer(1200.0, bulletin.record.timeout)  	#timer thread to exit loop if the button never gets pushed!
+		t = threading.Timer(20.0, bulletin.record.timeout)  	#timer thread to exit loop if the button never gets pushed! 1200.0 for 20 mins
 		t.start()
 		loop = 1
 		while loop == 1:									
@@ -87,9 +87,9 @@ if __name__ == '__main__':
 		print "testing for valid recording..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
-			print "PASSED: valid test OK: {}".format(bulletin.filepath)
+			print "PASSED: wav valid test OK: {}".format(bulletin.filepath)
 		else:
-			print "ERROR: valid test BAD: {}".format(bulletin.filepath)
+			print "ERROR: wav valid test BAD: {}".format(bulletin.filepath)
 			#what to do here? exit()?
 		##--REMOVE SILENCE--##
 		print "opening file:{} for silence trimming".format(bulletin.filepath)
@@ -101,10 +101,10 @@ if __name__ == '__main__':
 		##--VALIDATE--##
 		print "testing for valid audio file after silence trimming..."
 		bulletin.properties = get_properties(bulletin.filepath)
-		if bulletin.properties.wavvalid == 1:
-			print "PASSED: valid test OK: {}".format(bulletin.filepath)
+		if bulletin.properties.valid == 1:
+			print "PASSED: wav valid test OK: {}".format(bulletin.filepath)
 		else:
-			print "ERROR: valid test BAD: {}".format(bulletin.filepath)
+			print "ERROR: wav valid test BAD: {}".format(bulletin.filepath)
 			#what to do here? exit()?
 		bulletin.xml.duration = bulletin.properties.duration	#add audio duration to xml	
 		##--NORMALISE LOUDNESS--##
@@ -115,9 +115,9 @@ if __name__ == '__main__':
 		print "testing for valid audio file after loudness process..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
-			print "PASSED: valid test OK: {}".format(bulletin.filepath)
+			print "PASSED: wav valid test OK: {}".format(bulletin.filepath)
 		else:
-			print "ERROR: valid test BAD: {}".format(bulletin.filepath)
+			print "ERROR: wav valid test BAD: {}".format(bulletin.filepath)
 			#what to do here? exit()?
 		##--TRANSCODE--##
 		bulletin.transcoder = transcoder(bulletin.filepath)
@@ -126,25 +126,27 @@ if __name__ == '__main__':
 		##--VALIDATE MP3--##											#should this be folded into module?
 		print "testing for valid mp3 audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.mp3_filepath)
-		if bulletin.properties.mp3valid == 1:
-			print "PASSED: valid test OK: {}".format(bulletin.mp3_filepath)
+		bulletin.mp3valid =bulletin.properties.valid
+		if bulletin.mp3valid == 1:
+			print "PASSED: mp3 valid test OK: {}".format(bulletin.mp3_filepath)
+			bulletin.xml.mp3_size = bulletin.properties.filesize
 		else:
-			print "ERROR: valid test BAD: {}".format(bulletin.mp3_filepath)
-		bulletin.xml.mp3_size = bulletin.properties.filesize
+			print "ERROR: mp3 valid test BAD: {}".format(bulletin.mp3_filepath)
 		##--VALIDATE OGG--##
 		print "testing for valid ogg audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.ogg_filepath)
-		if bulletin.properties.oggvalid == 1:
-			print "PASSED: valid test OK: {}".format(bulletin.ogg_filepath)
+		bulletin.oggvalid =bulletin.properties.valid
+		if bulletin.properties.valid == 1:
+			print "PASSED: ogg valid test OK: {}".format(bulletin.ogg_filepath)
+			bulletin.xml.ogg_size = bulletin.properties.filesize
 		else:
-			print "ERROR: valid test BAD: {}".format(bulletin.ogg_filepath)
-		if bulletin.properties.mp3valid == 1 and bulletin.properties.oggvalid == 1:
+			print "ERROR: ogg valid test BAD: {}".format(bulletin.ogg_filepath)
+		if bulletin.mp3valid == 1 and bulletin.oggvalid == 1:
 			bulletin.transcoder.housekeeping()
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ERROR: bad transcoded files detected. Exiting.".format(timestamp)
-			exit()			
-		bulletin.xml.ogg_size = bulletin.properties.filesize
+			exit()
 		##--GENERATE XML--##
 		bulletin.xml.xml_write(os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
 		#test XML here????

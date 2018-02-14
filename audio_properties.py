@@ -25,9 +25,7 @@ class get_properties():
 		self.filesize = 'unknown'
 		self.codec = 'unknown'
 		self.bitrate = 'unknown'
-		self.wavvalid = 0
-		self.mp3valid = 0
-		self.oggvalid = 0
+		self.valid = 0
 		if not os.path.exists(self.input):
 			print "ERROR: no such file exists"
 			exit()
@@ -36,7 +34,6 @@ class get_properties():
 			media_info = MediaInfo.parse(self.input)
 			self.json= json.dumps(media_info.to_data(), indent=2, sort_keys=True)
 			#print self.jsonloaded  						#debug
-			#self.jsonloaded = json.loads(self.json)
 			self.astloaded = ast.literal_eval(self.json)	#no unicode by defualt!
 			self.get_codec()
 			if self.codec != 'unknown':
@@ -106,26 +103,26 @@ class get_properties():
 		if self.codec == 'Wave':
 			if self.bitdepth == '24' and self.samplerate == '48.0 KHz':
 				print ".wav file validation PASSED: {}".format(self.input)
-				self.wavvalid = 1
+				self.valid = 1
 			else:
 				print "ERROR: .wav file validation FAILED: {}".format(self.input)
-				self.wavvalid = 0
+				self.valid = 0
 
 		elif self.codec == 'MPEG Audio':
 			if self.bitrate == '64000' and self.samplerate == '48.0 KHz':
 				print ".mp3 file validation PASSED: {}".format(self.input)
-				self.mp3valid = 1
+				self.valid = 1
 			else:
 				print "ERROR: .mp3 file validation FAILED: {}".format(self.input)
-				self.mp3valid = 0
+				self.valid = 0
 				
 		elif self.codec == 'OGG':
 			if (self.astloaded['tracks'][1]['other_codec'][0]) == 'Vorbis' and self.samplerate == '48.0 KHz':
 				print ".ogg file validation PASSED: {}".format(self.input)
-				self.oggvalid = 1
+				self.valid = 1
 			else:
 				print "ERROR: .ogg file validation FAILED: {}".format(self.input)
-				self.oggvalid = 0	
+				self.valid = 0	
 		else:
 			print "ERROR: validation problem. Filetype not recognised: {}".format(self.input)			
 
