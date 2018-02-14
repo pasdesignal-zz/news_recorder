@@ -3,6 +3,9 @@ import ffmpy
 import os
 import shutil
 import datetime
+import subprocess
+import json
+import ast
 
 #This script takes a .wav file and runs a loudness process on it, creating a file that complies
 #with the Amazon Echo audio loudness standards. This requires FFMPEG version with libavfilter that includes 
@@ -25,7 +28,7 @@ class loudness_normaliser():
 		self.input = _input	
 		self.first_pass_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -'
 		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'
-		self.global_string = '-y -hide_banner -loglevel verbose'
+		self.global_string = '-y -hide_banner -loglevel info'
 		self.temp = (os.getcwd()+'/audio/temp/temp.wav')
 		if os.path.isfile(self.temp):
 			print "WARNING: removing existing temp wav file{}".format(self.temp)
@@ -40,10 +43,19 @@ class loudness_normaliser():
 		self.ff = ffmpy.FFmpeg(global_options=self.global_string, inputs={self.input : None},outputs={None : self.first_pass_string})
 		print self.ff.cmd
 		try:
-			self.ff.run(stderr=subprocess.PIPE)
+			stdout, stderr = self.ff.run(stderr=subprocess.PIPE)
+			self.result = stderr.split("{")[1:]
+			self.result = '{%s' % str(self.result[0])
+			self.json= json.loads(self.result)
+			self.input_i = self.json['input_i']
+			self.input_tp = self.json['input_tp']
+			self.input_lra = self.json['input_lra']
+			self.input_thresh = self.json['input_thresh']
+			self.offset = self.json['target_offset']
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} ffmpeg loudness processing COMPLETE".format(timestamp)
-		except Exception as e:
+			print "{} ffmpeg loudnorm first pass complete".format(timestamp)
+			return stderr
+		except ffmpy.FFRuntimeError as e:
 			print "ERROR: ffmpeg loudness processing: {}".format(e)
 		finally:
 			pass
@@ -57,7 +69,7 @@ class loudness_normaliser():
 			self.ff.run()
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudness processing COMPLETE".format(timestamp)
-		except Exception as e:
+		except ffmpy.FFRuntimeError as e:
 			print "ERROR: ffmpeg loudness processing: {}".format(e)
 		finally:
 			pass
@@ -93,8 +105,9 @@ if __name__ == '__main__':
 		#test.normalise(input_file, test.temp) #process orginal file and save as new file
 		#test.replace(input_file, test.temp) #replace orginal file with new file
 		test = loudness_normaliser(input_file)
-		loudness_normaliser.first_pass(test.temp) 
-		loudness_normaliser.normalise(test.temp) #process input file and save as new file
+		test.first_pass()
+		#print test.result
+		#test.normalise(test.temp) #process input file and save as new file
 		#loudness_normaliser.replace(input_file, test.temp) #replace orginal file with new file
 	except KeyboardInterrupt:
 		print "manually interrupted!"

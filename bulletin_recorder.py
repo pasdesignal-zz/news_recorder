@@ -14,6 +14,7 @@ from xml_generator import xml_machine
 from audio_transcode import transcoder
 
 #To Do:
+#check for folders before starting? Do this in modules!!!
 #more timestamps!
 #reset timeout to larger number! after testing!
 #make analyser useful! (loudness stats/test)
