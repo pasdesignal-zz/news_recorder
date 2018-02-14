@@ -51,10 +51,16 @@ class transcoder():
 		else:
 			print "ERROR: no file found: {}".format(self.wav_in)		
 
-	#is this necessary?
-	def housekeeping(self, deleteme):
-		print "removing source file:{}".format(deleteme)
-		#remove source file after transcode
+	def housekeeping(self):
+		print "removing source file:{}".format(self.input)
+		if os.path.exists(self.input):
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} deleting orgiginal recording .wav file: {}".format(timestamp, self.input)
+			os.remove(self.input)
+			if not os.path.isfile(self.input):
+							print "file deleted: {}".format(self.input)
+		else:
+			print "ERROR: no file found. Cannot delete: {}".format(self.input)					
 
 if __name__ == '__main__':
 	try:

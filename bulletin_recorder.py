@@ -16,7 +16,6 @@ from audio_transcode import transcoder
 #To Do:
 #more timestamps!
 #reset timeout to larger number! after testing!
-#remove old bulletin recordings (greater than 24 hours?)
 #make analyser useful! (loudness stats/test)
 #export function
 
@@ -123,14 +122,13 @@ if __name__ == '__main__':
 		bulletin.transcoder = transcoder(bulletin.filepath)
 		bulletin.transcoder.transcode_mp3(bulletin.mp3_filepath)
 		bulletin.transcoder.transcode_ogg(bulletin.ogg_filepath)
-		##--VALIDATE MP3--##
+		##--VALIDATE MP3--##											#should this be folded into module?
 		print "testing for valid mp3 audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.mp3_filepath)
 		if bulletin.properties.valid == 1:
 			print "PASSED: valid test OK: {}".format(bulletin.mp3_filepath)
 		else:
 			print "ERROR: valid test BAD: {}".format(bulletin.mp3_filepath)
-			#what to do here? exit()?
 		bulletin.xml.mp3_size = bulletin.properties.filesize
 		##--VALIDATE OGG--##
 		print "testing for valid ogg audio file after transcode..."
@@ -139,7 +137,12 @@ if __name__ == '__main__':
 			print "PASSED: valid test OK: {}".format(bulletin.ogg_filepath)
 		else:
 			print "ERROR: valid test BAD: {}".format(bulletin.ogg_filepath)
-			#what to do here? exit()?
+		if bulletin.properties.mp3valid == 1 and bulletin.properties.oggvalid == 1:
+			bulletin.transcoder.housekeeping()
+		else:
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} ERROR: bad transcoded files detected. Exiting.".format(timestamp)
+			exit()			
 		bulletin.xml.ogg_size = bulletin.properties.filesize
 		##--GENERATE XML--##
 		bulletin.xml.xml_write(os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')

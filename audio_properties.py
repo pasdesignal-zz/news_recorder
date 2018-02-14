@@ -25,7 +25,9 @@ class get_properties():
 		self.filesize = 'unknown'
 		self.codec = 'unknown'
 		self.bitrate = 'unknown'
-		self.valid = 0
+		self.wavvalid = 0
+		self.mp3valid = 0
+		self.oggvalid = 0
 		if not os.path.exists(self.input):
 			print "ERROR: no such file exists"
 			exit()
@@ -104,26 +106,26 @@ class get_properties():
 		if self.codec == 'Wave':
 			if self.bitdepth == '24' and self.samplerate == '48.0 KHz':
 				print ".wav file validation PASSED: {}".format(self.input)
-				self.valid = 1
+				self.wavvalid = 1
 			else:
 				print "ERROR: .wav file validation FAILED: {}".format(self.input)
-				self.validate = 0
+				self.wavvalid = 0
 
 		elif self.codec == 'MPEG Audio':
 			if self.bitrate == '64000' and self.samplerate == '48.0 KHz':
 				print ".mp3 file validation PASSED: {}".format(self.input)
-				self.valid = 1
+				self.mp3valid = 1
 			else:
 				print "ERROR: .mp3 file validation FAILED: {}".format(self.input)
-				self.validate = 0
+				self.mp3valid = 0
 				
 		elif self.codec == 'OGG':
 			if (self.astloaded['tracks'][1]['other_codec'][0]) == 'Vorbis' and self.samplerate == '48.0 KHz':
 				print ".ogg file validation PASSED: {}".format(self.input)
-				self.valid = 1
+				self.oggvalid = 1
 			else:
 				print "ERROR: .ogg file validation FAILED: {}".format(self.input)
-				self.valid = 0	
+				self.oggvalid = 0	
 		else:
 			print "ERROR: validation problem. Filetype not recognised: {}".format(self.input)			
 
