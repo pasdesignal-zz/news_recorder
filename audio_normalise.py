@@ -12,6 +12,7 @@ import datetime
 ##TO DO:
 #validate file (sox?) after loudness processing
 #test success
+#create two-pass option with argument
 
 class loudness_normaliser():
 

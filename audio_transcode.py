@@ -23,7 +23,7 @@ class transcoder():
 		self.input = wav_in
 		self.mp3_string = '-map 0:0 -ac 1 -b:a 64k'
 		self.ogg_string = '-map 0:0 -ac 1 -b:a 64k'
-		self.ffmpeg_globals = '-y -hide_banner'
+		self.ffmpeg_globals = '-y -hide_banner -v quiet'
 
 	def transcode_mp3(self, out_filename):
 		if os.path.exists(self.input):
