@@ -30,7 +30,7 @@ class bulletin_object(): #object to use for duration of bulletin creation
 if __name__ == '__main__':
 	try:
 		##--SESSION VARIABLES--##
-		livewire_channel = 4004
+		livewire_channel = 4263 #4004 for testing
 		sdp_filename = 'source.sdp'
 		bind_interface = '10.212.13.1'
 		bind_port=5119
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		t = threading.Timer(20.0, bulletin.record.timeout)  	#timer thread to exit loop if the button never gets pushed!
+		t = threading.Timer(1200.0, bulletin.record.timeout)  	#timer thread to exit loop if the button never gets pushed!
 		t.start()
 		loop = 1
 		while loop == 1:									
