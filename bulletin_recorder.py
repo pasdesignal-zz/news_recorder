@@ -47,7 +47,7 @@ if __name__ == '__main__':
 		bulletin.xml = xml_machine()
 		bulletin.xml.parse_template(template_xml)
 		bulletin.xml.broadcast_at = bulletin.time.strftime("%Y-%m-%d %H:00")
-		print "test time: ", bulletin.time.strftime("%H%p")
+		print "test time: ", bulletin.time.strftime("%h%p")
 		exit()
 		bulletin.xml.archive_at = (bulletin.time+datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:00")	#plus 1 day
 		bulletin.filepath = wav_dir+bulletin.time.strftime("%Y%m%d-%H00")+".wav"
