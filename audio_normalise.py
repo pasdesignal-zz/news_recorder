@@ -14,20 +14,17 @@ import ast
 
 ##TO DO:
 #test success
-#create two-pass option with argument
-
-#-af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -
-#-af loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=-27.61:measured_LRA=18.06:measured_TP=-4.47:measured_thresh=-39.20:offset=0.58:linear=true:print_format=summary -ar 48k
+#make compatibile for opus, mp3 and ogg etc
 
 class loudness_normaliser():
 
-	def __init__(self, _input):
+	def __init__(self, _input, dual_mode=True):		#specify single pass otherwise dual_pass mode by default
 		if not os.path.isfile(_input):
 			print "ERROR: no file found: {}".format(_input)
 			#exit???
 		self.input = _input	
 		self.first_pass_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -'
-		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'
+		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'	#only used if dual_mode==False
 		self.global_string = '-y -hide_banner -loglevel info'
 		self.temp = (os.getcwd()+'/audio/temp/temp.wav')
 		if os.path.isfile(self.temp):
@@ -36,25 +33,31 @@ class loudness_normaliser():
 		if not os.path.isdir(os.path.dirname(self.temp)):
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
 				os.makedirs(os.path.dirname(self.temp))
+		if dual_mode == True:
+			self.first_pass()		
 		
 	def first_pass(self):
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "{} initiating ffmpeg loudness first pass".format(timestamp)
+		print "{} initiating ffmpeg loudness first pass measurement".format(timestamp)
 		self.ff = ffmpy.FFmpeg(global_options=self.global_string, inputs={self.input : None},outputs={None : self.first_pass_string})
 		print self.ff.cmd
 		try:
 			stdout, stderr = self.ff.run(stderr=subprocess.PIPE)
 			self.result = stderr.split("{")[1:]
 			self.result = '{%s' % str(self.result[0])
+			print "loudness normaliser first pass analysis results:"
+			print self.result
 			self.json= json.loads(self.result)
 			self.input_i = self.json['input_i']
 			self.input_tp = self.json['input_tp']
 			self.input_lra = self.json['input_lra']
 			self.input_thresh = self.json['input_thresh']
 			self.offset = self.json['target_offset']
+			self.loudnorm_string = ('-af loudnorm=I=-14:TP=-3:LRA=11:measured_I={}:measured_LRA={}:measured_TP={}:measured_thresh={}:offset={}:'
+					'linear=true:print_format=json -c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
+			#print self.loudnorm_string	#debug
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudnorm first pass complete".format(timestamp)
-			return stderr
 		except ffmpy.FFRuntimeError as e:
 			print "ERROR: ffmpeg loudness processing: {}".format(e)
 		finally:
@@ -101,14 +104,10 @@ class loudness_normaliser():
 if __name__ == '__main__':
 	try:
 		input_file = (os.getcwd()+'/audio/test/test_bulletin.wav')
-		#test = loudness_normaliser()
-		#test.normalise(input_file, test.temp) #process orginal file and save as new file
-		#test.replace(input_file, test.temp) #replace orginal file with new file
+		output_file = (os.getcwd()+'/audio/temp/test_bulletin.wav')
 		test = loudness_normaliser(input_file)
-		test.first_pass()
-		#print test.result
-		#test.normalise(test.temp) #process input file and save as new file
-		#loudness_normaliser.replace(input_file, test.temp) #replace orginal file with new file
+		test.normalise(output_file) #process input file and save as new file
+		test.replace(input_file, output_file) #replace orginal file with new file
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
