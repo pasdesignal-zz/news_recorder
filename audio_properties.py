@@ -99,7 +99,7 @@ class get_properties():
 		if self.codec == 'OGG':
 			self.filesize = str((self.astloaded['tracks'][0]['file_size']))	
 
-	def validate(self):	#this could be fleshed out a bit more to be more sophisticated....
+	def validate(self):	#this could be improved/fleshed out a bit more to be more sophisticated....
 		if self.codec == 'Wave':
 			if self.bitdepth == '24' and self.samplerate == '48.0 KHz':
 				print ".wav file validation PASSED: {}".format(self.input)
@@ -109,7 +109,7 @@ class get_properties():
 				self.valid = 0
 
 		elif self.codec == 'MPEG Audio':
-			if self.bitrate == '64000' and self.samplerate == '48.0 KHz':
+			if self.bitrate == '48000' and self.samplerate == '48.0 KHz':
 				print ".mp3 file validation PASSED: {}".format(self.input)
 				self.valid = 1
 			else:
