@@ -30,7 +30,7 @@ class bulletin_object(): #object to use for duration of bulletin creation
 if __name__ == '__main__':
 	try:
 		##--SESSION VARIABLES--##
-		livewire_channel = 4004 #4004 for testing #4263 for bulletins (Auckland)
+		livewire_channel = 4263 #4004 for testing #4263 for bulletins (Auckland)
 		sdp_filename = 'source.sdp'
 		bind_interface = '10.212.13.1'
 		bind_port=5119

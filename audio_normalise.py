@@ -15,25 +15,27 @@ import ast
 ##TO DO:
 #test success
 #make compatibile for opus, mp3 and ogg etc
+#what to do if input file not found?
 
 class loudness_normaliser():
 
-	def __init__(self, _input, dual_mode=True):		#specify single pass otherwise dual_pass mode by default
-		if not os.path.isfile(_input):
+	def __init__(self, _input, dual_mode=True):
+		self.input = _input			
+		if not os.path.isfile(self.input):
 			print "ERROR: no file found: {}".format(_input)
-			#exit???
-		self.input = _input	
-		self.first_pass_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -'
-		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'	#only used if dual_mode==False
-		self.global_string = '-y -hide_banner -loglevel info'
+			exit()
 		self.temp = (os.getcwd()+'/audio/temp/temp.wav')
 		if os.path.isfile(self.temp):
 			print "WARNING: removing existing temp wav file{}".format(self.temp)
 			os.remove(self.temp)
 		if not os.path.isdir(os.path.dirname(self.temp)):
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
-				os.makedirs(os.path.dirname(self.temp))
-		if dual_mode == True:
+				os.makedirs(os.path.dirname(self.temp))	
+		
+		self.first_pass_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -'
+		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'	#only used if dual_mode==False
+		self.global_string = '-y -hide_banner -loglevel info'
+		if dual_mode == True:			#specify single pass otherwise dual_pass mode by default
 			self.first_pass()		
 		
 	def first_pass(self):
@@ -53,8 +55,12 @@ class loudness_normaliser():
 			self.input_lra = self.json['input_lra']
 			self.input_thresh = self.json['input_thresh']
 			self.offset = self.json['target_offset']
-			self.loudnorm_string = ('-af loudnorm=I=-14:TP=-3:LRA=11:measured_I={}:measured_LRA={}:measured_TP={}:measured_thresh={}:offset={}:'
-					'linear=true:print_format=json -c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
+			self.loudnorm_string = ('-af loudnorm=\
+				I=-14:TP=-3:LRA=11:measured_I={}:\
+				measured_LRA={}:measured_TP={}:\
+				measured_thresh={}:offset={}:\
+				linear=true:print_format=json \
+				-c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
 			#print self.loudnorm_string	#debug
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudnorm first pass complete".format(timestamp)
@@ -77,9 +83,9 @@ class loudness_normaliser():
 		finally:
 			pass
 
-	def replace(self, orig_file, new_file): #replace these variables with self.input etc
-		if os.path.isfile(new_file): 			#safety checks
-			if os.path.isfile(orig_file):  		#safety checks
+	def replace(self, orig_file, new_file): 		#replace these variables with self.input etc
+		if os.path.isfile(new_file): 				#safety checks
+			if os.path.isfile(orig_file):  			#safety checks
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} deleting original file:{}".format(timestamp, orig_file)
 				os.remove(orig_file)
@@ -106,8 +112,8 @@ if __name__ == '__main__':
 		input_file = (os.getcwd()+'/audio/test/test_bulletin.wav')
 		output_file = (os.getcwd()+'/audio/temp/test_bulletin.wav')
 		test = loudness_normaliser(input_file)
-		test.normalise(output_file) #process input file and save as new file
-		test.replace(input_file, output_file) #replace orginal file with new file
+		test.normalise(output_file) 				#process input file and save as new file
+		test.replace(input_file, output_file) 		#replace orginal file with new file
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:

@@ -1,22 +1,15 @@
 #!/usr/bin/python
 
-#Watch a folder and transcode files as they land
-#this script requires watchdog module - pip install watchdog
+#transcode from .wav to .mp3 ans .ogg
 
 ##to do:
-#try/except structure
 #define output formats as setup variables somehow
-#housekeeping
-#test
+#can bulletins be 64k?
 
 import os
 import datetime
 import time
 import ffmpy
-
-test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
-test_mp3 = (os.getcwd()+'/audio/test/test_bulletin.mp3')
-test_ogg = (os.getcwd()+'/audio/test/test_bulletin.ogg')
 
 class transcoder():
 
@@ -41,9 +34,14 @@ class transcoder():
 			mp3_filename = out_filename
 			ff = ffmpy.FFmpeg(global_options=self.ffmpeg_globals, inputs={self.input : None}, outputs={mp3_filename : self.mp3_string})
 			print ff.cmd
-			ff.run()
-			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, mp3_filename)		
+			try:
+				ff.run()
+				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, mp3_filename)		
+			except ffmpy.FFRuntimeError as e:
+				print "ERROR: ffmpeg loudness processing: {}".format(e)
+			finally:
+				pass
 		else:
 			print "ERROR: no file found: {}".format(self.wav_in)
 
@@ -54,9 +52,14 @@ class transcoder():
 			ogg_filename = out_filename
 			ff = ffmpy.FFmpeg(global_options=self.ffmpeg_globals, inputs={self.input : None}, outputs={ogg_filename : self.ogg_string})
 			print ff.cmd
-			ff.run()	
-			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, ogg_filename)			
+			try:
+				ff.run()	
+				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, ogg_filename)
+			except ffmpy.FFRuntimeError as e:
+				print "ERROR: ffmpeg loudness processing: {}".format(e)
+			finally:
+				pass		
 		else:
 			print "ERROR: no file found: {}".format(self.wav_in)		
 
@@ -73,6 +76,9 @@ class transcoder():
 
 if __name__ == '__main__':
 	try:
+		test_wav = (os.getcwd()+'/audio/test/test_bulletin.wav')
+		test_mp3 = (os.getcwd()+'/audio/test/test_bulletin.mp3')
+		test_ogg = (os.getcwd()+'/audio/test/test_bulletin.ogg')
 		t = transcoder(test_wav)
 		t.transcode_mp3(test_mp3)
 		t.transcode_ogg(test_ogg)
