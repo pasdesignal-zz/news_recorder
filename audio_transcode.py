@@ -19,12 +19,12 @@ class transcoder():
 		-metadata "Album=News Bulletin" \
 		-metadata "Track name=Radio New Zealand News" \
 		-metadata "Performer=Radio New Zealand" \
-		-metadata "Comment=News bulletin recorded at 2pm"')
+		-metadata "Comment=News bulletin recorded at {}"').format(datetime.datetime.now().strftime("%-I%p"))
 		self.ogg_string = ('-map 0:0 -ac 1 -b:a 48k \
 		-metadata "Album=News Bulletin" \
 		-metadata "Track name=Radio New Zealand News" \
 		-metadata "Performer=Radio New Zealand" \
-		-metadata "Description=News bulletin recorded at 2pm"')
+		-metadata "Description=News bulletin recorded at {}"').format(datetime.datetime.now().strftime("%-I%p"))
 		self.ffmpeg_globals = '-y -hide_banner -v quiet'
 
 	def transcode_mp3(self, out_filename):
