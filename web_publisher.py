@@ -22,10 +22,10 @@ def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
 
 if __name__ == '__main__':
 	try:
-		elf_staging = '10.128.71.32'
+		elf_staging = '150.242.42.149'
 		elf_user = 'deploy'
 		key_file = ''
-		test = check_ssh()
+		test = check_ssh(elf_staging)
 		test.check_it()
 	except KeyboardInterrupt:
 		print "manually interrupted!"

@@ -7,8 +7,11 @@ import json
 import ast
 from pymediainfo import MediaInfo
 
-#to do: test for valid file type
+
+#to do: 
+# wrap all these in try/except
 # what if the media info fails?
+# improve valid test!!!
 
 test_wav = os.getcwd()+'/audio/test/test_bulletin.wav'
 test_ogg = os.getcwd()+'/audio/test/test_bulletin.ogg'
@@ -33,7 +36,7 @@ class get_properties():
 		try:
 			media_info = MediaInfo.parse(self.input)
 			self.json= json.dumps(media_info.to_data(), indent=2, sort_keys=True)
-			#print self.jsonloaded  						#debug
+			print self.json  						#debug
 			self.astloaded = ast.literal_eval(self.json)	#no unicode by defualt!
 			self.get_codec()
 			if self.codec != 'unknown':
@@ -63,7 +66,8 @@ class get_properties():
 		if self.codec == 'Wave':
 			self.duration = str((self.astloaded['tracks'][0]['duration'])/1000)
 		if self.codec == 'MPEG Audio':
-			self.duration = str((self.astloaded['tracks'][0]['duration'])/1000)
+			pass
+			#self.duration = str((self.astloaded['tracks'][0]['duration'])/1000)
 		if self.codec == 'OGG':
 			self.duration = str((self.astloaded['tracks'][0]['duration'])/1000)
 
@@ -84,12 +88,15 @@ class get_properties():
 			self.samplerate = str(self.astloaded['tracks'][1]['other_sampling_rate'][0])
 
 	def get_bitrate(self):
-		if self.codec == 'Wave':
-			self.bitrate = str((self.astloaded['tracks'][0]['overall_bit_rate']))
-		if self.codec == 'MPEG Audio':
-			self.bitrate = str((self.astloaded['tracks'][0]['overall_bit_rate']))
-		if self.codec == 'OGG':
-			self.bitrate = str((self.astloaded['tracks'][0]['overall_bit_rate']))
+		try:
+			if self.codec == 'Wave':
+				self.bitrate = str((self.astloaded['tracks'][0]['overall_bit_rate']))
+			if self.codec == 'MPEG Audio':
+				self.bitrate = str((self.astloaded['tracks'][0]['overall_bit_rate']))
+			if self.codec == 'OGG':
+				self.bitrate = str((self.astloaded['tracks'][0]['overall_bit_rate']))
+		except:
+			pass
 
 	def get_filesize(self):
 		if self.codec == 'Wave':
@@ -109,7 +116,7 @@ class get_properties():
 				self.valid = 0
 
 		elif self.codec == 'MPEG Audio':
-			if self.bitrate == '48000' and self.samplerate == '48.0 KHz':
+			if self.samplerate == '48.0 KHz':
 				print ".mp3 file validation PASSED: {}".format(self.input)
 				self.valid = 1
 			else:
@@ -117,7 +124,7 @@ class get_properties():
 				self.valid = 0
 				
 		elif self.codec == 'OGG':
-			if (self.astloaded['tracks'][1]['other_codec'][0]) == 'Vorbis' and self.samplerate == '48.0 KHz':
+			if (self.astloaded['tracks'][1]['other_codec'][0]) == 'Vorbis':
 				print ".ogg file validation PASSED: {}".format(self.input)
 				self.valid = 1
 			else:
@@ -127,15 +134,15 @@ class get_properties():
 			print "ERROR: validation problem. Filetype not recognised: {}".format(self.input)			
 
 if __name__ == '__main__':
-	stats = get_properties(test_wav)
-	print "properties of {} :".format(test_wav)
-	print "codec", stats.codec
-	print "bitdepth", stats.bitdepth
-	print "samplerate", stats.samplerate
-	print "duration", stats.duration
-	print "filesize", stats.filesize
-	print "bitrate", stats.bitrate
-	print "validate", stats.valid
+	#stats = get_properties(test_wav)
+	#print "properties of {} :".format(test_wav)
+	#print "codec", stats.codec
+	#print "bitdepth", stats.bitdepth
+	#print "samplerate", stats.samplerate
+	#print "duration", stats.duration
+	#print "filesize", stats.filesize
+	#print "bitrate", stats.bitrate
+	#print "validate", stats.valid
 	stats = get_properties(test_mp3)
 	print "properties of {} :".format(test_mp3)
 	print "codec", stats.codec
@@ -145,12 +152,12 @@ if __name__ == '__main__':
 	print "filesize", stats.filesize
 	print "bitrate", stats.bitrate
 	print "validate", stats.valid
-	stats = get_properties(test_ogg)
-	print "properties of {} :".format(test_ogg)
-	print "codec", stats.codec
-	print "bitdepth", stats.bitdepth
-	print "samplerate", stats.samplerate
-	print "duration", stats.duration
-	print "filesize", stats.filesize
-	print "bitrate", stats.bitrate
-	print "validate", stats.valid
+	#stats = get_properties(test_ogg)
+	#print "properties of {} :".format(test_ogg)
+	#print "codec", stats.codec
+	#print "bitdepth", stats.bitdepth
+	#print "samplerate", stats.samplerate
+	#print "duration", stats.duration
+	#print "filesize", stats.filesize
+	#print "bitrate", stats.bitrate
+	#print "validate", stats.valid

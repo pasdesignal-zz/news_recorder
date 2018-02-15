@@ -26,10 +26,10 @@ class transcoder():
 		-metadata "album=News Bulletin" \
 		-metadata "Track name=Radio New Zealand News" \
 		-metadata "performer=Radio New Zealand" \
-		-metadata "comment=News bulletin recorded at 2pm"')
+		-metadata "Comment=News bulletin recorded at 2pm"')
 		self.ogg_string = ('-map 0:0 -ac 1 -b:a 48k \
 		-metadata "album=News Bulletin" \
-		-metadata "track name=Radio New Zealand News" \
+		-metadata "Track name=Radio New Zealand News" \
 		-metadata "performer=Radio New Zealand" \
 		-metadata "description=News bulletin recorded at 2pm"')
 		self.ffmpeg_globals = '-y -hide_banner -v quiet'
