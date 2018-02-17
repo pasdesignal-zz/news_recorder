@@ -29,7 +29,7 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 	def __init__(self):
 		timestamp = datetime.datetime.now()
 		timestamp_plus = timestamp + datetime.timedelta(minutes=10)				#bring time into next hour cause we start early
-		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour
+		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour	
 
 if __name__ == '__main__':
 	try:
@@ -157,7 +157,7 @@ if __name__ == '__main__':
 			exit()
 		##--GENERATE XML--##
 		bulletin.xml.xml_write(os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
-		#test XML here????
+		#test valid XML here????
 		##--EXPORT--##
 		#scp file to ELF
 		#call ELF script

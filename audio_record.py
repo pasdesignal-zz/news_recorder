@@ -4,6 +4,9 @@ import datetime
 import os
 import threading
 
+#ToDo:
+#ignore 255 error for ffmpy terminate
+
 class recorder():
 	#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
@@ -13,27 +16,25 @@ class recorder():
 
 	def __init__(self, comm, filename):
 		self.filename = filename
+		if not os.path.isdir(os.path.dirname(self.filename)):
+			print "creating wav folder:{}".format(os.path.dirname(self.filename))
+			os.makedirs(os.path.dirname(self.filename))
 		self.cue = ffmpy.FFmpeg(global_options=self.global_options,inputs={self.audio_input : self.recstring},outputs={self.filename : self.outstring })
 		self.comm = comm
 
 	def run(self):
 		try:
-			if not os.path.isdir(os.path.dirname(self.filename)):
-				print "creating folder:{}".format(os.path.dirname(self.filename))
-				os.makedirs(os.path.dirname(self.filename))
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} starting recording of file:{}".format(timestamp, self.filename)	
 			self.cue.run()
-		except Exception as e:
-			print "ffmpeg error:{}".format(e)
-		finally:
-			pass
+		except ffmpy.FFRuntimeError as e:
+				print "ERROR: ffmpeg recording: {}".format(e)
 
 	def terminate(self):
 		try:
 			self.cue.process.terminate()
-		except Exception as e:
-			pass				
+		except ffmpy.FFRuntimeError as e:
+				print "ERROR: ffmpeg recording: {}".format(e)
 
 	def timeout(self):
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")

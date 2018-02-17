@@ -31,6 +31,9 @@ class xml_machine():
 
 	def parse_template(self, input_xml):
 		self.input_xml = input_xml
+		if not os.path.isdir(os.path.dirname(self.input_xml)):
+				print "creating XML folder:{}".format(os.path.dirname(self.input_xml))
+				os.makedirs(os.path.dirname(self.input_xml))
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} opening XML: {}".format(timestamp, self.input_xml)               #debug
 		self.tree = ET.parse(self.input_xml)
