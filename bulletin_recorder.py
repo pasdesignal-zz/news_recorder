@@ -16,9 +16,7 @@ from audio_transcode import transcoder
 #To Do:
 #syslog notification for errors
 #test exits are working/elegant
-#check for folders before starting? Do this in all modules!!!
 #more timestamps!
-#reset timeout to larger number! after testing!
 #make analyser useful! (loudness stats/test)
 #export function
 #housekeeping: delete all filetypes generated older than 24 hours: xml, wav, ogg, mp3, temp etc
@@ -30,6 +28,11 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 		timestamp = datetime.datetime.now()
 		timestamp_plus = timestamp + datetime.timedelta(minutes=10)				#bring time into next hour cause we start early
 		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour	
+
+	def housekeeping(self):
+		#delete old files
+		#delete temp files
+		self.filepath
 
 if __name__ == '__main__':
 	try:
