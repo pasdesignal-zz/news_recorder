@@ -161,12 +161,12 @@ if __name__ == '__main__':
 		##--EXPORT--##
 		#scp file to ELF
 		#call ELF script
-		##--HOUSEKEEPING--##
-		#delete temp and old files >24hours
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
 		print "Error:"
 		print e
 	finally:
+		##--HOUSEKEEPING--##
+		#delete temp and old files >24hours
 		print "finished"
