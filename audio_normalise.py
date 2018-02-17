@@ -77,7 +77,7 @@ class loudness_normaliser():
 		except ffmpy.FFRuntimeError as e:
 			print "ERROR: ffmpeg loudness processing: {}".format(e)
 
-	def replace(self, orig_file, new_file): 		#replace these variables with self.input etc
+	def replace(self): 		#replace these variables with self.input etc
 		if os.path.isfile(self.output): 				#safety checks
 			if os.path.isfile(self.input):  			#safety checks
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")

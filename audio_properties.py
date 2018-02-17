@@ -11,7 +11,7 @@ from pymediainfo import MediaInfo
 
 #to do: 
 # wrap all these in try/except
-# what if the media info fails?
+# what if the media info fails? - get errors printing properly!
 # improve valid test!!!
 
 test_wav = os.getcwd()+'/audio/test/test_bulletin.wav'
