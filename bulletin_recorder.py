@@ -30,8 +30,8 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour	
 
 	def housekeeping(self):
+		print "housekeeping..."
 		#delete old files
-		#delete temp files:
 		
 if __name__ == '__main__':
 	try:
@@ -168,6 +168,5 @@ if __name__ == '__main__':
 		print "Error:"
 		print e
 	finally:
-		##--HOUSEKEEPING--##
-		#delete temp and old files >24hours
+		bulletin.housekeeping()
 		print "finished"
