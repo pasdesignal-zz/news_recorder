@@ -31,9 +31,8 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 
 	def housekeeping(self):
 		#delete old files
-		#delete temp files
-		self.filepath
-
+		#delete temp files:
+		
 if __name__ == '__main__':
 	try:
 		##--SESSION VARIABLES--##
