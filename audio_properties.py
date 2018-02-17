@@ -37,7 +37,7 @@ class get_properties():
 		try:
 			media_info = MediaInfo.parse(self.input)
 			self.json= json.dumps(media_info.to_data(), indent=2, sort_keys=True)
-			print self.json  						#debug
+			#print self.json  						#debug
 			self.astloaded = ast.literal_eval(self.json)	#no unicode by defualt!
 			self.get_codec()
 			if self.codec != 'unknown':
