@@ -3,6 +3,7 @@
 #transcode from .wav to .mp3 ans .ogg
 
 ##to do:
+#return pas or fail attribute back to main instead of validation?
 #define output formats as setup variables somehow
 #can bulletins be 64k?
 
@@ -28,6 +29,7 @@ class transcoder():
 		self.ffmpeg_globals = '-y -hide_banner -v quiet'
 
 	def transcode_mp3(self, out_filename):
+		self.mp3valid = 0
 		if os.path.exists(self.input):
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} initiating ffmpeg transcode process to mp3".format(timestamp)
@@ -37,7 +39,8 @@ class transcoder():
 			try:
 				ff.run()
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, mp3_filename)		
+				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, mp3_filename)
+				self.mp3valid = 1		
 			except ffmpy.FFRuntimeError as e:
 				print "ERROR: ffmpeg loudness processing: {}".format(e)
 			finally:
@@ -46,6 +49,7 @@ class transcoder():
 			print "ERROR: no file found: {}".format(self.wav_in)
 
 	def transcode_ogg(self, out_filename):
+		self.oggvalid = 0
 		if os.path.exists(self.input):
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} initiating ffmpeg transcode process to ogg".format(timestamp)
@@ -56,6 +60,7 @@ class transcoder():
 				ff.run()	
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, ogg_filename)
+				self.oggvalid = 1
 			except ffmpy.FFRuntimeError as e:
 				print "ERROR: ffmpeg loudness processing: {}".format(e)
 			finally:

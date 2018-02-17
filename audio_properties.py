@@ -1,12 +1,13 @@
 #!/usr/bin/python
-#Get properties of audio file using mediainfo
+#Get properties of audio files using mediainfo
+
 #requires mediainfo: sudo apt install mediainfo
 #requires pymediainfo: sudo pip install pymediainfo
+
 import os
 import json
 import ast
 from pymediainfo import MediaInfo
-
 
 #to do: 
 # wrap all these in try/except

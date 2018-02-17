@@ -131,24 +131,25 @@ if __name__ == '__main__':
 		bulletin.transcoder.transcode_mp3(bulletin.mp3_filepath)
 		bulletin.transcoder.transcode_ogg(bulletin.ogg_filepath)
 		##--VALIDATE MP3--##											#should this be folded into module?
-		print "testing for valid mp3 audio file after transcode..."
-		bulletin.properties = get_properties(bulletin.mp3_filepath)
-		bulletin.mp3valid =bulletin.properties.valid
-		if bulletin.mp3valid == 1:
+		#print "testing for valid mp3 audio file after transcode..."
+		#bulletin.mp3valid =bulletin.properties.valid
+		if bulletin.transcoder.mp3valid == 1:
 			print "PASSED: mp3 valid test OK: {}".format(bulletin.mp3_filepath)
+			bulletin.properties = get_properties(bulletin.mp3_filepath)
 			bulletin.xml.mp3_size = bulletin.properties.filesize
 		else:
 			print "ERROR: mp3 valid test BAD: {}".format(bulletin.mp3_filepath)
 		##--VALIDATE OGG--##
-		print "testing for valid ogg audio file after transcode..."
-		bulletin.properties = get_properties(bulletin.ogg_filepath)
-		bulletin.oggvalid =bulletin.properties.valid
-		if bulletin.properties.valid == 1:
+		#print "testing for valid ogg audio file after transcode..."
+		
+		#bulletin.oggvalid =bulletin.properties.valid
+		if bulletin.transcoder.oggvalid == 1:
 			print "PASSED: ogg valid test OK: {}".format(bulletin.ogg_filepath)
+			bulletin.properties = get_properties(bulletin.ogg_filepath)
 			bulletin.xml.ogg_size = bulletin.properties.filesize
 		else:
 			print "ERROR: ogg valid test BAD: {}".format(bulletin.ogg_filepath)
-		if bulletin.mp3valid == 1 and bulletin.oggvalid == 1:
+		if bulletin.transcoder.mp3valid == 1 and bulletin.transcoder.oggvalid == 1:
 			bulletin.transcoder.housekeeping()
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
