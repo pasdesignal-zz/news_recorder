@@ -51,12 +51,12 @@ class loudness_normaliser():
 			self.input_lra = self.json['input_lra']
 			self.input_thresh = self.json['input_thresh']
 			self.offset = self.json['target_offset']
-			self.loudnorm_string = ('-af loudnorm=\
-				I=-14:TP=-3:LRA=11:measured_I={}:\
-				measured_LRA={}:measured_TP={}:\
-				measured_thresh={}:offset={}:\
-				linear=true:print_format=json \
-				-c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
+			self.loudnorm_string = ('-af loudnorm='
+				'I=-14:TP=-3:LRA=11:measured_I={}:'
+				'measured_LRA={}:measured_TP={}:'
+				'measured_thresh={}:offset={}:'
+				'linear=true:print_format=json '
+				'-c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
 			#print self.loudnorm_string	#debug
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudnorm first pass complete".format(timestamp)
