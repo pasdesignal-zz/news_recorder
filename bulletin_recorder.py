@@ -119,10 +119,9 @@ if __name__ == '__main__':
 		louder.normalise(louder.temp) 								#process orginal file and save as new file
 		##--VALIDATE--##
 		print "testing for valid audio file after loudness process..."
-		bulletin.properties = get_properties(louder.temp)
+		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
-			print "PASSED: .wav valid test OK: {}".format(louder.temp)
-			louder.replace(bulletin.filepath, louder.temp) 			#replace orginal file with new file
+			print "PASSED: .wav valid test OK: {}".format(bulletin.filepath)
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, louder.temp)
