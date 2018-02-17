@@ -32,7 +32,7 @@ class xml_machine():
 	def parse_template(self, input_xml):
 		self.input_xml = input_xml
 		if not os.path.isfile(self.input_xml):
-			print "FATAL ERROR: no XML input file found: {}".format(self.input_xml)
+			print "FATAL ERROR: no XML input file found: {}. Exiting.".format(self.input_xml)
 			exit()
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} opening XML: {}".format(timestamp, self.input_xml)               #debug
