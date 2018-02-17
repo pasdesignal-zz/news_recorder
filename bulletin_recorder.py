@@ -14,13 +14,17 @@ from xml_generator import xml_machine
 from audio_transcode import transcoder
 
 #To Do:
-#check for folders before starting? Do this in modules!!!
+#syslog notification for errors
+#test exits are working/elegant
+#check for folders before starting? Do this in all modules!!!
 #more timestamps!
 #reset timeout to larger number! after testing!
 #make analyser useful! (loudness stats/test)
 #export function
+#housekeeping: delete all filetypes generated older than 24 hours: xml, wav, ogg, mp3, temp etc
+#make listen socket safer? Will basically parse anything?
 
-class bulletin_object(): #object to use for duration of bulletin creation
+class bulletin_object(): #basic object to use for duration of bulletin creation
 
 	def __init__(self):
 		timestamp = datetime.datetime.now() #get current time
@@ -30,10 +34,10 @@ class bulletin_object(): #object to use for duration of bulletin creation
 if __name__ == '__main__':
 	try:
 		##--SESSION VARIABLES--##
-		livewire_channel = 4263 #4004 for testing #4263 for bulletins (Auckland)
+		livewire_channel = 4263 			#4004 for testing #4263 for bulletins (Auckland)
 		sdp_filename = 'source.sdp'
-		bind_interface = '10.212.13.1'
-		bind_port=5119
+		bind_interface = '10.212.13.1'		#for socket strings from Pathfinder
+		bind_port=5119						#for socket strings from Pathfinder
 		wav_dir = (os.getcwd()+'/audio/wav/')
 		mp3_dir = (os.getcwd()+'/audio/mp3/')
 		ogg_dir = (os.getcwd()+'/audio/ogg/')
@@ -42,7 +46,7 @@ if __name__ == '__main__':
 		podcast_baseurl = 'http://podcast.radionz.co.nz/news/'
 		##--RECORD--##
 		print "\r\n"
-		print "{} starting recording job".format(timestamp)
+		print "{} starting bulletin recording job...".format(timestamp)
 		bulletin = bulletin_object()
 		bulletin.xml = xml_machine()
 		bulletin.xml.parse_template(template_xml)
@@ -53,27 +57,27 @@ if __name__ == '__main__':
 		bulletin.ogg_filepath = ogg_dir+bulletin.time.strftime("%Y%m%d-%H00")+".ogg"
 		bulletin.xml.mp3_url = podcast_baseurl+bulletin.time.strftime("%Y%m%d-%H00")+"-048.mp3"
 		bulletin.xml.ogg_url = podcast_baseurl+bulletin.time.strftime("%Y%m%d-%H00")+"-00.ogg"
-		print "initiating listen socket"
-		listen_parent_conn, listen_child_conn = Pipe() 		#Pipe for control of ffmpeg thread
-		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port) #pass one end of pipe to this thread
-		bulletin.control = Process(target=pathfinder.listen)             
-		print "initiating recorder thread"
 		bulletin.sdp = SDP_Gen(livewire_channel, sdp_filename)
 		bulletin.sdp.generate_sdp(session_description='RNZ Bulletin')
+		print "initiating listen socket"
+		listen_parent_conn, listen_child_conn = Pipe() 												#Pipe for control of ffmpeg thread
+		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
+		bulletin.control = Process(target=pathfinder.listen)             
+		print "initiating recorder thread"
 		bulletin.record = recorder(comm=listen_parent_conn, filename=bulletin.filepath)
 		rec_job = threading.Thread(target=bulletin.record.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		t = threading.Timer(1200.0, bulletin.record.timeout)  	#timer thread to exit loop if the button never gets pushed! 1200.0 for 20 mins
+		t = threading.Timer(1200.0, bulletin.record.timeout)  	#timeout thread in case button never gets pushed! 1200.0 for 20 mins
 		t.start()
 		loop = 1
 		while loop == 1:									
 			command = listen_child_conn.recv()
 			print 'command: {}'.format(command)
 			if command == 'stop_recording':
-				t.cancel()										#cancel timer thread
+				t.cancel()										#cancel timeout thread
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} terminating recording process".format(timestamp)
 				bulletin.record.terminate()
@@ -87,10 +91,11 @@ if __name__ == '__main__':
 		print "testing for valid recording..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
-			print "PASSED: wav valid test OK: {}".format(bulletin.filepath)
+			print "PASSED: .wav valid test OK: {}".format(bulletin.filepath)
 		else:
-			print "ERROR: wav valid test BAD: {}".format(bulletin.filepath)
-			#what to do here? exit()?
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
+			exit()
 		##--REMOVE SILENCE--##
 		print "opening file:{} for silence trimming".format(bulletin.filepath)
 		sox_object = silence_trimmer()
@@ -102,10 +107,11 @@ if __name__ == '__main__':
 		print "testing for valid audio file after silence trimming..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
-			print "PASSED: wav valid test OK: {}".format(bulletin.filepath)
+			print "PASSED: .wav valid test OK: {}".format(bulletin.filepath)
 		else:
-			print "ERROR: wav valid test BAD: {}".format(bulletin.filepath)
-			#what to do here? exit()?
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
+			exit()
 		bulletin.xml.duration = bulletin.properties.duration	#add audio duration to xml	
 		##--NORMALISE LOUDNESS--##
 		louder = loudness_normaliser(bulletin.filepath)
@@ -115,10 +121,11 @@ if __name__ == '__main__':
 		print "testing for valid audio file after loudness process..."
 		bulletin.properties = get_properties(bulletin.filepath)
 		if bulletin.properties.valid == 1:
-			print "PASSED: wav valid test OK: {}".format(bulletin.filepath)
+			print "PASSED: .wav valid test OK: {}".format(bulletin.filepath)
 		else:
-			print "ERROR: wav valid test BAD: {}".format(bulletin.filepath)
-			#what to do here? exit()?
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
+			exit()
 		##--TRANSCODE--##
 		bulletin.transcoder = transcoder(bulletin.filepath)
 		bulletin.transcoder.transcode_mp3(bulletin.mp3_filepath)
@@ -145,13 +152,16 @@ if __name__ == '__main__':
 			bulletin.transcoder.housekeeping()
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} ERROR: bad transcoded files detected. Exiting.".format(timestamp)
+			print "{} FATAL ERROR: bad transcoded files detected. Exiting.".format(timestamp)
 			exit()
 		##--GENERATE XML--##
 		bulletin.xml.xml_write(os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
 		#test XML here????
 		##--EXPORT--##
+		#scp file to ELF
+		#call ELF script
 		##--HOUSEKEEPING--##
+		#delete temp and old files >24hours
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
