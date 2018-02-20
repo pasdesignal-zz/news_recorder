@@ -29,7 +29,7 @@ class recorder():
 				print "ERROR: ffmpeg recording: {}".format(e)	
 
 	def terminate(self):
-		self.cue.terminate()			
+		self.cue.process.terminate()			
 
 if __name__ == '__main__':
 	try:
