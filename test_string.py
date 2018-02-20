@@ -4,8 +4,8 @@ import socket
 
 #send test message to listen socket
 
-TCP_IP = '10.212.13.1'
-TCP_PORT = 5119
+TCP_IP = '127.0.0.1
+TCP_PORT = 5120
 BUFFER_SIZE = 1024
 message = 'stop_recording'
 

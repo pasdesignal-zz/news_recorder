@@ -14,6 +14,7 @@ from xml_generator import xml_machine
 from audio_transcode import transcoder
 
 #To Do:
+#create test option
 #syslog notification for errors
 #test exits are working/elegant
 #more timestamps!
@@ -21,6 +22,10 @@ from audio_transcode import transcoder
 #export function
 #housekeeping: delete all filetypes generated older than 24 hours: xml, wav, ogg, mp3, temp etc
 #make listen socket safer? Will basically parse anything?
+
+parser = argparse.ArgumentParser(description='Record a news bulletin and publish. Use --test for testing.', epilog='')
+parser.add_argument('--test', action='store_true', default=False, help='Test mode. Use for testing purposes only. Uses alternative livewire channel and local socket')
+arguments = parser.parse_args()
 
 class bulletin_object(): 					#basic object to use for duration of bulletin creation
 
@@ -36,7 +41,7 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 if __name__ == '__main__':
 	try:
 		##--SESSION VARIABLES--##
-		livewire_channel = 4004 			#4004 for testing #4263 for bulletins (Auckland Livewire)
+		livewire_channel = 4263		#4004 for testing #4263 for bulletins (Auckland Livewire)
 		sdp_filename = 'source.sdp'
 		bind_interface = '10.212.13.1'		#for socket strings from Pathfinder
 		bind_port=5119						#for socket strings from Pathfinder
@@ -47,6 +52,11 @@ if __name__ == '__main__':
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		template_xml = (os.getcwd()+'/diginews_template.xml')
 		podcast_baseurl = 'http://podcast.radionz.co.nz/news/'
+		if arguments.test == True:
+			print "Test argument used. Setting up alternative session variables..."
+			livewire_channel = 4004 		#no silence
+			bind_interface = '127.0.0.1'		#for socket strings from test script
+			bind_port=5120		
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting bulletin recording job...".format(timestamp)
