@@ -30,7 +30,7 @@ class listen_socket():
 		while True:
 			data = self.conn.recv(self.BUFFER_SIZE)
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} received socket data {}:".format(timestamp, data)
+			print "{} received socket data: {}".format(timestamp, data)
 			self.comm.send(data)	
 			time.sleep(1)
 
