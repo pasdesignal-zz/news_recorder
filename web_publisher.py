@@ -5,6 +5,7 @@
 import paramiko
 import urlparse
 import httplib
+import os
 
 #To Do:
 # check connectivity to ELF
@@ -16,6 +17,7 @@ class check_ssh(): #object to use for duration of bulletin creation
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
+		ssh.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
 		print "testing SSH connectivity to {} as user {}".format(ip, user)
 		ssh.connect(ip, username=user, key_filename=key_file, sock=self.sock)
 		return True
