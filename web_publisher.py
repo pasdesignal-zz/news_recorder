@@ -3,8 +3,9 @@
 #sudo pip install paramiko
 
 import paramiko
-import os
-import sys
+import urlparse
+import httplib
+
 #To Do:
 # check connectivity to ELF
 
