@@ -26,8 +26,8 @@ if __name__ == '__main__':
 		elf_staging = '150.242.42.149'
 		elf_user = 'deploy'
 		key_file = '/home/deploy/.ssh/id_rsa'
-		test = check_ssh(elf_staging)
-		test.check_it()
+		test = check_ssh()
+		test.check_it(elf_staging, elf_user, key_file)
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:
