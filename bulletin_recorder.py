@@ -83,7 +83,8 @@ if __name__ == '__main__':
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()  
 		print "initiating recorder thread"
-		rec_job = Process(target=recorder, args=(bulletin.filepath,))
+		record = recorder(bulletin.filepath)
+		rec_job = Process(target=record.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		time.sleep(1)
@@ -99,7 +100,7 @@ if __name__ == '__main__':
 				else:
 					print 'command: {}'.format(command)	
 			time.sleep(5)		
-		rec_job.terminate()
+		rec_job.process.terminate()
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} closing listen socket".format(timestamp)
 		bulletin.control.terminate()
