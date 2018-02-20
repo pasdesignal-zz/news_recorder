@@ -17,8 +17,7 @@ class ssh_session(): #object to use for duration of bulletin creation
 		self.port = port
 		self.user =user
 		self.key_file = key_file
-		self.string = '/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 {} {}'.format(self.dest, self.port)
-
+		self.string = '/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 {} {}'.format(self.dest, self.port) #don't ask
 
 	def check_it(self, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
