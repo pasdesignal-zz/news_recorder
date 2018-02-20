@@ -16,10 +16,11 @@ class check_ssh(): #object to use for duration of bulletin creation
 		self.sock = sock
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
+		self.string = '/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 {} {}'.format(ip, '22')
 		ssh = paramiko.SSHClient()
 		ssh.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
 		print "testing SSH connectivity to {} as user {}".format(ip, user)
-		ssh.connect(ip, username=user, key_filename=key_file, sock=self.sock)
+		ssh.connect(ip, username=user, key_filename=key_file, sock=self.string)
 		return True
 
 if __name__ == '__main__':
