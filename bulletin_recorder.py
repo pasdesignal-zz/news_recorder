@@ -85,7 +85,7 @@ if __name__ == '__main__':
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		timeout = threading.Timer(20.0, rec_job.terminate)  	#timeout thread in case button never gets pushed! 1200.0 for 20 mins
+		timeout = threading.Timer(20.0, rec_job.terminate)  #timeout thread in case button never gets pushed! 1200.0 for 20 mins
 		timeout.start()
 		loop = 1
 		while loop == 1:									
