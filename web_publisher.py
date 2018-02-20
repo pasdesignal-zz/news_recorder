@@ -15,8 +15,9 @@ class check_ssh(): #object to use for duration of bulletin creation
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
+		proxy = paramiko.ProxyCommand(self.proxy_command)
 		print "testing SSH connectivity to {} as user {}".format(ip, user)
-		ssh.connect(ip, username=user, key_filename=key_file)
+		ssh.connect(ip, username=user, key_filename=key_file, sock=proxy)
 		return True
 
 if __name__ == '__main__':
