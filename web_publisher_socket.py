@@ -17,12 +17,16 @@ class ssh_session(): #object to use for duration of bulletin creation
 		self.port = port
 		self.user =user
 		self.key_file = key_file
-		self.string = '/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 %h %p'
-
+		proxy_uri = "http://172.17.8.1:3128"
+		url = urlparse.urlparse(proxy_uri)
+		http_con = httplib.HTTPConnection(url.hostname, url.port)
+		headers = {}	
+		http_con.set_tunnel(self.dest, self.port, headers)
+		http_con.connect()
+		self.sock = http_con.sock
 
 	def check_it(self, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
-		self.sock=paramiko.ProxyCommand(self.string)
 		ssh.load_host_keys(os.path.expanduser('~/.ssh/known_hosts'))
 		print "testing SSH connectivity to {} as user {}".format(self.dest, self.user)
 		ssh.connect(self.dest, username=self.user, key_filename=self.key_file, sock=self.sock)
