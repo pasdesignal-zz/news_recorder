@@ -1,16 +1,17 @@
 #!/usr/bin/python
-#Get properties of audio file using mediainfo
+#Get properties of audio files using mediainfo
+
 #requires mediainfo: sudo apt install mediainfo
 #requires pymediainfo: sudo pip install pymediainfo
+
 import os
 import json
 import ast
 from pymediainfo import MediaInfo
 
-
 #to do: 
 # wrap all these in try/except
-# what if the media info fails?
+# what if the media info fails? - get errors printing properly!
 # improve valid test!!!
 
 test_wav = os.getcwd()+'/audio/test/test_bulletin.wav'
@@ -36,7 +37,7 @@ class get_properties():
 		try:
 			media_info = MediaInfo.parse(self.input)
 			self.json= json.dumps(media_info.to_data(), indent=2, sort_keys=True)
-			print self.json  						#debug
+			#print self.json  						#debug
 			self.astloaded = ast.literal_eval(self.json)	#no unicode by defualt!
 			self.get_codec()
 			if self.codec != 'unknown':

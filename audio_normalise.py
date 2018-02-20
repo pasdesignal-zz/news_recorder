@@ -22,12 +22,9 @@ class loudness_normaliser():
 	def __init__(self, _input, dual_mode=True):
 		self.input = _input			
 		if not os.path.isfile(self.input):
-			print "ERROR: no file found: {}".format(_input)
+			print "FATAL ERROR: no loudness input file found: {}".format(self.input)
 			exit()
 		self.temp = (os.getcwd()+'/audio/temp/temp.wav')
-		if os.path.isfile(self.temp):
-			print "WARNING: removing existing temp wav file{}".format(self.temp)
-			os.remove(self.temp)
 		if not os.path.isdir(os.path.dirname(self.temp)):
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
 				os.makedirs(os.path.dirname(self.temp))
@@ -54,48 +51,49 @@ class loudness_normaliser():
 			self.input_lra = self.json['input_lra']
 			self.input_thresh = self.json['input_thresh']
 			self.offset = self.json['target_offset']
-			self.loudnorm_string = ('-af loudnorm=I=-14:TP=-3:LRA=11:measured_I={}:'
-				'measured_LRA={}:measured_TP={}:measured_thresh={}:offset={}:'
-				'linear=true:print_format=json -c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
+			self.loudnorm_string = ('-af loudnorm='
+				'I=-14:TP=-3:LRA=11:measured_I={}:'
+				'measured_LRA={}:measured_TP={}:'
+				'measured_thresh={}:offset={}:'
+				'linear=true:print_format=json '
+				'-c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
 			#print self.loudnorm_string	#debug
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudnorm first pass complete".format(timestamp)
 		except ffmpy.FFRuntimeError as e:
 			print "ERROR: ffmpeg loudness processing: {}".format(e)
-		finally:
-			pass
 		
 	def normalise(self, _output):
+		self.output = _output
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} initiating ffmpeg loudness processing".format(timestamp)
-		self.ff = ffmpy.FFmpeg(global_options=self.global_string, inputs={self.input : None},outputs={_output : self.loudnorm_string })
+		self.ff = ffmpy.FFmpeg(global_options=self.global_string, inputs={self.input : None},outputs={self.output : self.loudnorm_string })
 		print self.ff.cmd
 		try:
 			self.ff.run()
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudness processing COMPLETE".format(timestamp)
+			self.replace()
 		except ffmpy.FFRuntimeError as e:
 			print "ERROR: ffmpeg loudness processing: {}".format(e)
-		finally:
-			pass
 
-	def replace(self, orig_file, new_file): 		#replace these variables with self.input etc
-		if os.path.isfile(new_file): 				#safety checks
-			if os.path.isfile(orig_file):  			#safety checks
+	def replace(self): 		#replace these variables with self.input etc
+		if os.path.isfile(self.output): 				#safety checks
+			if os.path.isfile(self.input):  			#safety checks
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-				print "{} deleting original file:{}".format(timestamp, orig_file)
-				os.remove(orig_file)
-				if not os.path.isfile(orig_file):
-					print "file deleted: {}".format(orig_file)
-					print "replacing with processed file: {}".format(new_file)
-					shutil.copy(new_file, orig_file)
-					if os.path.isfile(orig_file):
-						print "file replaced: {}".format(orig_file)
-					if os.path.isfile(new_file):
-						print "deleting temp file: {}".format(new_file)
-						os.remove(new_file)
-						if not os.path.isfile(new_file):
-							print "file deleted: {}".format(new_file)
+				print "{} deleting original file:{}".format(timestamp, self.input)
+				os.remove(self.input)
+				if not os.path.isfile(self.input):
+					print "file deleted: {}".format(self.input)
+					print "replacing with processed file: {}".format(self.output)
+					shutil.copy(self.output, self.input)
+					if os.path.isfile(self.input):
+						print "file replaced: {}".format(self.input)
+					if os.path.isfile(self.output):
+						print "deleting temp file: {}".format(self.output)
+						os.remove(self.output)
+						if not os.path.isfile(self.output):
+							print "file deleted: {}".format(self.output)
 							timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 							print " {} file operations complete...".format(timestamp)
 			else:

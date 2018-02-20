@@ -31,6 +31,9 @@ class xml_machine():
 
 	def parse_template(self, input_xml):
 		self.input_xml = input_xml
+		if not os.path.isfile(self.input_xml):
+			print "FATAL ERROR: no XML input file found: {}. Exiting.".format(self.input_xml)
+			exit()
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} opening XML: {}".format(timestamp, self.input_xml)               #debug
 		self.tree = ET.parse(self.input_xml)
@@ -62,6 +65,9 @@ class xml_machine():
 #writes xml object to file
 	def xml_write(self, output_xml):
 		self.output_xml = output_xml
+		if not os.path.isdir(os.path.dirname(self.output_xml)):
+			print "creating XML folder:{}".format(os.path.dirname(self.output_xml))
+			os.makedirs(os.path.dirname(self.output_xml))
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} writing XML to file: {}".format(timestamp, self.output_xml)  
 		for element in self.root.iter():
