@@ -14,7 +14,7 @@ class check_ssh(): #object to use for duration of bulletin creation
 		self.proxy_command = ""
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
-		self.proxy_command = "/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 {} {}".format(ip, '22')
+		self.proxy_command = "/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128"
 		print self.proxy_command
 		ssh = paramiko.SSHClient()
 		proxy = paramiko.ProxyCommand(self.proxy_command)
