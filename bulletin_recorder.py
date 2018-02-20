@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #import all the things :)
 import datetime
+import time
 import os
 import threading
 import argparse
@@ -88,9 +89,6 @@ if __name__ == '__main__':
 		#timeout = threading.Timer(20.0, rec_job.terminate)  #timeout thread in case button never gets pushed! 1200.0 for 20 mins
 		#timeout.start()
 		while rec_job.is_alive():
-			print "alive?", rec_job.is_alive()		
-			print "joining..."
-			rec_job.join()	
 			print "alive?", rec_job.is_alive()
 			if not listen_queue.empty():							
 				command = listen_queue.get()
