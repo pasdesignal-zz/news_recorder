@@ -10,7 +10,7 @@ import paramiko
 class check_ssh(): #object to use for duration of bulletin creation
 
 	def __init__(self):
-	pass
+		pass
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
