@@ -10,7 +10,7 @@ import sys
 
 class check_ssh(): #object to use for duration of bulletin creation
 
-	def __init__(sel, sock):
+	def __init__(self, sock):
 		self.sock = sock
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
