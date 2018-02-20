@@ -19,7 +19,7 @@ def recorder(filename):
 	cue = ffmpy.FFmpeg(global_options=global_options,inputs={audio_input : recstring},outputs={filename : outstring })
 	try:
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "{} starting recording of file:{}".format(timestamp, self.filename)	
+		print "{} starting recording of file:{}".format(timestamp, filename)	
 		cue.run()
 	except ffmpy.FFRuntimeError as e:
 		print "ERROR: ffmpeg recording: {}".format(e)	
