@@ -7,10 +7,10 @@ import urlparse
 import httplib
 import os
 
-#To Do:
-# check connectivity to ELF
+# To Do:
+# place file in destination location
 
-class check_ssh(): #object to use for duration of bulletin creation
+class ssh_session(): #object to use for duration of bulletin creation
 
 	def __init__(self, dest, port, user, key_file):
 		self.dest = dest
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 	elf_port = 22
 	elf_user = 'deploy'
 	key_file = '/home/deploy/.ssh/id_rsa.pub'
-	test = check_ssh(elf_staging, elf_port, elf_user, key_file)
+	test = ssh_session(elf_staging, elf_port, elf_user, key_file)
 	result = test.check_it()
 	if result == True:
 		print "success bitches!!!"
