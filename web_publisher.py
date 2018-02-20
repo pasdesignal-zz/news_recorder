@@ -69,6 +69,6 @@ if __name__ == '__main__':
 		print "ELF failure bitches!!!"  
 	result = test.check_podcast(podcast_server, podcast_port, podcast_user, podcast_key_file)
 	if result == True:
-		print "ELF success bitches!!!"
+		print "PODCAST success bitches!!!"
 	else:
-		print "ELF failure bitches!!!"      
+		print "PODCAST failure bitches!!!"      
