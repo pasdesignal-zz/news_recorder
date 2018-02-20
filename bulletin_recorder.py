@@ -79,7 +79,7 @@ if __name__ == '__main__':
 		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
 		bulletin.control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
-		bulletin.record = recorder(comm=listen_parent_conn, filename=bulletin.filepath)
+		bulletin.record = recorder(filename=bulletin.filepath)
 		rec_job = Process(target=bulletin.record.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()

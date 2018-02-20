@@ -13,27 +13,18 @@ class recorder():
 	outstring = "-c:a pcm_s24le"
 	audio_input = (os.getcwd()+'/source.sdp')
 
-	def __init__(self, comm, filename):
+	def __init__(self, filename):
 		self.filename = filename
 		if not os.path.isdir(os.path.dirname(self.filename)):
 			print "creating wav folder:{}".format(os.path.dirname(self.filename))
 			os.makedirs(os.path.dirname(self.filename))
 		self.cue = ffmpy.FFmpeg(global_options=self.global_options,inputs={self.audio_input : self.recstring},outputs={self.filename : self.outstring })
-		self.comm = comm
 
 	def run(self):
 		try:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} starting recording of file:{}".format(timestamp, self.filename)	
 			self.cue.run()
-		except ffmpy.FFRuntimeError as e:
-				print "ERROR: ffmpeg recording: {}".format(e)
-
-	def terminate(self):
-		try:
-			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} terminating ffmpeg recording of file:{}".format(timestamp, self.filename)
-			self.cue.process.terminate()
 		except ffmpy.FFRuntimeError as e:
 				print "ERROR: ffmpeg recording: {}".format(e)
 
