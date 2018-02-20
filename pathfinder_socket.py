@@ -13,8 +13,8 @@ import datetime
 
 class listen_socket():
 
-	def __init__(self, comm, bind, port):
-		self.comm = comm
+	def __init__(self, queue, bind, port):
+		self.queue = queue
 		self.bind = bind
 		self.port = int(port)
 		self.BUFFER_SIZE = 20  # Normally 1024, but we want fast response -- is this going to be an issue????
@@ -31,7 +31,7 @@ class listen_socket():
 			data = self.conn.recv(self.BUFFER_SIZE)
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} received socket data: {}".format(timestamp, data)
-			self.comm.send(data)	
+			self.queue.put(data)	
 			time.sleep(1)
 
 	def close_socket(self):   #this isnt working yet - .conn not an attribute of self?

@@ -4,7 +4,8 @@ import datetime
 import os
 import threading
 import argparse
-from multiprocessing import Process, Pipe
+from multiprocessing import Process
+from multiprocessing.queues import SimpleQueue
 from sdp_generator import SDP_Gen
 from audio_properties import get_properties
 from pathfinder_socket import listen_socket
@@ -75,8 +76,8 @@ if __name__ == '__main__':
 		bulletin.sdp = SDP_Gen(livewire_channel, sdp_filename)
 		bulletin.sdp.generate_sdp(session_description='RNZ Bulletin')
 		print "initiating listen socket"
-		listen_parent_conn, listen_child_conn = Pipe() 												#Pipe for control of ffmpeg thread
-		pathfinder = listen_socket(comm=listen_parent_conn, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
+		listen_queue = SimpleQueue() 												#Pipe for control of ffmpeg thread
+		pathfinder = listen_socket(comm=listen_queue, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
 		bulletin.control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
 		rec_job = Process(target=recorder, args=(bulletin.filepath,))
@@ -86,18 +87,22 @@ if __name__ == '__main__':
 		bulletin.control.start()   
 		#timeout = threading.Timer(20.0, rec_job.terminate)  #timeout thread in case button never gets pushed! 1200.0 for 20 mins
 		#timeout.start()
-		while rec_job.is_alive():		
+		while rec_job.is_alive():
+			print "alive?", rec_job.is_alive()		
 			print "joining..."
-			rec_job.join()							
-			command = listen_child_conn.recv()
-			print 'command received: {}'.format(command)
-			if command == 'stop_recording':
-				#timeout.cancel()										#cancel timeout thread
-				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-				print "{} terminating recording process".format(timestamp)
-				rec_job.terminate()
-			else:
-				print 'command: {}'.format(command)	
+			rec_job.join()	
+			print "alive?", rec_job.is_alive()
+			if not listen_queue.empty():							
+				command = listen_queue.get()
+				print 'command received: {}'.format(command)
+				if command == 'stop_recording':
+					#timeout.cancel()										#cancel timeout thread
+					timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+					print "{} terminating recording process".format(timestamp)
+					rec_job.terminate()
+				else:
+					print 'command: {}'.format(command)	
+			time.sleep(1)		
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} closing listen socket".format(timestamp)
 		bulletin.control.terminate()
