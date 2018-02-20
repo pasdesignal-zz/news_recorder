@@ -24,7 +24,7 @@ if __name__ == '__main__':
 	try:
 		elf_staging = '150.242.42.149'
 		elf_user = 'deploy'
-		key_file = '/home/deploy/.ssh/id_rsa'
+		key_file = '/home/deploy/.ssh/id_rsa.pub'
 		testconn = check_ssh()
 		result = testconn.check_it(elf_staging, elf_user, key_file)
 		if result == True:
