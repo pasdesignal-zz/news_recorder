@@ -17,7 +17,7 @@ class ssh_session(): #object to use for duration of bulletin creation
 		self.port = port
 		self.user =user
 		self.key_file = key_file
-		self.string = '/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 %h %p'
+		self.string = '/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 {} {}'.format(self.dest, self.port)
 
 
 	def check_it(self, initial_wait=0, interval=0, retries=1):
