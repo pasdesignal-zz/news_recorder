@@ -32,6 +32,8 @@ class recorder():
 
 	def terminate(self):
 		try:
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} terminating ffmpeg ecording of file:{}".format(timestamp, self.filename)
 			self.cue.process.terminate()
 		except ffmpy.FFRuntimeError as e:
 				print "ERROR: ffmpeg recording: {}".format(e)
