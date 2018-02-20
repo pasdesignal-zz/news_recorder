@@ -100,7 +100,7 @@ if __name__ == '__main__':
 				else:
 					print 'command: {}'.format(command)	
 			time.sleep(5)		
-		recorder.process.terminate()
+		recorder.cue.process.terminate()
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} closing listen socket".format(timestamp)
 		bulletin.control.terminate()
