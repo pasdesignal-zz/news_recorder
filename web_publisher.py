@@ -2,7 +2,6 @@
 #requires paramiko:
 #sudo pip install paramiko
 
-import datetime
 import paramiko
 
 #To Do:
@@ -11,9 +10,6 @@ import paramiko
 class check_ssh(): #object to use for duration of bulletin creation
 
 	def __init__(self):
-		timestamp = datetime.datetime.now() #get current time
-		timestamp_plus = timestamp + datetime.timedelta(minutes=10) #bring time into next hour because we start early
-		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
@@ -30,8 +26,12 @@ if __name__ == '__main__':
 		elf_staging = '150.242.42.149'
 		elf_user = 'deploy'
 		key_file = '/home/deploy/.ssh/id_rsa'
-		test = check_ssh()
-		test.check_it(elf_staging, elf_user, key_file)
+		testconn = check_ssh()
+		result = testconn.check_it(elf_staging, elf_user, key_file)
+		if result == True:
+			print "success bitches!!!"
+		else:
+			print "failure bitches!!!"	
 	except KeyboardInterrupt:
 		print "manually interrupted!"
 	except Exception as e:

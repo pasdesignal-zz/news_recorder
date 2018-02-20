@@ -151,28 +151,18 @@ if __name__ == '__main__':
 			bulletin.xml.ogg_size = bulletin.properties.filesize
 		else:
 			print "ERROR: ogg valid test BAD: {}".format(bulletin.ogg_filepath)
-<<<<<<< HEAD
-			#what to do here? Exit?
-		if bulletin.mp3valid == 1 and bulletin.oggvalid == 1:
-=======
 		if bulletin.transcoder.mp3valid == 1 and bulletin.transcoder.oggvalid == 1:
->>>>>>> c9c04573c88c4fa7a1359ca28fbf8acfe4fdec4c
 			bulletin.transcoder.housekeeping()
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: bad transcoded files detected. Exiting.".format(timestamp)
 			exit()
 		##--GENERATE XML--##
-<<<<<<< HEAD
 		xml_filename = (os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} generating XML for ingest to ELF: {}".format(timestamp, xml_filename)
 		bulletin.xml.xml_write(xml_filename)
 		#test XML here????
-=======
-		bulletin.xml.xml_write(os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
-		#test valid XML here????
->>>>>>> c9c04573c88c4fa7a1359ca28fbf8acfe4fdec4c
 		##--EXPORT--##
 		#scp file to ELF
 		#call ELF script
