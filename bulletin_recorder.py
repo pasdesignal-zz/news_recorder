@@ -85,18 +85,16 @@ if __name__ == '__main__':
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		timeout = threading.Timer(20.0, rec_job.terminate)  #timeout thread in case button never gets pushed! 1200.0 for 20 mins
-		timeout.start()
-		loop = 1
-		while loop == 1:									
+		#timeout = threading.Timer(20.0, rec_job.terminate)  #timeout thread in case button never gets pushed! 1200.0 for 20 mins
+		#timeout.start()
+		while rec_job.isalive():									
 			command = listen_child_conn.recv()
-			print 'command: {}'.format(command)
+			print 'command received: {}'.format(command)
 			if command == 'stop_recording':
-				timeout.cancel()										#cancel timeout thread
+				#timeout.cancel()										#cancel timeout thread
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} terminating recording process".format(timestamp)
 				rec_job.terminate()
-				loop = 0
 			else:
 				print 'command: {}'.format(command)	
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")

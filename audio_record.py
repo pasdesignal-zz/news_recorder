@@ -26,13 +26,7 @@ class recorder():
 			print "{} starting recording of file:{}".format(timestamp, self.filename)	
 			self.cue.run()
 		except ffmpy.FFRuntimeError as e:
-				print "ERROR: ffmpeg recording: {}".format(e)
-
-	def timeout(self):
-		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "{} ERROR: no-one pushed the button or something else went wrong".format(timestamp)
-		print "recording timeout occured, forcing end of recording etc"
-		self.comm.send('stop_recording')	
+				print "ERROR: ffmpeg recording: {}".format(e)	
 
 if __name__ == '__main__':
 	try:
