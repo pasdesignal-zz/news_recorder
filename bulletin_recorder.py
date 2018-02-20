@@ -84,7 +84,7 @@ if __name__ == '__main__':
 		bulletin.control.start()  
 		print "initiating recorder thread"
 		record = recorder(bulletin.filepath)
-		rec_job = Process(target=record.run)
+		rec_job = threading.Thread(target=record.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		time.sleep(1)
