@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import paramiko
 
 #To Do:
 # check connectivity to ELF
