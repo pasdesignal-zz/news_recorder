@@ -10,7 +10,7 @@ def recorder(filename):
 	#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 	filename = filename
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v debug"
-	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 0:20"
+	recstring = "-c:a pcm_s24be -r:a 48000 -ac 2 -t 20:0"
 	outstring = "-c:a pcm_s24le"
 	audio_input = (os.getcwd()+'/source.sdp')
 	if not os.path.isdir(os.path.dirname(filename)):
