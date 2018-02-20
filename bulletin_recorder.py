@@ -77,7 +77,7 @@ if __name__ == '__main__':
 		bulletin.sdp.generate_sdp(session_description='RNZ Bulletin')
 		print "initiating listen socket"
 		listen_queue = SimpleQueue() 												#Pipe for control of ffmpeg thread
-		pathfinder = listen_socket(comm=listen_queue, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
+		pathfinder = listen_socket(queue=listen_queue, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
 		bulletin.control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
 		rec_job = Process(target=recorder, args=(bulletin.filepath,))
