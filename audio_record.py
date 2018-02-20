@@ -2,7 +2,6 @@
 import ffmpy
 import datetime
 import os
-import threading
 
 #ToDo:
 #ignore 255 error for ffmpy terminate
@@ -33,7 +32,7 @@ class recorder():
 	def terminate(self):
 		try:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-			print "{} terminating ffmpeg ecording of file:{}".format(timestamp, self.filename)
+			print "{} terminating ffmpeg recording of file:{}".format(timestamp, self.filename)
 			self.cue.process.terminate()
 		except ffmpy.FFRuntimeError as e:
 				print "ERROR: ffmpeg recording: {}".format(e)
@@ -46,6 +45,7 @@ class recorder():
 
 if __name__ == '__main__':
 	try:
+		import threading
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		wav_filename = wav_dir+'rnznews_'+timestamp+'.wav'
 		print ""

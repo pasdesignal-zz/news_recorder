@@ -15,7 +15,8 @@ from xml_generator import xml_machine
 from audio_transcode import transcoder
 
 #To Do:
-#create test option
+#fix terminate loop BS
+#better way to timeout kill
 #syslog notification for errors
 #test exits are working/elegant
 #more timestamps!
@@ -84,17 +85,17 @@ if __name__ == '__main__':
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		t = threading.Timer(1200.0, bulletin.record.timeout)  	#timeout thread in case button never gets pushed! 1200.0 for 20 mins
-		t.start()
+		timeout = threading.Timer(1200.0, bulletin.record.timeout)  	#timeout thread in case button never gets pushed! 1200.0 for 20 mins
+		timeout.start()
 		loop = 1
 		while loop == 1:									
 			command = listen_child_conn.recv()
 			print 'command: {}'.format(command)
 			if command == 'stop_recording':
-				t.cancel()										#cancel timeout thread
+				timeout.cancel()										#cancel timeout thread
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} terminating recording process".format(timestamp)
-				bulletin.record.terminate()
+				rec_job.terminate()
 				loop = 0
 			else:
 				print 'command: {}'.format(command)	
