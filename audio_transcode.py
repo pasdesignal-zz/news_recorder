@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#transcode from .wav to .mp3 ans .ogg
+#transcode from .wav to .mp3 and .ogg
 
 ##to do:
 #define output formats as setup variables somehow
@@ -15,20 +15,23 @@ class transcoder():
 
 	def __init__(self, wav_in):
 		self.input = wav_in
-		self.mp3_string = ('-map 0:0 -ac 1 -b:a 48k \
+		self.mp3_string = ('-map 0:0 -ac 1 -b:a 64k \
 		-metadata "Album=News Bulletin" \
 		-metadata "Track name=Radio New Zealand News" \
 		-metadata "Performer=Radio New Zealand" \
-		-metadata "Comment=News bulletin recorded at {}"').format(datetime.datetime.now().strftime("%-I%p"))
-		self.ogg_string = ('-map 0:0 -ac 1 -b:a 48k \
+		-metadata "Comment=News bulletin recorded at {}"').format(str(datetime.datetime.now().strftime("%-I%p")))
+		self.ogg_string = ('-map 0:0 -ac 1 -b:a 64k \
 		-metadata "Album=News Bulletin" \
 		-metadata "Track name=Radio New Zealand News" \
 		-metadata "Performer=Radio New Zealand" \
-		-metadata "Description=News bulletin recorded at {}"').format(datetime.datetime.now().strftime("%-I%p"))
-		self.ffmpeg_globals = '-y -hide_banner -v quiet'
+		-metadata "Description=News bulletin recorded at {}"').format(str(datetime.datetime.now().strftime("%-I%p")))
+		self.ffmpeg_globals = '-y -hide_banner -v info'
 
 	def transcode_mp3(self, out_filename):
 		if os.path.exists(self.input):
+			if not os.path.isdir(os.path.dirname(out_filename)):
+				print "creating mp3 folder:{}".format(os.path.dirname(out_filename))
+				os.makedirs(os.path.dirname(out_filename))	
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} initiating ffmpeg transcode process to mp3".format(timestamp)
 			mp3_filename = out_filename
@@ -39,7 +42,7 @@ class transcoder():
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, mp3_filename)		
 			except ffmpy.FFRuntimeError as e:
-				print "ERROR: ffmpeg loudness processing: {}".format(e)
+				print "ERROR: ffmpeg mp3 transcode processing: {}".format(e)
 			finally:
 				pass
 		else:
@@ -47,6 +50,9 @@ class transcoder():
 
 	def transcode_ogg(self, out_filename):
 		if os.path.exists(self.input):
+			if not os.path.isdir(os.path.dirname(out_filename)):
+				print "creating mp3 folder:{}".format(os.path.dirname(out_filename))
+				os.makedirs(os.path.dirname(out_filename))	
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} initiating ffmpeg transcode process to ogg".format(timestamp)
 			ogg_filename = out_filename
@@ -57,7 +63,7 @@ class transcoder():
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} COMPLETE: ffmpeg mp3 transcoded file: {}".format(timestamp, ogg_filename)
 			except ffmpy.FFRuntimeError as e:
-				print "ERROR: ffmpeg loudness processing: {}".format(e)
+				print "ERROR: ffmpeg ogg transcode processing: {}".format(e)
 			finally:
 				pass		
 		else:

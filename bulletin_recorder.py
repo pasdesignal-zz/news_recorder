@@ -132,6 +132,7 @@ if __name__ == '__main__':
 			bulletin.xml.mp3_size = bulletin.properties.filesize
 		else:
 			print "ERROR: mp3 valid test BAD: {}".format(bulletin.mp3_filepath)
+			#what to do here? Exit?
 		##--VALIDATE OGG--##
 		print "testing for valid ogg audio file after transcode..."
 		bulletin.properties = get_properties(bulletin.ogg_filepath)
@@ -141,6 +142,7 @@ if __name__ == '__main__':
 			bulletin.xml.ogg_size = bulletin.properties.filesize
 		else:
 			print "ERROR: ogg valid test BAD: {}".format(bulletin.ogg_filepath)
+			#what to do here? Exit?
 		if bulletin.mp3valid == 1 and bulletin.oggvalid == 1:
 			bulletin.transcoder.housekeeping()
 		else:
@@ -148,7 +150,10 @@ if __name__ == '__main__':
 			print "{} ERROR: bad transcoded files detected. Exiting.".format(timestamp)
 			exit()
 		##--GENERATE XML--##
-		bulletin.xml.xml_write(os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
+		xml_filename = (os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
+		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+		print "{} generating XML for ingest to ELF: {}".format(timestamp, xml_filename)
+		bulletin.xml.xml_write(xml_filename)
 		#test XML here????
 		##--EXPORT--##
 		##--HOUSEKEEPING--##

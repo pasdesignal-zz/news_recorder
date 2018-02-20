@@ -24,7 +24,7 @@ if __name__ == '__main__':
 	try:
 		elf_staging = '150.242.42.149'
 		elf_user = 'deploy'
-		key_file = ''
+		key_file = '/home/deploy/.ssh/id_rsa'
 		test = check_ssh(elf_staging)
 		test.check_it()
 	except KeyboardInterrupt:

@@ -30,8 +30,7 @@ class loudness_normaliser():
 			os.remove(self.temp)
 		if not os.path.isdir(os.path.dirname(self.temp)):
 				print "creating temp folder:{}".format(os.path.dirname(self.temp))
-				os.makedirs(os.path.dirname(self.temp))	
-		
+				os.makedirs(os.path.dirname(self.temp))
 		self.first_pass_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -f null -'
 		self.loudnorm_string = '-map 0:0 -af loudnorm=I=-14:TP=-3:LRA=11:print_format=json -c:a pcm_s24le -ar 48000'	#only used if dual_mode==False
 		self.global_string = '-y -hide_banner -loglevel info'
@@ -55,12 +54,9 @@ class loudness_normaliser():
 			self.input_lra = self.json['input_lra']
 			self.input_thresh = self.json['input_thresh']
 			self.offset = self.json['target_offset']
-			self.loudnorm_string = ('-af loudnorm=\
-				I=-14:TP=-3:LRA=11:measured_I={}:\
-				measured_LRA={}:measured_TP={}:\
-				measured_thresh={}:offset={}:\
-				linear=true:print_format=json \
-				-c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
+			self.loudnorm_string = ('-af loudnorm=I=-14:TP=-3:LRA=11:measured_I={}:'
+				'measured_LRA={}:measured_TP={}:measured_thresh={}:offset={}:'
+				'linear=true:print_format=json -c:a pcm_s24le -ar 48000').format(self.input_i, self.input_lra, self.input_tp, self.input_thresh, self.offset)
 			#print self.loudnorm_string	#debug
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} ffmpeg loudnorm first pass complete".format(timestamp)
