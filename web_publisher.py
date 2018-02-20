@@ -49,10 +49,10 @@ class ssh_session(): #object to use for duration of bulletin creation
 		return True
 
 if __name__ == '__main__':
-  	rnzweb-wn-vm-rnz-app = '10.14.4.51'
-  	rnzweb-ak-vm-rnz-app = '10.14.8.51'
-  	rnzweb-wn-vm-podcast = '10.14.4.136'
-  	rnzweb-ak-vm-podcast = '10.14.8.203'
+	rnzweb-wn-vm-rnz-app = '10.14.4.51'
+	rnzweb-ak-vm-rnz-app = '10.14.8.51'
+	rnzweb-wn-vm-podcast = '10.14.4.136'
+	rnzweb-ak-vm-podcast = '10.14.8.203'
 	radionz-stg-app1 = '150.242.42.149'
 	elf_port = 22
 	elf_user = 'deploy'
@@ -66,9 +66,9 @@ if __name__ == '__main__':
 	if result == True:
 		print "ELF success bitches!!!"
 	else:
-		print "ELF failure bitches!!!"	
+		print "ELF failure bitches!!!"  
 	result = test.check_podcast(podcast_server, podcast_port, elf_user, key_file)
 	if result == True:
 		print "ELF success bitches!!!"
 	else:
-		print "ELF failure bitches!!!"		
+		print "ELF failure bitches!!!"      
