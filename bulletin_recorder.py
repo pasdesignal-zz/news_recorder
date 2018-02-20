@@ -87,7 +87,7 @@ if __name__ == '__main__':
 		bulletin.control.start()   
 		#timeout = threading.Timer(20.0, rec_job.terminate)  #timeout thread in case button never gets pushed! 1200.0 for 20 mins
 		#timeout.start()
-		while rec_job.isalive():									
+		while rec_job.is_alive():									
 			command = listen_child_conn.recv()
 			print 'command received: {}'.format(command)
 			if command == 'stop_recording':
