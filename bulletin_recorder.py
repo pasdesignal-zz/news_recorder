@@ -80,14 +80,15 @@ if __name__ == '__main__':
 		listen_queue = SimpleQueue() 												#Pipe for control of ffmpeg thread
 		pathfinder = listen_socket(queue=listen_queue, bind=bind_interface, port=bind_port) 	#pass one end to this listen thread
 		bulletin.control = Process(target=pathfinder.listen)             
+		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
+		bulletin.control.start()  
 		print "initiating recorder thread"
 		rec_job = Process(target=recorder, args=(bulletin.filepath,))
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
-		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
-		bulletin.control.start()   
+		time.sleep(1)
 		while rec_job.is_alive():
-			print "alive?", rec_job.is_alive()
+			print "ffmpeg recording alive:", rec_job.is_alive()
 			if not listen_queue.empty():							
 				command = listen_queue.get()
 				print 'command received: {}'.format(command)
