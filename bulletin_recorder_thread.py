@@ -68,19 +68,19 @@ if __name__ == '__main__':
 		bulletin.control = Process(target=pathfinder.listen)             
 		print "initiating recorder thread"
 		bulletin.record = recorder(comm=listen_parent_conn, filename=bulletin.filepath)
-		rec_job = Process(target=bulletin.record.run)
+		rec_job = threading.Thread(target=bulletin.record.run)
 		print "starting ffmpeg recorder thread"
 		rec_job.start()
 		print "starting pathfinder listen socket on interface {}, port: {}".format(bind_interface, bind_port)
 		bulletin.control.start()   
-		t = threading.Timer(1200.0, bulletin.record.timeout)  	#timeout thread in case button never gets pushed! 1200.0 for 20 mins
-		t.start()
+		timeout = threading.Timer(1200.0, bulletin.record.timeout)  	#timeout thread in case button never gets pushed! 1200.0 for 20 mins
+		timeout.start()
 		loop = 1
 		while loop == 1:									
 			command = listen_child_conn.recv()
 			print 'command: {}'.format(command)
 			if command == 'stop_recording':
-				t.cancel()										#cancel timeout thread
+				timeout.cancel()										#cancel timeout thread
 				timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 				print "{} terminating recording process".format(timestamp)
 				bulletin.record.terminate()
