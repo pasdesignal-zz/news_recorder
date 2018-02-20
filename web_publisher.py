@@ -35,7 +35,7 @@ if __name__ == '__main__':
 	sock = http_con.sock
 	test = check_ssh(sock)
 	test.check_it(elf_staging, elf_user, key_file)
-		if result == True:
-			print "success bitches!!!"
-		else:
-			print "failure bitches!!!"	
+	if result == True:
+		print "success bitches!!!"
+	else:
+		print "failure bitches!!!"	
