@@ -3,15 +3,18 @@
 #sudo pip install paramiko
 
 import paramiko
-
+import os
+import sys
 #To Do:
 # check connectivity to ELF
 
 class check_ssh(): #object to use for duration of bulletin creation
 
 	def __init__(self):
-		self.proxy_command = "/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 %h %p"
+		self.proxy_command = "/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 \%h \%p"
 		print self.proxy_command
+
+
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
 		ssh = paramiko.SSHClient()
