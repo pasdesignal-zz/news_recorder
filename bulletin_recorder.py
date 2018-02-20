@@ -94,13 +94,14 @@ if __name__ == '__main__':
 				command = listen_queue.get()
 				print 'command received: {}'.format(command)
 				if command == 'stop_recording':
-					timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-					print "{} terminating recording process".format(timestamp)
 					break
 				else:
 					print 'command: {}'.format(command)	
 			time.sleep(5)		
-		record.terminate()
+		if rec_job.is_alive():
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "{} terminating recording process".format(timestamp)
+			record.terminate()
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		print "{} closing listen socket".format(timestamp)
 		bulletin.control.terminate()
