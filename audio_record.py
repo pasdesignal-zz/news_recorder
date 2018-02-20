@@ -17,16 +17,10 @@ def recorder(filename):
 		print "creating wav folder:{}".format(os.path.dirname(filename))
 		os.makedirs(os.path.dirname(filename))
 	cue = ffmpy.FFmpeg(global_options=global_options,inputs={audio_input : recstring},outputs={filename : outstring })
-	try:
-		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
-		print "{} starting recording of file:{}".format(timestamp, filename)	
-		cue.run()
-	except ffmpy.FFRuntimeError as e:
-		print "ERROR: ffmpeg recording: {}".format(e)
-	finally:
-		print "finished recording...."
-		cue.process.terminate()
-		return		
+	timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+	print "{} starting recording of file:{}".format(timestamp, filename)	
+	cue.run()
+	print "finished recording...."
 
 if __name__ == '__main__':
 	try:
