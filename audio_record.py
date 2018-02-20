@@ -25,6 +25,7 @@ def recorder(filename):
 		print "ERROR: ffmpeg recording: {}".format(e)
 	finally:
 		print "finished recording...."
+		cue.process.terminate()
 		return		
 
 if __name__ == '__main__':
