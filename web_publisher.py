@@ -23,9 +23,7 @@ if __name__ == '__main__':
 	elf_staging = '150.242.42.149'
 	elf_user = 'deploy'
 	key_file = '/home/deploy/.ssh/id_rsa.pub'
-	testconn = check_ssh()
-	result = testconn.check_it(elf_staging, elf_user, key_file)
-	port = 22	
+	port = 22
 	proxy_uri = "http://172.17.8.1:3128"
 	url = urlparse.urlparse(proxy_uri)
 	http_con = httplib.HTTPConnection(url.hostname, url.port)
