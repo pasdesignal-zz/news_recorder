@@ -6,7 +6,7 @@ import os
 #ToDo:
 #ignore 255 error for ffmpy terminate
 
-recorder(filename):
+def recorder(filename):
 	#is there a bug in the way protocol_whitelist is parsed? Last option always ignored!
 	filename = filename
 	global_options = "-y -hide_banner -protocol_whitelist 'file,udp,rtp,https' -v quiet"
