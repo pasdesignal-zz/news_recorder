@@ -10,34 +10,32 @@ import sys
 
 class check_ssh(): #object to use for duration of bulletin creation
 
-	def __init__(self):
-		self.proxy_command = ""
+	def __init__(sel, sock):
+		self.sock = sock
 
 	def check_it(self, ip, user, key_file, initial_wait=0, interval=0, retries=1):
-		self.proxy_command = "/usr/bin/ncat --proxy-type http --proxy 172.17.8.1:3128 {} {}".format(ip, 22)
-		print self.proxy_command
 		ssh = paramiko.SSHClient()
-		proxy = paramiko.ProxyCommand(self.proxy_command)
-		print proxy
 		print "testing SSH connectivity to {} as user {}".format(ip, user)
-		ssh.connect(ip, username=user, key_filename=key_file, sock=proxy)
+		ssh.connect(ip, username=user, key_filename=key_file, sock=self.sock)
 		return True
 
 if __name__ == '__main__':
-	try:
-		elf_staging = '150.242.42.149'
-		elf_user = 'deploy'
-		key_file = '/home/deploy/.ssh/id_rsa.pub'
-		testconn = check_ssh()
-		result = testconn.check_it(elf_staging, elf_user, key_file)
+	elf_staging = '150.242.42.149'
+	elf_user = 'deploy'
+	key_file = '/home/deploy/.ssh/id_rsa.pub'
+	testconn = check_ssh()
+	result = testconn.check_it(elf_staging, elf_user, key_file)
+	port = 22
+	proxy_uri = "http://172.17.8.1:3128"
+	url = urlparse.urlparse(proxy_uri)
+	http_con = httplib.HTTPConnection(url.hostname, url.port)
+	headers = {}	
+	http_con.set_tunnel(elf_staging, port, headers)
+	http_con.connect()
+	sock = http_con.sock
+	test = check_ssh(sock)
+
 		if result == True:
 			print "success bitches!!!"
 		else:
 			print "failure bitches!!!"	
-	except KeyboardInterrupt:
-		print "manually interrupted!"
-	except Exception as e:
-		print "Error:"
-		print e
-	finally:
-		print "finished"
