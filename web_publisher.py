@@ -49,11 +49,11 @@ class ssh_session(): #object to use for duration of bulletin creation
 		return True
 
 if __name__ == '__main__':
-	rnzweb-wn-vm-rnz-app = '10.14.4.51'
-	rnzweb-ak-vm-rnz-app = '10.14.8.51'
-	rnzweb-wn-vm-podcast = '10.14.4.136'
-	rnzweb-ak-vm-podcast = '10.14.8.203'
-	radionz-stg-app1 = '150.242.42.149'
+	rnzweb_wn_vm_rnz_app = '10.14.4.51'
+	rnzweb_ak_vm_rnz_app = '10.14.8.51'
+	rnzweb_wn_vm_podcast = '10.14.4.136'
+	rnzweb_ak_vm_podcast = '10.14.8.203'
+	radionz_stg_app1 = '150.242.42.149'
 	elf_port = 22
 	elf_user = 'deploy'
 	elf_key_file = '/home/deploy/.ssh/id_rsa.pub'
