@@ -25,7 +25,7 @@ if __name__ == '__main__':
 	key_file = '/home/deploy/.ssh/id_rsa.pub'
 	testconn = check_ssh()
 	result = testconn.check_it(elf_staging, elf_user, key_file)
-	port = 22
+	port = 22python	
 	proxy_uri = "http://172.17.8.1:3128"
 	url = urlparse.urlparse(proxy_uri)
 	http_con = httplib.HTTPConnection(url.hostname, url.port)
@@ -34,7 +34,7 @@ if __name__ == '__main__':
 	http_con.connect()
 	sock = http_con.sock
 	test = check_ssh(sock)
-
+	test.check_it(elf_staging, elf_user, key_file)
 		if result == True:
 			print "success bitches!!!"
 		else:
