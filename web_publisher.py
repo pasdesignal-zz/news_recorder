@@ -62,7 +62,7 @@ if __name__ == '__main__':
 	podcast_user = 'deploy'
 	podcast_key_file = '/home/deploy/.ssh/id_rsa.pub'
 	test = ssh_session()
-	result = test.check_elf(radionz-stg-app1, elf_port, elf_user, key_file)
+	result = test.check_elf(radionz_stg_app1, elf_port, elf_user, key_file)
 	if result == True:
 		print "ELF success bitches!!!"
 	else:
