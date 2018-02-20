@@ -22,7 +22,10 @@ def recorder(filename):
 		print "{} starting recording of file:{}".format(timestamp, filename)	
 		cue.run()
 	except ffmpy.FFRuntimeError as e:
-		print "ERROR: ffmpeg recording: {}".format(e)	
+		print "ERROR: ffmpeg recording: {}".format(e)
+	finally:
+		print "finished recording...."
+		return		
 
 if __name__ == '__main__':
 	try:
