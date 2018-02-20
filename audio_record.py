@@ -28,6 +28,9 @@ class recorder():
 		except ffmpy.FFRuntimeError as e:
 				print "ERROR: ffmpeg recording: {}".format(e)	
 
+	def terminate(self):
+		self.cue.process.terminate()			
+
 if __name__ == '__main__':
 	try:
 		import threading
