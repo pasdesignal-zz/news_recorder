@@ -25,7 +25,7 @@ class recorder():
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} starting recording of file:{}".format(timestamp, self.filename)	
 			self.cue.run()
-		except ffmpy.FFRuntimeError as e:
+		except ffmpy.FFRuntimeError as e:		#ignore normal exit code raised by ffmpeg when you terminate
 			if e.exit_code == 255:
 				pass
 			else:	
