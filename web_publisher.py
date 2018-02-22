@@ -12,9 +12,8 @@ import os
 # 2. test SSH connect to rnzweb-wn-vm-podcast & rnzweb-ak-vm-podcast
 # 3. upload audio
 # 4. upload metadata: test connect and run simple command, see if returns
-# place file in destination location
 
-class ssh_session(): #object to use for duration of bulletin creation
+class ssh_session():
 
 	def __init__(self,):
 		self.dest = ''
