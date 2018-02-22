@@ -26,7 +26,7 @@ class recorder():
 			print "{} starting recording of file:{}".format(timestamp, self.filename)	
 			self.cue.run()
 		except ffmpy.FFRuntimeError as e:
-			if e.errno == 255:
+			if e.exit_code == 255:
 				pass
 			else:	
 				print "ERROR raised during ffmpeg recording:"
