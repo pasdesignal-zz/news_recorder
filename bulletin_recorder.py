@@ -1,10 +1,13 @@
 #!/usr/bin/python
 #import all the things :)
+
 import datetime
 import time
 import os
 import threading
 import argparse
+import sys
+sys.path = [(os.getcwd()), (os.getcwd()+'/BTech')]
 from multiprocessing import Process
 from multiprocessing.queues import SimpleQueue
 from sdp_generator import SDP_Gen
@@ -15,7 +18,7 @@ from audio_trim import silence_trimmer
 from audio_normalise import loudness_normaliser
 from xml_generator import xml_machine
 from audio_transcode import transcoder
-from .BTech import syslog_rnz
+from  syslog_rnz import rnz_syslog
 
 #To Do:
 #syslog notification for errors
