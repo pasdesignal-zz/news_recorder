@@ -17,7 +17,7 @@ from audio_trim import silence_trimmer
 from audio_normalise import loudness_normaliser
 from xml_generator import xml_machine
 from audio_transcode import transcoder
-sys.path = [(os.getcwd()), (os.getcwd()+'/BTech')]
+sys.path = [(os.getcwd()), (os.getcwd()+'/BTech')]		#there must be a more elegant way to do this!
 from  syslog_rnz import rnz_syslog
 
 #To Do:
@@ -40,8 +40,6 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 		timestamp_plus = timestamp + datetime.timedelta(minutes=10)				#bring time into next hour cause we start early
 		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour	
 		self.log = rnz_syslog('auckland')
-		print "testing syslog messages...."
-		self.log.debug('this is a debug test')
 
 	def housekeeping(self):
 		print "housekeeping..."
@@ -61,15 +59,18 @@ if __name__ == '__main__':
 		timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 		template_xml = (os.getcwd()+'/diginews_template.xml')
 		podcast_baseurl = 'http://podcast.radionz.co.nz/news/'
+		bulletin = bulletin_object()
 		if arguments.test == True:
 			print "Test argument used. Setting up alternative session variables..."
 			livewire_channel = 4004 		#no silence
 			bind_interface = '127.0.0.1'		#for socket strings from test script
 			bind_port=5120		
+			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
+			print "testing syslog messages...."
+			self.log.debug('{} this is a debug test'.format(timestamp))
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting bulletin recording job...".format(timestamp)
-		bulletin = bulletin_object()
 		bulletin.xml = xml_machine()
 		bulletin.xml.parse_template(template_xml)
 		bulletin.xml.broadcast_at = bulletin.time.strftime("%Y-%m-%d %H:00")
