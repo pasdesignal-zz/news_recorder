@@ -7,6 +7,7 @@ import os
 import threading
 import argparse
 import sys
+import socket
 from multiprocessing import Process
 from multiprocessing.queues import SimpleQueue
 from sdp_generator import SDP_Gen
@@ -67,7 +68,7 @@ if __name__ == '__main__':
 			bind_port=5120		
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "testing syslog messages...."
-			bulletin.log.debug('{} this is a debug test'.format(timestamp))
+			bulletin.log.debug('{} {}: this is a debug test'.format(timestamp, socket.gethostname()))
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting bulletin recording job...".format(timestamp)
