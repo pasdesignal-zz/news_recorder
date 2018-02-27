@@ -15,9 +15,9 @@ from audio_trim import silence_trimmer
 from audio_normalise import loudness_normaliser
 from xml_generator import xml_machine
 from audio_transcode import transcoder
+from syslog_rnz import rnz_syslog
 
 #To Do:
-#fix terminate loop BS
 #syslog notification for errors
 #test exits are working/elegant
 #more timestamps!
@@ -36,6 +36,9 @@ class bulletin_object(): 					#basic object to use for duration of bulletin crea
 		timestamp = datetime.datetime.now()
 		timestamp_plus = timestamp + datetime.timedelta(minutes=10)				#bring time into next hour cause we start early
 		self.time = timestamp_plus.replace( minute=00, second=0, microsecond=0) #round down to nearest hour	
+		self.log = rnz_syslog('auckland')
+		print "testing syslog messages...."
+		self.log.debug('this is a debug test')
 
 	def housekeeping(self):
 		print "housekeeping..."
