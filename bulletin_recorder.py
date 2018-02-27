@@ -18,7 +18,6 @@ from audio_transcode import transcoder
 
 #To Do:
 #fix terminate loop BS
-#better way to timeout kill
 #syslog notification for errors
 #test exits are working/elegant
 #more timestamps!
@@ -89,7 +88,7 @@ if __name__ == '__main__':
 		rec_job.start()
 		time.sleep(1)
 		while rec_job.is_alive():
-			print "ffmpeg recording alive:", rec_job.is_alive()
+			print "ffmpeg recording thread is alive:", rec_job.is_alive()
 			if not listen_queue.empty():							
 				command = listen_queue.get()
 				print 'command received: {}'.format(command)
@@ -113,6 +112,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
+			#syslog here
 			exit()
 		##--REMOVE SILENCE--##
 		print "opening file:{} for silence trimming".format(bulletin.filepath)
@@ -129,6 +129,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
+			#syslog here
 			exit()
 		bulletin.xml.duration = bulletin.properties.duration		#add audio duration to xml	
 		##--NORMALISE LOUDNESS--##
@@ -142,6 +143,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, louder.temp)
+			#syslog here
 			exit()
 		##--TRANSCODE--##
 		bulletin.transcoder = transcoder(bulletin.filepath)
@@ -171,6 +173,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: bad transcoded files detected. Exiting.".format(timestamp)
+			#syslog here
 			exit()
 		##--GENERATE XML--##
 		xml_filename = (os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
@@ -186,6 +189,7 @@ if __name__ == '__main__':
 	except Exception as e:
 		print "Error:"
 		print e
+		#syslog here
 	finally:
 		bulletin.housekeeping()
 		print "finished"
