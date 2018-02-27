@@ -17,7 +17,8 @@ from audio_trim import silence_trimmer
 from audio_normalise import loudness_normaliser
 from xml_generator import xml_machine
 from audio_transcode import transcoder
-sys.path = [(os.getcwd()), (os.getcwd()+'/BTech')]		#there must be a more elegant way to do this!
+sys.path.insert(0, (os.getcwd()+'/BTech'))
+#sys.path = [(os.getcwd()), (os.getcwd()+'/BTech')]		#there must be a more elegant way to do this!
 from syslog_rnz import rnz_syslog
 
 #To Do:
