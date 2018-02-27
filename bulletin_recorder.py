@@ -72,6 +72,7 @@ if __name__ == '__main__':
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting bulletin recording job...".format(timestamp)
+		bulletin.log.info('{} {}: starting bulletin recording job'.format(timestamp, socket.gethostname()))
 		bulletin.xml = xml_machine()
 		bulletin.xml.parse_template(template_xml)
 		bulletin.xml.broadcast_at = bulletin.time.strftime("%Y-%m-%d %H:00")
@@ -120,7 +121,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
-			#syslog here
+			bulletin.log.critical('{} {}: FATAL ERROR: invalid .wav file detected. Cannot continue.'.format(timestamp, socket.gethostname()))
 			exit()
 		##--REMOVE SILENCE--##
 		print "opening file:{} for silence trimming".format(bulletin.filepath)
@@ -137,7 +138,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, bulletin.filepath)
-			#syslog here
+			bulletin.log.critical('{} {}: FATAL ERROR: invalid .wav file detected. Cannot continue.'.format(timestamp, socket.gethostname()))
 			exit()
 		bulletin.xml.duration = bulletin.properties.duration		#add audio duration to xml	
 		##--NORMALISE LOUDNESS--##
@@ -151,7 +152,7 @@ if __name__ == '__main__':
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: invalid .wav file detected. Cannot continue: {}".format(timestamp, louder.temp)
-			#syslog here
+			bulletin.log.critical('{} {}: FATAL ERROR: invalid .wav file detected. Cannot continue.'.format(timestamp, socket.gethostname()))
 			exit()
 		##--TRANSCODE--##
 		bulletin.transcoder = transcoder(bulletin.filepath)
@@ -166,6 +167,7 @@ if __name__ == '__main__':
 			bulletin.xml.mp3_size = bulletin.properties.filesize
 		else:
 			print "ERROR: mp3 valid test BAD: {}".format(bulletin.mp3_filepath)
+			bulletin.log.critical('{} {}: ERROR: mp3 valid test BAD.'.format(timestamp, socket.gethostname()))
 			#what to do here? Exit?
 		##--VALIDATE OGG--##
 		#print "testing for valid ogg audio file after transcode..."
@@ -176,12 +178,13 @@ if __name__ == '__main__':
 			bulletin.xml.ogg_size = bulletin.properties.filesize
 		else:
 			print "ERROR: ogg valid test BAD: {}".format(bulletin.ogg_filepath)
+			bulletin.log.critical('{} {}: ERROR: ogg valid test BAD.'.format(timestamp, socket.gethostname()))
 		if bulletin.transcoder.mp3valid == 1 and bulletin.transcoder.oggvalid == 1:
 			bulletin.transcoder.housekeeping()
 		else:
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "{} FATAL ERROR: bad transcoded files detected. Exiting.".format(timestamp)
-			#syslog here
+			bulletin.log.critical('{} {}: FATAL ERROR: bad transcoded files detected. Exiting.'.format(timestamp, socket.gethostname()))
 			exit()
 		##--GENERATE XML--##
 		xml_filename = (os.getcwd()+'/xmls/'+bulletin.time.strftime("%Y%m%d-%H00")+'.xml')
