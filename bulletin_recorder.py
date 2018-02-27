@@ -15,7 +15,7 @@ from audio_trim import silence_trimmer
 from audio_normalise import loudness_normaliser
 from xml_generator import xml_machine
 from audio_transcode import transcoder
-from .BTech/syslog_rnz.py import rnz_syslog
+from .BTech.syslog_rnz import rnz_syslog
 
 #To Do:
 #syslog notification for errors
