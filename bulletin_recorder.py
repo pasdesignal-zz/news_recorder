@@ -17,8 +17,7 @@ from audio_trim import silence_trimmer
 from audio_normalise import loudness_normaliser
 from xml_generator import xml_machine
 from audio_transcode import transcoder
-sys.path.insert(0, (os.getcwd()+'/BTech'))
-#sys.path = [(os.getcwd()), (os.getcwd()+'/BTech')]		#there must be a more elegant way to do this!
+sys.path.insert(0, (os.getcwd()+'/BTech')) 		#add path to rnz_syslog module
 from syslog_rnz import rnz_syslog
 
 #To Do:
@@ -68,7 +67,7 @@ if __name__ == '__main__':
 			bind_port=5120		
 			timestamp = datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
 			print "testing syslog messages...."
-			self.log.debug('{} this is a debug test'.format(timestamp))
+			bulletin.log.debug('{} this is a debug test'.format(timestamp))
 		##--RECORD--##
 		print "\r\n"
 		print "{} starting bulletin recording job...".format(timestamp)
